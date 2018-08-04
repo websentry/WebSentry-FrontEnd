@@ -3,11 +3,9 @@ import React, { Component } from 'react'
 import {
   Button,
   Container,
-  Divider,
   Grid,
   Header,
   Icon,
-  Image,
   List,
   Menu,
   Responsive,
@@ -79,7 +77,7 @@ class DesktopContainer extends Component {
           <Segment
             inverted
             textAlign='center'
-            style={{ minHeight: (pageType=='Home')?700:0, padding: '1em 0em' }}
+            style={{ minHeight: (pageType==='Home')?700:0, padding: '1em 0em' }}
             vertical
           >
             <Menu
@@ -90,8 +88,8 @@ class DesktopContainer extends Component {
               size='large'
             >
               <Container>
-              <Menu.Item as='a' href='/' active={pageType=='Home'}>Home</Menu.Item>
-              <Menu.Item as='a' href='/console' active={pageType=='Console'}>Console</Menu.Item>
+              <Menu.Item as='a' href='/' active={pageType==='Home'}>Home</Menu.Item>
+              <Menu.Item as='a' href='/console' active={pageType==='Console'}>Console</Menu.Item>
 
                 <Menu.Item position='right'>
                   <Button as='a' inverted={!fixed}>
@@ -103,7 +101,7 @@ class DesktopContainer extends Component {
                 </Menu.Item>
               </Container>
             </Menu>
-            {(pageType=='Home')?<HomepageHeading />:''}
+            {(pageType==='Home')?<HomepageHeading />:''}
           </Segment>
         </Visibility>
 
@@ -136,8 +134,8 @@ class MobileContainer extends Component {
       <Responsive maxWidth={Responsive.onlyMobile.maxWidth}>
         <Sidebar.Pushable>
           <Sidebar as={Menu} animation='uncover' inverted vertical visible={sidebarOpened}>
-          <Menu.Item as='a' href='/' active={pageType=='Home'}>Home</Menu.Item>
-          <Menu.Item as='a' href='/console' active={pageType=='Console'}>Console</Menu.Item>
+          <Menu.Item as='a' href='/' active={pageType==='Home'}>Home</Menu.Item>
+          <Menu.Item as='a' href='/console' active={pageType==='Console'}>Console</Menu.Item>
 
             <Menu.Item as='a'>Log in</Menu.Item>
             <Menu.Item as='a'>Sign Up</Menu.Item>
@@ -151,7 +149,7 @@ class MobileContainer extends Component {
             <Segment
               inverted
               textAlign='center'
-              style={{ minHeight: (pageType=='Home')?350:0, padding: '1em 0em' }}
+              style={{ minHeight: (pageType==='Home')?350:0, padding: '1em 0em' }}
               vertical
             >
               <Container>
@@ -169,7 +167,7 @@ class MobileContainer extends Component {
                   </Menu.Item>
                 </Menu>
               </Container>
-             {(pageType=='Home')?<HomepageHeading />:''}
+             {(pageType==='Home')?<HomepageHeading />:''}
             </Segment>
 
             {children}
