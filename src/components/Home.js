@@ -1,9 +1,11 @@
 import React from 'react'
+import CommonPage from './CommonPage';
+
 
 const Home = () => (
-  <div>
-    <h1>Welcome to the Tornadoes Website!</h1>
-  </div>
+    <CommonPage pageType='Home'>
+        Home
+    </CommonPage>
 )
 
 export default Home

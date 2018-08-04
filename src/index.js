@@ -1,11 +1,18 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import 'semantic-ui-css/semantic.min.css';
-import App from './components/App';
+
+import Home from './components/Home.js';
+import Console from './components/Console.js';
+
+
 
 render((
   <BrowserRouter>
-    <App />
+      <Switch>
+        <Route exact path='/' component={Home}/>
+        <Route path='/console' component={Console}/>
+      </Switch>
   </BrowserRouter>
 ), document.getElementById('root'));
