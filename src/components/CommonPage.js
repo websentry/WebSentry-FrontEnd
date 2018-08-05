@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import {
   Button,
   Container,
@@ -88,8 +89,8 @@ class DesktopContainer extends Component {
               size='large'
             >
               <Container>
-              <Menu.Item as='a' href='/' active={pageType==='Home'}>Home</Menu.Item>
-              <Menu.Item as='a' href='/console' active={pageType==='Console'}>Console</Menu.Item>
+              <Menu.Item as={Link} to='/' active={pageType==='Home'}>Home</Menu.Item>
+              <Menu.Item as={Link} to='/console' active={pageType==='Console'}>Console</Menu.Item>
 
                 <Menu.Item position='right'>
                   <Button as='a' inverted={!fixed}>
@@ -134,8 +135,8 @@ class MobileContainer extends Component {
       <Responsive maxWidth={Responsive.onlyMobile.maxWidth}>
         <Sidebar.Pushable>
           <Sidebar as={Menu} animation='uncover' inverted vertical visible={sidebarOpened}>
-          <Menu.Item as='a' href='/' active={pageType==='Home'}>Home</Menu.Item>
-          <Menu.Item as='a' href='/console' active={pageType==='Console'}>Console</Menu.Item>
+          <Menu.Item as={Link} to='/' active={pageType==='Home'}>Home</Menu.Item>
+          <Menu.Item as={Link} to='/console' active={pageType==='Console'}>Console</Menu.Item>
 
             <Menu.Item as='a'>Log in</Menu.Item>
             <Menu.Item as='a'>Sign Up</Menu.Item>
