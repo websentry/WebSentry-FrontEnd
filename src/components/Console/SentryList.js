@@ -80,7 +80,7 @@ class ConsoleSentryList extends Component {
                     <Grid.Row centered>
                         <Card.Group>
 
-                        <Card as={Link} to='/console/sentry/add'>
+                        <Card as={Link} to='/console/sentry/create'>
                           <Card.Content textAlign='center'>
                               <Icon name='add' size='big' style={{margin: '25px'}} />
                               <Card.Header>Create New Sentry</Card.Header>

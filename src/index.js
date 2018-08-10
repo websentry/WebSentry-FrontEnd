@@ -6,7 +6,7 @@ import 'semantic-ui-css/semantic.min.css';
 import Home from './components/Home.js';
 import Console from './components/Console.js';
 
-
+// TODO: Terrible quality, refactor needed
 
 render((
   <BrowserRouter>
