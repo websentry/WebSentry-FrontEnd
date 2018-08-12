@@ -254,7 +254,7 @@ class ConsoleSentryCreate extends Component {
                     src={this.state.screenshotUrl}
                     crop={this.state.crop}
                     onChange = {(crop) => {this.setState({ crop });}}
-                    onImageLoaded = {(image) => { this.setState({ screenshotHeight: image.height, screenshotWidth: image.width });}}
+                    onImageLoaded = {(image) => { this.setState({ screenshotHeight: image.naturalHeight, screenshotWidth: image.naturalWidth });}}
                 />
                 <Divider />
                 <Header as='h3'>Notification method</Header>
