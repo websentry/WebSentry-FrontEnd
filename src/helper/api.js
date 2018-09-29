@@ -1,4 +1,4 @@
-
+const axios = require('axios');
 
 const apiUrlBase = 'http://127.0.0.1:8080/v1/';
 
@@ -9,7 +9,7 @@ api.requestApi = async (method, params, requireToken) => {
         params.token = localStorage.getItem('ws-token');
     }
 
-    let res = await axios.request({url: apiUrl + method,
+    let res = await axios.request({url: apiUrlBase + method,
                             method: 'post', params: params});
     if (res.data.code===-1) {
         // auth fail, logout
@@ -24,15 +24,26 @@ api.getLoginInfo = async () => {
     let info = localStorage.getItem('ws-loginInfo');
     if (info!==null) return info;
     // use token to request login info
-    let data = await api.requestApi('user/info', {}, false);
-    if (data.code===0) {
-        info = {login: true
-                email: data.email};
+    let response = await api.requestApi('user/info', {}, true);
+    if (response.code===0) {
+        info = response.data;
         localStorage.setItem('ws-loginInfo', info);
         return info;
     } else {
-        return {login: false};
+        return null;
     }
+}
+
+api.login = async (email, password) => {
+    localStorage.removeItem('ws-token');
+    sessionStorage.removeItem('ws-loginInfo');
+
+    const params = {email: email, password: password};
+    let response = await api.requestApi('login', params, false);
+    if (response.code===0) {
+        localStorage.setItem('ws-token', response.data.token);
+    }
+    return response;
 }
 
 
