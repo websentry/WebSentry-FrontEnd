@@ -1,10 +1,16 @@
 
 |---- package.json
+
 |---- generators/
+
     |---- app/
+
         |---- index.js
+
     |---- router/
+
         |---- index.js
+        
 
 
 
