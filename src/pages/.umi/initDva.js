@@ -14,7 +14,7 @@ app.use(createLoading());
   app.use(plugin);
 });
 
-app.model({ namespace: 'global', ...(require('/Users/estelle/Project/websentry/src/models/global.js').default) });
-app.model({ namespace: 'menu', ...(require('/Users/estelle/Project/websentry/src/models/menu.js').default) });
-app.model({ namespace: 'setting', ...(require('/Users/estelle/Project/websentry/src/models/setting.js').default) });
-app.model({ namespace: 'user', ...(require('/Users/estelle/Project/websentry/src/models/user.js').default) });
+app.model({ namespace: 'global', ...(require('/Users/estelle/Project/WebSentry-FrontEnd/src/models/global.js').default) });
+app.model({ namespace: 'menu', ...(require('/Users/estelle/Project/WebSentry-FrontEnd/src/models/menu.js').default) });
+app.model({ namespace: 'setting', ...(require('/Users/estelle/Project/WebSentry-FrontEnd/src/models/setting.js').default) });
+app.model({ namespace: 'user', ...(require('/Users/estelle/Project/WebSentry-FrontEnd/src/models/user.js').default) });

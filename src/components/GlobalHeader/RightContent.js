@@ -82,10 +82,6 @@ export default class GlobalHeaderRight extends PureComponent {
           <Icon type="setting" />
           <FormattedMessage id="menu.account.settings" defaultMessage="account settings" />
         </Menu.Item>
-        <Menu.Item key="triggerError">
-          <Icon type="close-circle" />
-          <FormattedMessage id="menu.account.trigger" defaultMessage="Trigger Error" />
-        </Menu.Item>
         <Menu.Divider />
         <Menu.Item key="logout">
           <Icon type="logout" />
@@ -119,7 +115,7 @@ export default class GlobalHeaderRight extends PureComponent {
         <Tooltip title={formatMessage({ id: 'component.globalHeader.help' })}>
           <a
             target="_blank"
-            href="https://pro.ant.design/docs/getting-started"
+            href="https://github.com/websentry/WebSentry"
             rel="noopener noreferrer"
             className={styles.action}
           >
@@ -167,7 +163,34 @@ export default class GlobalHeaderRight extends PureComponent {
             emptyImage="https://gw.alipayobjects.com/zos/rmsportal/HsIsxMZiWKrNUavQUXqx.svg"
           />
         </NoticeIcon>
-        {currentUser.name ? (
+
+        {/* <button className = {styles.sign_in_button}>Sign in </button>
+        <span> or </span>
+        <button className={styles.sign_up_button}> Sign up </button> */}
+
+        
+        {/* <div className = {styles.top_content_menu_input_text}> */}
+          <a 
+            href = "javascript:void(0)" 
+            onclick = "document.getElementById('light').style.display='block'; document.getElementById('fade').style.display='block' "
+          > 
+          Sign in 
+          </a>
+          <span> or </span>
+          <a className={styles.sign_up}>Sign up</a>
+
+          <div id="light" className={styles.white_content}>这是一个层窗口示例程序. 
+            <a 
+            href = "javascript:void(0)" 
+            onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">
+            点这里关闭本窗口
+            </a>
+            </div> 
+
+          <div type = 'text/html' id="fade" className={styles.black_overlay}></div> 
+        {/* </div> */}
+
+        {/* {currentUser.name ? (
           <HeaderDropdown overlay={menu}>
             <span className={`${styles.action} ${styles.account}`}>
               <Avatar
@@ -181,7 +204,7 @@ export default class GlobalHeaderRight extends PureComponent {
           </HeaderDropdown>
         ) : (
           <Spin size="small" style={{ marginLeft: 8, marginRight: 8 }} />
-        )}
+        )} */}
         <SelectLang className={styles.action} />
       </div>
     );
