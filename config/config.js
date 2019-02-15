@@ -59,29 +59,22 @@ export default {
           path: '/explore',
           component: './Explore',
         },
-        // component: './Welcome',
-        // {
-        //   path: 'https://github.com/umijs/umi-blocks/tree/master/ant-design-pro',
-        //   name: 'more-blocks',
-        //   icon: 'block',
-        // },
         {
           path: '/dashboard',
           name: 'Dashboard',
           icon: 'dashboard',
-          // component: './Welcome',
           routes: [
             {
               path: '/dashboard/blank',
               name: 'Blank',
               icon: 'plus-square',
-              component: './blank',
+              component: './dashboard/blank',
             },
             {
               name: 'NewBlank',
               icon: 'switcher',
               path: '/dashboard/newblank',
-              component: './newblank',
+              component: './dashboard/newblank',
             },
             {
               name: 'notifications',
@@ -93,7 +86,7 @@ export default {
               name: 'Settings',
               icon: 'setting',
               path: '/dashboard/settings',
-              component: './Settings',
+              component: './dashboard/Settings',
             },
           ],
         },

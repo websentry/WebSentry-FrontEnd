@@ -44,7 +44,7 @@ let routes = [
         "exact": true
       },
       {
-        "name": "Explore",
+        "name": "explore",
         "icon": "global",
         "path": "/explore",
         "component": _dvaDynamic({
@@ -67,7 +67,10 @@ models: () => [
             "name": "Blank",
             "icon": "plus-square",
             "component": _dvaDynamic({
-  
+  app: window.g_app,
+models: () => [
+  import('/Users/estelle/Project/WebSentry-FrontEnd/src/pages/dashboard/blank/model.js').then(m => { return { namespace: 'model',...m.default}})
+],
   component: () => import('../dashboard/blank'),
   LoadingComponent: require('/Users/estelle/Project/WebSentry-FrontEnd/src/components/PageLoading/index').default,
 }),
@@ -78,7 +81,10 @@ models: () => [
             "icon": "switcher",
             "path": "/dashboard/newblank",
             "component": _dvaDynamic({
-  
+  app: window.g_app,
+models: () => [
+  import('/Users/estelle/Project/WebSentry-FrontEnd/src/pages/dashboard/newblank/model.js').then(m => { return { namespace: 'model',...m.default}})
+],
   component: () => import('../dashboard/newblank'),
   LoadingComponent: require('/Users/estelle/Project/WebSentry-FrontEnd/src/components/PageLoading/index').default,
 }),
@@ -103,7 +109,10 @@ models: () => [
             "icon": "setting",
             "path": "/dashboard/settings",
             "component": _dvaDynamic({
-  
+  app: window.g_app,
+models: () => [
+  import('/Users/estelle/Project/WebSentry-FrontEnd/src/pages/dashboard/Settings/model.js').then(m => { return { namespace: 'model',...m.default}})
+],
   component: () => import('../dashboard/Settings'),
   LoadingComponent: require('/Users/estelle/Project/WebSentry-FrontEnd/src/components/PageLoading/index').default,
 }),
