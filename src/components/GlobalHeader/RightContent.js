@@ -3,7 +3,7 @@ import { FormattedMessage, formatMessage } from 'umi/locale';
 import { Spin, Tag, Menu, Icon, Avatar, Tooltip } from 'antd';
 import moment from 'moment';
 import groupBy from 'lodash/groupBy';
-import { NoticeIcon } from 'ant-design-pro';
+import NoticeIcon from '../NoticeIcon';
 import HeaderSearch from '../HeaderSearch';
 import HeaderDropdown from '../HeaderDropdown';
 import SelectLang from '../SelectLang';
@@ -185,3 +185,6 @@ export default class GlobalHeaderRight extends PureComponent {
     );
   }
 }
+
+
+
