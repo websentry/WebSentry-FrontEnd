@@ -1,36 +1,9 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
-
-
-# dependencies
-**/node_modules
-
-# testing
-/coverage
-
-# production
-/build
-/.vscode
-
-# misc
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-package-lock.json
-yarn.lock
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-*bak
-.vscode
-
 # Created by https://www.gitignore.io/api/macos,windows
 
 ### macOS ###
+# General
 *.DS_Store
 .AppleDouble
 .LSOverride
@@ -63,8 +36,11 @@ Thumbs.db
 ehthumbs.db
 ehthumbs_vista.db
 
+# Dump file
+*.stackdump
+
 # Folder config file
-Desktop.ini
+[Dd]esktop.ini
 
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
@@ -72,17 +48,42 @@ $RECYCLE.BIN/
 # Windows Installer files
 *.cab
 *.msi
+*.msix
 *.msm
 *.msp
 
 # Windows shortcuts
 *.lnk
 
+
+# End of https://www.gitignore.io/api/macos,windows
+
+# ant design pro
+
+# dependencies
+**/node_modules
+
+# testing
+/coverage
+
+# misc
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+package-lock.json
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+*bak
+
 # visual studio code
 .history
 *.log
-
 .temp/**
+.vscode
 
 # umi
 .umi
@@ -92,4 +93,3 @@ $RECYCLE.BIN/
 
 
 
-# End of https://www.gitignore.io/api/macos,windows
