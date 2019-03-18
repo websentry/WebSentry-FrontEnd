@@ -16,6 +16,9 @@ git:
 notifications:
   email: false
 
+env:
+  - CI=false
+
 script:
   - yarn build     
   - yarn test 
