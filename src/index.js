@@ -1,18 +1,12 @@
-import React from 'react'
-import { render } from 'react-dom'
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import 'semantic-ui-css/semantic.min.css';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './routes/App';
+import * as serviceWorker from './serviceWorker';
 
-import Home from './components/Home.js';
-import Console from './components/Console.js';
+ReactDOM.render(<App />, document.getElementById('root'));
 
-// TODO: Terrible quality, refactor needed
-
-render((
-  <BrowserRouter>
-      <Switch>
-        <Route exact path='/' component={Home}/>
-        <Route path='/console' component={Console}/>
-      </Switch>
-  </BrowserRouter>
-), document.getElementById('root'));
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.unregister();
