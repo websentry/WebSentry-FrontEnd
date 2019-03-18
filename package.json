@@ -1,22 +1,27 @@
 {
-  "name": "websentry-frontend",
+  "name": "websentry",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "ajv": "^6.5.2",
-    "axios": "^0.18.0",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
-    "react-image-crop": "^4.0.2",
-    "react-router-dom": "^4.3.1",
-    "react-scripts": "1.1.4",
-    "semantic-ui-css": "^2.3.3",
-    "semantic-ui-react": "^0.82.1"
+    "antd": "^3.15.0",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4",
+    "react-router-dom": "^4.4.0",
+    "react-scripts": "2.1.8"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "react-scripts test",
     "eject": "react-scripts eject"
-  }
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
