@@ -20,5 +20,4 @@ env:
   - CI=false
 
 script:
-  - yarn build     
-  - yarn test 
+  - yarn build
