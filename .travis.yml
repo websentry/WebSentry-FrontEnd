@@ -1,0 +1,23 @@
+language: node_js
+
+node_js:
+  - "stable"
+
+cache:
+  yarn: true
+  directories:
+    - node_modules
+
+# Only clone the most recent commit.
+git:
+  depth: 1
+
+# Don't email me
+notifications:
+  email: false
+
+env:
+  - CI=false
+
+script:
+  - yarn build
