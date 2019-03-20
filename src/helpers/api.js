@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { config } from './../../config.js';
+import { config } from './../../config';
 
 // --- helper ---
 async function requestApi(method, params, requireToken) {
