@@ -4,7 +4,7 @@ import {
     Route,
     Link
 }from 'react-router-dom';
-import HomeLayout from '@/layouts/HomeLayout';
+import HomeLayout from '../layouts/HomeLayout';
 
 class App extends Component {
   render() {
