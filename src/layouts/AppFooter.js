@@ -1,6 +1,6 @@
-import React from "react";
-import { Layout, Icon } from "antd";
-import './AppFooter.less'
+import React from 'react';
+import { Layout, Icon } from 'antd';
+import './AppFooter.less';
 
 const { Footer } = Layout;
 

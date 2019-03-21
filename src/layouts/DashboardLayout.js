@@ -1,7 +1,7 @@
-import React from "react";
-import { Layout, Menu, Icon } from "antd";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom"
-import AppFooter from "./AppFooter";
+import React from 'react';
+import { Layout, Menu, Icon } from 'antd';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import AppFooter from './AppFooter';
 
 const { Header, Content, Sider } = Layout;
 
