@@ -1,14 +1,19 @@
 import axios from 'axios';
 
-import { config } from './../../config';
-
 // --- helper ---
 async function requestApi(method, params, requireToken) {
     if (requireToken) {
         params.token = localStorage.getItem('ws-token');
+        if (!params.token) {
+            return {
+                code: api.code.authError,
+                msg: "Not logged in.",
+                detail: ""
+            };
+        }
     }
     try {
-        let res = await axios.request({url: config.backendUrl + method, method: 'post', params: params});
+        let res = await axios.request({url: process.env.REACT_APP_BACKEND_URL + method, method: 'post', params: params});
 
         if (res.data.code === api.code.authError) {
             // auth fail, logout

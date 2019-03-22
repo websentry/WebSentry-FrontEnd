@@ -3,15 +3,55 @@ import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import Dashboard from './Dashboard';
 import Explore from './Explore';
 import NoMatch from './NoMatch';
+import {UserContext} from '../UserContext'
+import Api from '../helpers/Api';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    // user context
+    this.userContextToggleRefreash = async () => {
+      if (!this.state.isLoading) {
+        this.setState({isLoading: true});
+      }
+
+      const response = await Api.getUserInfo();
+      if (response.code === Api.code.ok) {
+        this.setState({
+          isLoading: false,
+          isLoggedIn: true,
+          userEmail: response.data.email,
+        });
+      } else {
+        this.setState({
+          isLoading: false,
+          isLoggedIn: false,
+          userEmail: "",
+        });
+      }
+    };
+
+    this.state = {
+      isLoading: true,
+      isLoggedIn: false,
+      userEmail: "",
+      toggleRefreash: () => this.userContextToggleRefreash,
+    };
+
+    // async function, don't wait
+    this.userContextToggleRefreash();
+  }
+
   render() {
     return (
       <Router>
         <Switch>
+        <UserContext.Provider value={this.state}>
           <Route exact path="/" component={Explore} />
           <Route path="/dashboard" component={Dashboard} />
           <Route component={NoMatch} />
+        </UserContext.Provider>
         </Switch>
       </Router>
     );
