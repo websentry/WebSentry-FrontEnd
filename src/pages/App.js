@@ -30,6 +30,7 @@ class App extends Component {
           userEmail: "",
         });
       }
+      console.log(this.state);
     };
 
     this.state = {
@@ -45,15 +46,15 @@ class App extends Component {
 
   render() {
     return (
+      <UserContext.Provider value={this.state}>
       <Router>
         <Switch>
-        <UserContext.Provider value={this.state}>
           <Route exact path="/" component={Explore} />
           <Route path="/dashboard" component={Dashboard} />
           <Route component={NoMatch} />
-        </UserContext.Provider>
         </Switch>
       </Router>
+      </UserContext.Provider>
     );
   }
 }
