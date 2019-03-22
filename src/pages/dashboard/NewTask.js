@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
-class Task extends Component {
+class NewTask extends Component {
   render() {
     return (
-      <div className="App">
+      <div>
       Blank Task page
       </div>
     );
   }
 }
 
-export default Task;
+export default NewTask;
