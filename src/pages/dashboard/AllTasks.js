@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
-class History extends Component {
+class AllTasks extends Component {
   render() {
     return (
-      <div className="App">
+      <div>
       Blank History page
       </div>
     );
   }
 }
 
-export default History;
+export default AllTasks;
