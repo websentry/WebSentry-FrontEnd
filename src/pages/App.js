@@ -47,13 +47,13 @@ class App extends Component {
   render() {
     return (
       <UserContext.Provider value={this.state}>
-      <Router>
-        <Switch>
-          <Route exact path="/" component={Explore} />
-          <Route path="/dashboard" component={Dashboard} />
-          <Route component={NoMatch} />
-        </Switch>
-      </Router>
+        <Router>
+          <Switch>
+            <Route exact path="/" component={Explore} />
+            <Route path="/dashboard" component={Dashboard} />
+            <Route component={NoMatch} />
+          </Switch>
+        </Router>
       </UserContext.Provider>
     );
   }
