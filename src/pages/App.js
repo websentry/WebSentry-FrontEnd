@@ -30,7 +30,6 @@ class App extends Component {
           userEmail: "",
         });
       }
-      console.log(this.state);
     };
 
     this.state = {
