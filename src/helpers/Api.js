@@ -62,5 +62,8 @@ api.login = async (email, password) => {
     return response;
 }
 
+api.getAllSentries = async () => {
+    return await requestApi('sentry/list', {}, true);
+}
 
 export default api;
