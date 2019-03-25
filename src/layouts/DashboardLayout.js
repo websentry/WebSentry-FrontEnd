@@ -1,7 +1,10 @@
 import React from 'react';
 import { Layout, Menu, Icon } from 'antd';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import DashboardHeader from './DashboardHeader'
 import AppFooter from './AppFooter';
+import logo from '../assets/logo.png'
+import './DashboardLayout.less'
 
 const { Header, Content, Sider } = Layout;
 
@@ -9,7 +12,7 @@ class DashboardLayout extends React.Component {
   render() {
     return (
         <Router>
-      <Layout>
+      <Layout className="dashboard-layout">
         <Sider
           breakpoint="lg"
           collapsedWidth="0"
@@ -20,15 +23,11 @@ class DashboardLayout extends React.Component {
             console.log(collapsed, type);
           }}
         >
-          <div className="logo" />
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={["4"]}>
-            <Menu.Item key="dashboardNewTask">
-              <Icon type="plus-square" />
-              <span>New Task</span>
-            </Menu.Item>
-            <Menu.Item key="dashboardAllTasks">
+          <img className="dashboard-logo" src={logo} />
+          <Menu theme="dark" mode="inline" defaultSelectedKeys={["dashboardHome"]}>
+            <Menu.Item key="dashboardHome">
               <Icon type="database" />
-              <span>All Tasks</span>
+              <span>Home</span>
             </Menu.Item>
             <Menu.Item key="dashboardNotifications">
               <Icon type="bell" />
@@ -41,7 +40,7 @@ class DashboardLayout extends React.Component {
           </Menu>
         </Sider>
         <Layout>
-          <Header style={{ background: "#fff", padding: 0 }} />
+          <DashboardHeader />
           <Content style={{ margin: "24px 16px 0" }}>
             <div style={{ padding: 24, background: "#fff", minHeight: 360 }}>
               {this.props.children}

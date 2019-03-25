@@ -4,16 +4,16 @@ import {
     Route,
     Link
 }from 'react-router-dom';
-import HomeLayout from '../layouts/HomeLayout';
+import AppLayout from '../layouts/AppLayout';
 
 class App extends Component {
   render() {
     return (
-        <HomeLayout>
+        <AppLayout>
             <div>
                 hahahahahaha
             </div>
-        </HomeLayout>
+        </AppLayout>
     );
   }
 }

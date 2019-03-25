@@ -1,14 +1,15 @@
 import React from 'react';
 import { Layout } from 'antd';
-import AppHeader from './AppHeader';
+import AppHeader from './AppHeader'
 import AppFooter from './AppFooter';
+import './AppLayout.less'
 
 const { Content } = Layout
 
-class HomeLayout extends React.Component {
+class AppLayout extends React.Component {
   render() {
     return (
-      <Layout>
+      <Layout className="home-layout">
         <AppHeader />
         <Content>
           {this.props.children}
@@ -19,4 +20,4 @@ class HomeLayout extends React.Component {
   }
 }
 
-export default HomeLayout;
+export default AppLayout;
