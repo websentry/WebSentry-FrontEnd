@@ -1,5 +1,7 @@
 import React from 'react';
 import { Layout, Menu } from 'antd';
+import logo from '../assets/logo.png'
+import './AppHeader.less'
 
 const { Header } = Layout;
 
@@ -7,11 +9,11 @@ class AppHeader extends React.Component {
   render() {
     return (
       <Header className="app-header">
-        <div className="logo" />
+          <img src={logo} className="app-header-logo"/>
         <Menu
           theme="dark"
           mode="horizontal"
-          defaultSelectedKeys={["2"]}
+          defaultSelectedKeys={["explore"]}
           style={{ lineHeight: "64px" }}
         >
           <Menu.Item key="explore">Explore</Menu.Item>

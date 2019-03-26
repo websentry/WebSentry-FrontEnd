@@ -39,31 +39,48 @@ class Home extends Component {
   taskCard(item) {
     return (
       <List.Item>
-        <Card 
+        <Card
           title={item.name}
           className="task-card"
-          actions={[<Tooltip title="detail"><Icon type="project" /></Tooltip>, <Tooltip title="edit"><Icon type="edit" /></Tooltip>]}
+          actions={[
+            <Tooltip title="detail">
+              <Icon type="project" />
+            </Tooltip>,
+            <Tooltip title="edit">
+              <Icon type="edit" />
+            </Tooltip>
+          ]}
         >
           <Meta
             description={
               <div>
                 <table>
-                  <tr>
-                    <td>
-                      <Tooltip title="URL"><Tag><Icon type="link" /></Tag></Tooltip>
-                    </td>
-                    <td>
-                      <span>{item.url}</span>
-                    </td>
-                  </tr>
-                    <td>
-                      <Tooltip title="last check"><Tag><Icon type="clock-circle" /></Tag></Tooltip>
-                    </td>
-                    <td>
-                      <span>{moment(item.lastCheckTime).fromNow()}</span>
-                    </td>
-                  <tr>
-                  </tr>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <Tooltip title="URL">
+                          <Tag>
+                            <Icon type="link" />
+                          </Tag>
+                        </Tooltip>
+                      </td>
+                      <td>
+                        <span>{item.url}</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <Tooltip title="last check">
+                          <Tag>
+                            <Icon type="clock-circle" />
+                          </Tag>
+                        </Tooltip>
+                      </td>
+                      <td>
+                        <span>{moment(item.lastCheckTime).fromNow()}</span>
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
             }
