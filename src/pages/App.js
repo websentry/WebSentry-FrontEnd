@@ -6,6 +6,14 @@ import NoMatch from './NoMatch';
 import {UserContext} from '../UserContext'
 import Api from '../helpers/Api';
 
+import {IntlProvider, addLocaleData} from 'react-intl';
+import en from 'react-intl/locale-data/en';
+import zh from 'react-intl/locale-data/zh';
+import zh_CN from '../locale/lang/zh_CN.js';
+import en_US from '../locale/lang/en_US.js';
+
+addLocaleData([...en, ...zh]);
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -33,26 +41,64 @@ class App extends Component {
     };
 
     this.state = {
+      lang:navigator.language,
       isLoading: true,
       isLoggedIn: false,
       userEmail: "",
       toggleRefreash: () => this.userContextToggleRefreash,
     };
-
     // async function, don't wait
     this.userContextToggleRefreash();
+    this.switchLang = this.switchLang.bind(this);
   }
 
+  chooseLocale() {
+    switch(this.state.lang.split('-')[0]){
+        case 'en':
+            return en_US;
+        case 'zh':
+            return zh_CN;
+        default:
+            return en_US;
+    }
+  }
+
+  switchLang(){
+    console.log(this.state);
+    switch (this.state.lang.split('-')[0]) {
+      case 'en':
+        this.setState({ lang:'zh-CN' });
+        break;
+      case 'zh':
+        this.setState({ lang:'en-US' });
+        break;
+      default:
+        this.setState({ lang:navigator.language });
+        break;
+    }
+    console.log(this.state);
+  }
+
+
   render() {
+    console.log("loading app");
     return (
       <UserContext.Provider value={this.state}>
-        <Router>
-          <Switch>
-            <Route exact path="/" component={Explore} />
-            <Route path="/dashboard" component={Dashboard} />
-            <Route component={NoMatch} />
-          </Switch>
-        </Router>
+        <IntlProvider locale={this.state.lang}  messages={this.chooseLocale()}>
+          <Router state={this.state}>
+            <Switch>
+              <Route
+                exact path="/"
+                render={()=><Explore
+                                state={this.state}
+                                switchLang={this.switchLang}
+                        />}
+              />
+              <Route path="/dashboard" component={Dashboard}/>
+              <Route component={NoMatch} />
+            </Switch>
+          </Router>
+        </IntlProvider>
       </UserContext.Provider>
     );
   }
