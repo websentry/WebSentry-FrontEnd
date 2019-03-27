@@ -6,8 +6,8 @@ import Home from './dashboard/Home';
 import Notifications from './dashboard/Notifications';
 import Settings from './dashboard/Settings';
 import DashboardLayout from '../layouts/DashboardLayout';
-import {UserContext} from '../UserContext'
-import './Dashboard.less'
+import {UserContext} from '../UserContext';
+import './Dashboard.less';
 
 class Dashboard extends Component {
   render() {

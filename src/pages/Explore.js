@@ -9,7 +9,7 @@ import AppLayout from '../layouts/AppLayout';
 class App extends Component {
   render() {
     return (
-        <AppLayout>
+      <AppLayout>
             <div>
                 hahahahahaha
             </div>
