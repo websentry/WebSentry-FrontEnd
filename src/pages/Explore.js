@@ -7,19 +7,9 @@ import {
 import AppLayout from '../layouts/AppLayout';
 
 class App extends Component {
-
-  constructor(props){
-    super(props);
-    this.state = props.state;
-    this.switchLang= props.switchLang;
-  }
-
   render() {
     return (
-        <AppLayout
-           state = {this.state}
-           switchLang={this.switchLang}
-        >
+      <AppLayout>
             <div>
                 hahahahahaha
             </div>
