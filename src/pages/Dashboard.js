@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Spin } from 'antd';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import NewTask from './dashboard/NewTask';
 import Home from './dashboard/Home';
 import Notifications from './dashboard/Notifications';

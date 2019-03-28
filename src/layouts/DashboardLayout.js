@@ -1,12 +1,12 @@
 import React from 'react';
 import { Layout, Menu, Icon } from 'antd';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import DashboardHeader from './DashboardHeader'
 import AppFooter from './AppFooter';
 import logo from '../assets/logo.png'
 import './DashboardLayout.less'
 
-const { Header, Content, Sider } = Layout;
+const { Content, Sider } = Layout;
 
 class DashboardLayout extends React.Component {
   render() {
@@ -23,7 +23,7 @@ class DashboardLayout extends React.Component {
             console.log(collapsed, type);
           }}
         >
-          <img className="dashboard-logo" src={logo} />
+          <img className="dashboard-logo" src={logo} alt=""/>
           <Menu theme="dark" mode="inline" defaultSelectedKeys={["dashboardHome"]}>
             <Menu.Item key="dashboardHome">
               <Icon type="database" />
