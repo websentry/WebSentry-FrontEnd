@@ -94,7 +94,7 @@ class Home extends Component {
 
     return (
       <div>
-        <PageHeader title="Active Tasks" extra={<Button type="primary" icon="plus-circle" size="default">Create task</Button>} />
+        <PageHeader title="Active Tasks" extra={<Button type="primary" icon="plus-circle" size="default" onClick={() => {this.props.history.push('new-task');}} >Create task</Button>} />
         <Divider />
 
         <List

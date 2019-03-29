@@ -25,7 +25,7 @@ class Dashboard extends Component {
             return (
               <DashboardLayout>
               <Router>
-                <Route path="/dashboard/" component={Home} />
+                <Route exact path="/dashboard/" component={Home} />
                 <Route path="/dashboard/new-task" component={NewTask} />
                 <Route path="/dashboard/notifications" component={Notifications} />
                 <Route path="/dashboard/settings" component={Settings} />
