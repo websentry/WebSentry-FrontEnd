@@ -17,7 +17,7 @@ class AppHeader extends React.Component {
         { ({switchLang}) => {
             return (
               <Header className="app-header">
-                  <img src={logo} className="app-header-logo"/>
+                  <img src={logo} className="app-header-logo" alt=""/>
                   <Menu
                     theme="dark"
                     mode="horizontal"
