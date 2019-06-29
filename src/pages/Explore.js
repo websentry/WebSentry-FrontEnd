@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import AppLayout from '../layouts/AppLayout';
+import ReactCrop from 'react-image-crop';
+import 'react-image-crop/dist/ReactCrop.css';
+import './Explore.less';
 import {
   Layout,
   Breadcrumb
@@ -8,7 +11,50 @@ import {
 const { Header, Content, Footer } = Layout;
 
 class App extends React.Component {
+
+  state = {
+    src: "https://www.hospitalityinhealthcare.com/wp-content/uploads/2017/03/1-WELCOME-IMAGE_medical-personnel-consult.jpg",
+    crop: {
+      unit: "%",
+      width: 30,
+      aspect: 16 / 9
+    }
+  };
+
+  onImageLoaded = image => {
+    console.log('onCropComplete', image)
+  }
+
+  onCropComplete = crop => {
+    console.log('onCropComplete', crop)
+  }
+
+  onCropChange = crop => {
+    this.setState({ crop })
+  }
+
+  renderCrop() {
+    const { crop, croppedImageUrl, src } = this.state;
+    if(src) {
+      return(
+        <ReactCrop
+        src={src}
+        crop={crop}
+        onImageLoaded={this.onImageLoaded}
+        onComplete={this.onCropComplete}
+        onChange={this.onCropChange}
+      />)}
+      else{
+        return(
+          <div class="jumbotron mb-3 fixedHeight"></div>
+        )
+      }
+  }
+
   render() {
+    const backgroundImage3 = "https://www.hospitalityinhealthcare.com/wp-content/uploads/2017/03/1-WELCOME-IMAGE_medical-personnel-consult.jpg";
+    const { crop, croppedImageUrl, src } = this.state;
+
     return (
       <AppLayout>
         <div class="container mt-5">
@@ -22,14 +68,17 @@ class App extends React.Component {
               <button type="button" class="btn btn-primary btn-lg">Large button</button>
             </div>
           </div>
-          <div class="input-group mb-3">
+            {this.renderCrop()}
+            {croppedImageUrl && (
+              <img alt="Crop" crossOrigin="Anonymous" style={{ maxWidth: "100%" }} src={croppedImageUrl} />
+            )}
+          <div class="input-group mt-2 mb-3">
             <input type="text" class="form-control form-control-lg" placeholder="me@example.com" aria-label="Recipient's username" aria-describedby="basic-addon2"/>
             <div class="input-group-append">
               <button type="button" class="btn btn-primary btn-lg">Large button</button>
             </div>
           </div>
         </div>
-
       </AppLayout>
     );
   }
