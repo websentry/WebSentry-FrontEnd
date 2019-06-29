@@ -1,19 +1,32 @@
 import axios from 'axios';
 
 // --- helper ---
-async function requestApi(method, params, requireToken) {
-    if (requireToken) {
-        params.token = localStorage.getItem('ws-token');
-        if (!params.token) {
-            return {
-                code: api.code.authError,
-                msg: "Not logged in.",
-                detail: ""
-            };
-        }
-    }
+async function requestApi(method, params, formData, requireToken) {
     try {
-        let res = await axios.request({url: process.env.REACT_APP_BACKEND_URL + method, method: 'post', params: params});
+        let options = {
+            url: process.env.REACT_APP_BACKEND_URL + method,
+            method: 'post',
+            params: params,
+            headers: {},
+        };
+
+        if (formData) {
+            options['data'] = formData;
+        }
+
+        if (requireToken) {
+            const token = localStorage.getItem('ws-token');
+            if (!token) {
+                return {
+                    code: api.code.authError,
+                    msg: "Not logged in.",
+                    detail: ""
+                };
+            }
+            options.headers['WS-User-Token'] = token;
+        }
+
+        let res = await axios.request(options);
 
         if (res.data.code === api.code.authError) {
             // auth fail, logout
@@ -47,15 +60,18 @@ api.code = {
 
 
 api.getUserInfo = async () => {
-    let response = await requestApi('user/info', {}, true);
+    let response = await requestApi('user/info', {}, null, true);
     return response;
 }
 
 api.login = async (email, password) => {
     localStorage.removeItem('ws-token');
 
-    const params = {email: email, password: password};
-    let response = await requestApi('login', params, false);
+    const params = {email: email};
+    var formData = new FormData(); 
+    formData.set("password", password);
+    
+    let response = await requestApi('login', params, formData, false);
     if (response.code === api.code.ok) {
         localStorage.setItem('ws-token', response.data.token);
     }
@@ -63,7 +79,7 @@ api.login = async (email, password) => {
 }
 
 api.getAllSentries = async () => {
-    return await requestApi('sentry/list', {}, true);
+    return await requestApi('sentry/list', {}, null, true);
 }
 
 export default api;
