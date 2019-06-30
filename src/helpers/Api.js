@@ -2,6 +2,7 @@ import axios from 'axios';
 
 // --- helper ---
 async function requestApi(method, params, formData, requireToken) {
+  console.log(process.env.REACT_APP_BACKEND_URL);
     try {
         let options = {
             url: process.env.REACT_APP_BACKEND_URL + method,
@@ -68,9 +69,9 @@ api.login = async (email, password) => {
     localStorage.removeItem('ws-token');
 
     const params = {email: email};
-    var formData = new FormData(); 
+    var formData = new FormData();
     formData.set("password", password);
-    
+
     let response = await requestApi('login', params, formData, false);
     if (response.code === api.code.ok) {
         localStorage.setItem('ws-token', response.data.token);
@@ -80,6 +81,11 @@ api.login = async (email, password) => {
 
 api.getAllSentries = async () => {
     return await requestApi('sentry/list', {}, null, true);
+}
+
+api.sendFullScreenShotRequest = async (url) => {
+    return await requestApi('sentry/request_full_screenshot?url=' + url,
+                                 {}, null, false);
 }
 
 export default api;
