@@ -17,7 +17,7 @@ class App extends React.Component {
     this.state = {
       url:"",
       loading:false,
-      src: "https://www.hospitalityinhealthcare.com/wp-content/uploads/2017/03/1-WELCOME-IMAGE_medical-personnel-consult.jpg",
+      screenshotLink: null,
       crop: {
         unit: "%",
         width: 30,
@@ -34,14 +34,23 @@ class App extends React.Component {
     this.setState({ url: event.target.value});
   }
 
-  handleSubmit(event) {
-    console.log(this.state);
-    Api.sendFullScreenShotRequest(this.state.url).then((res) => {
-      console.log(res);
-    }).catch((error) =>{
-      console.log(error);
-    });
+  async handleSubmit(event) {
     event.preventDefault();
+    console.log(this.state);
+    let res = await Api.requestFullScreenshot(this.state.url);
+    let taskId = res.data.taskId;
+    if (res.code === Api.code.ok) {
+        res = await Api.waitFullScreenshot(taskId);
+        console.log(res);
+        if (res.code === Api.code.ok) {
+          this.setState(
+            {
+              screenshotLink:
+                Api.getFullScreenshotLink(taskId, res.data.imageToken)
+            }
+          );
+        }
+    }
   }
 
   onImageLoaded = image => {
@@ -57,11 +66,11 @@ class App extends React.Component {
   }
 
   renderCrop() {
-    const { crop, croppedImageUrl, src } = this.state;
-    if(src) {
+    const { crop, croppedImageUrl, screenshotLink } = this.state;
+    if(screenshotLink) {
       return(
         <ReactCrop
-        src={src}
+        src={screenshotLink}
         crop={crop}
         onImageLoaded={this.onImageLoaded}
         onComplete={this.onCropComplete}
@@ -76,7 +85,7 @@ class App extends React.Component {
 
   render() {
     const backgroundImage3 = "https://www.hospitalityinhealthcare.com/wp-content/uploads/2017/03/1-WELCOME-IMAGE_medical-personnel-consult.jpg";
-    const { crop, croppedImageUrl, src } = this.state;
+    const { crop, croppedImageUrl, screenshotLink } = this.state;
 
     return (
       <AppLayout>

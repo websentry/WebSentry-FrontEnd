@@ -27,6 +27,8 @@ async function requestApi(method, params, formData, requireToken) {
             options.headers['WS-User-Token'] = token;
         }
 
+        console.log(options);
+
         let res = await axios.request(options);
 
         if (res.data.code === api.code.authError) {
@@ -83,11 +85,43 @@ api.getAllSentries = async () => {
     return await requestApi('sentry/list', {}, null, true);
 }
 
-api.sendFullScreenShotRequest = async (url) => {
+api.requestFullScreenshot = async (url) => {
     const params = {url: url};
+    return await requestApi('sentry/request_full_screenshot', params, null, true);
+}
 
-    return await requestApi('sentry/request_full_screenshot',
-                                 params, null, false);
+api.waitFullScreenshot = async (taskId) => {
+    const params = {taskId: taskId};
+    let response = null;
+    do {
+        console.log("requesting...");
+        response = await requestApi('sentry/wait_full_screenshot', params, null, true);
+    } while (response.code === api.code.ok && response.data.complete === false);
+
+    return response;
+}
+
+api.getFullScreenshotLink = (taskId, imageToken) => {
+    return process.env.REACT_APP_BACKEND_URL +
+           'common/get_full_screenshot_image?taskId=' + taskId +
+           '&imageToken=' + imageToken;
+}
+
+api.createSentry = async (name, url, x, y, width, height, notification) => {
+    const params = {
+        name: name,
+        url: url,
+        x: x,
+        y: y,
+        width: width,
+        height: height,
+        notification: notification
+    };
+    return await requestApi('sentry/request_full_screenshot', params, null, true);
+}
+
+api.getAllNotifications = async () => {
+    return await requestApi('notification/list', {}, null, true);
 }
 
 export default api;
