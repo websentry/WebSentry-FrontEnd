@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Dashboard from './Dashboard';
 import Explore from './Explore';
 import NoMatch from './NoMatch';
+import Login from './Login';
 import {UserContext} from '../UserContext'
 import Api from '../helpers/Api';
 
@@ -91,6 +92,7 @@ class App extends Component {
               <Switch>
                 <Route exact path="/" component={Explore} />
                 <Route path="/dashboard" component={Dashboard} />
+                <Route path="/login" component={Login} />
                 <Route component={NoMatch} />
               </Switch>
           </Router>
