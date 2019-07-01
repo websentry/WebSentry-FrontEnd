@@ -84,8 +84,10 @@ api.getAllSentries = async () => {
 }
 
 api.sendFullScreenShotRequest = async (url) => {
-    return await requestApi('sentry/request_full_screenshot?url=' + url,
-                                 {}, null, false);
+    const params = {url: url};
+
+    return await requestApi('sentry/request_full_screenshot',
+                                 params, null, false);
 }
 
 export default api;

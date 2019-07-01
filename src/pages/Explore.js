@@ -17,7 +17,7 @@ class App extends React.Component {
     this.state = {
       url:"",
       loading:false,
-      src: null,
+      src: "https://www.hospitalityinhealthcare.com/wp-content/uploads/2017/03/1-WELCOME-IMAGE_medical-personnel-consult.jpg",
       crop: {
         unit: "%",
         width: 30,
