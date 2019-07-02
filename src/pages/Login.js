@@ -35,8 +35,8 @@ class Login extends Component {
         if(isLoggedIn){
           console.log(this.props.history.push("/"));
         }else{
-          return(<AppLayout>
-            <div>
+          return(
+            <AppLayout>
               <Card className="login-form-card">
                 <Form onSubmit={this.handleSubmit} className="login-form">
                   <Form.Item>
@@ -75,7 +75,6 @@ class Login extends Component {
                   </Form.Item>
                 </Form>
               </Card>
-            </div>
           </AppLayout>)
         }
       }}

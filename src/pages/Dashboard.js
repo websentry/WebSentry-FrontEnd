@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import { Spin } from 'antd';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import NewTask from './dashboard/NewTask';
-import Home from './dashboard/Home';
-import Notifications from './dashboard/Notifications';
-import Settings from './dashboard/Settings';
+import Container from './dashboard/Container';
 import DashboardLayout from '../layouts/DashboardLayout';
 import {UserContext} from '../UserContext';
 import './Dashboard.less';
@@ -24,15 +21,8 @@ class Dashboard extends Component {
           if (isLoggedIn) {
             return (
               <DashboardLayout>
-              <Router>
-                <Switch>
-                  <Route path="/dashboard/" component={Home} />
-                  <Route path="/dashboard/new-task" component={NewTask} />
-                  <Route path="/dashboard/notifications" component={Notifications} />
-                  <Route path="/dashboard/settings" component={Settings} />
-                </Switch>
-              </Router>
-            </DashboardLayout>
+                <Container/>
+              </DashboardLayout>
             )
           };
           return (

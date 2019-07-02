@@ -2,6 +2,7 @@ import React from 'react';
 import { Layout, Menu } from 'antd';
 import { FormattedMessage } from 'react-intl';
 import { UserContext } from '../UserContext';
+import { Link } from "react-router-dom";
 import logo from '../assets/logo.png';
 import './AppHeader.less';
 
@@ -28,10 +29,12 @@ class AppHeader extends React.Component {
                     />
                   </Menu.Item>
                   <Menu.Item key="dashboard">
-                    <FormattedMessage
-                      id='dashboard'
-                      defaultMessage='Dashboard'
-                    />
+                    <Link to="/dashboard">
+                      <FormattedMessage
+                        id='dashboard'
+                        defaultMessage='Dashboard'
+                      />
+                    </Link>
                   </Menu.Item>
                   <Menu.Item key="signIn">
                     <FormattedMessage

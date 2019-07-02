@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Card, Icon, Tooltip, PageHeader, Divider, Button, List, Tag } from 'antd';
+import { Card, Icon, Tooltip, PageHeader, Divider, Button, List, Tag, Modal } from 'antd';
+import { Link } from "react-router-dom";
+import NewTask from './NewTask';
 import moment from 'moment'
 import api from '../../helpers/Api';
 import './Home.less'
@@ -13,10 +15,32 @@ class Home extends Component {
 
     this.state = {
       isLoading: true,
+      createTaskVisible: false,
       data: [],
     };
     this.loadData();
+    this.showCreateTask = this.showCreateTask.bind(this);
   };
+
+  handleOk = e => {
+    console.log(e);
+    this.setState({
+      createTaskVisible: false
+    });
+  };
+
+  handleCancel = e => {
+    console.log(e);
+    this.setState({
+      createTaskVisible: false
+    });
+  };
+
+  showCreateTask(){
+    this.setState({
+      createTaskVisible: true
+    });
+  }
 
   async loadData() {
     if (!this.state.isLoading) {
@@ -94,7 +118,22 @@ class Home extends Component {
 
     return (
       <div>
-        <PageHeader title="Active Tasks" extra={<Button type="primary" icon="plus-circle" size="default">Create task</Button>} />
+        <Modal
+          title="Basic Modal"
+          visible={this.state.createTaskVisible}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+        >
+          <NewTask/>
+        </Modal>
+        <PageHeader
+          title="Active Tasks"
+          extra={
+            <Button type="primary" icon="plus-circle" size="default" onClick={this.showCreateTask}>
+              Create task
+            </Button>
+          }
+        />
         <Divider />
 
         <List
