@@ -27,8 +27,6 @@ async function requestApi(method, params, formData, requireToken) {
             options.headers['WS-User-Token'] = token;
         }
 
-        console.log(options);
-
         let res = await axios.request(options);
 
         if (res.data.code === api.code.authError) {

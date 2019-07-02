@@ -1,15 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import AppLayout from '../layouts/AppLayout';
 import ReactCrop from 'react-image-crop';
+import { UserContext } from '../UserContext';
 import 'react-image-crop/dist/ReactCrop.css';
 import './Explore.less';
-import {
-  Layout,
-  Breadcrumb
-} from 'antd';
 import Api from '../helpers/Api.js';
-
-const { Header, Content, Footer } = Layout;
 
 class App extends React.Component {
   constructor(props){
@@ -20,8 +15,7 @@ class App extends React.Component {
       screenshotLink: null,
       crop: {
         unit: "%",
-        width: 30,
-        aspect: 16 / 9
+        width: 30
       }
     };
 
@@ -30,13 +24,23 @@ class App extends React.Component {
   }
 
   urlOnchange(event){
-    // console.log(this.state);
     this.setState({ url: event.target.value});
+  }
+
+  onImageLoaded = image => {
+    console.log('onImageLoaded', image)
+  }
+
+  onCropComplete = crop => {
+    console.log('onCropComplete', crop)
+  }
+
+  onCropChange = crop => {
+    this.setState({ crop })
   }
 
   async handleSubmit(event) {
     event.preventDefault();
-    console.log(this.state);
     let res = await Api.requestFullScreenshot(this.state.url);
     let taskId = res.data.taskId;
     if (res.code === Api.code.ok) {
@@ -53,39 +57,26 @@ class App extends React.Component {
     }
   }
 
-  onImageLoaded = image => {
-    console.log('onImageLoaded', image)
-  }
-
-  onCropComplete = crop => {
-    console.log('onCropComplete', crop)
-  }
-
-  onCropChange = crop => {
-    this.setState({ crop })
-  }
-
   renderCrop() {
-    const { crop, croppedImageUrl, screenshotLink } = this.state;
+    const { crop, screenshotLink } = this.state;
     if(screenshotLink) {
       return(
         <ReactCrop
-        src={screenshotLink}
-        crop={crop}
-        onImageLoaded={this.onImageLoaded}
-        onComplete={this.onCropComplete}
-        onChange={this.onCropChange}
-      />)}
-      else{
-        return(
-          <div className="jumbotron mb-3 fixedHeight"></div>
-        )
-      }
+          src={screenshotLink}
+          crop={crop}
+          onImageLoaded={this.onImageLoaded}
+          onComplete={this.onCropComplete}
+          onChange={this.onCropChange}
+        />
+      )
+    }
+    return(
+      <div className="jumbotron mb-3 fixedHeight"></div>
+    )
   }
 
   render() {
-    const backgroundImage3 = "https://www.hospitalityinhealthcare.com/wp-content/uploads/2017/03/1-WELCOME-IMAGE_medical-personnel-consult.jpg";
-    const { crop, croppedImageUrl, screenshotLink } = this.state;
+    const { croppedImageUrl } = this.state;
 
     return (
       <AppLayout>
