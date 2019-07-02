@@ -6,7 +6,7 @@ import 'react-image-crop/dist/ReactCrop.css';
 import './Explore.less';
 import Api from '../helpers/Api.js';
 
-class App extends React.Component {
+class Explore extends React.Component {
   constructor(props){
     super(props);
     this.state = {
@@ -107,4 +107,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default Explore;

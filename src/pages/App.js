@@ -26,6 +26,7 @@ class App extends Component {
       }
 
       const response = await Api.getUserInfo();
+      console.log(response);
       if (response.code === Api.code.ok) {
         this.setState({
           isLoading: false,
@@ -69,8 +70,6 @@ class App extends Component {
     // async function, don't wait
     this.userContextToggleRefreash();
   }
-
-
 
   chooseLocale() {
     switch(this.state.lang.split('-')[0]){

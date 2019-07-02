@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Spin } from 'antd';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import NewTask from './dashboard/NewTask';
 import Home from './dashboard/Home';
 import Notifications from './dashboard/Notifications';
@@ -25,10 +25,12 @@ class Dashboard extends Component {
             return (
               <DashboardLayout>
               <Router>
-                <Route path="/dashboard/" component={Home} />
-                <Route path="/dashboard/new-task" component={NewTask} />
-                <Route path="/dashboard/notifications" component={Notifications} />
-                <Route path="/dashboard/settings" component={Settings} />
+                <Switch>
+                  <Route path="/dashboard/" component={Home} />
+                  <Route path="/dashboard/new-task" component={NewTask} />
+                  <Route path="/dashboard/notifications" component={Notifications} />
+                  <Route path="/dashboard/settings" component={Settings} />
+                </Switch>
               </Router>
             </DashboardLayout>
             )

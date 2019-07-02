@@ -5,9 +5,6 @@ import { UserContext } from '../UserContext';
 import logo from '../assets/logo.png';
 import './AppHeader.less';
 
-
-
-
 const { Header } = Layout;
 
 class AppHeader extends React.Component {
