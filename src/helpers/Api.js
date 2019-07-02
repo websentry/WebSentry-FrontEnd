@@ -2,7 +2,6 @@ import axios from 'axios';
 
 // --- helper ---
 async function requestApi(method, params, formData, requireToken) {
-  console.log(process.env.REACT_APP_BACKEND_URL);
     try {
         let options = {
             url: process.env.REACT_APP_BACKEND_URL + method,

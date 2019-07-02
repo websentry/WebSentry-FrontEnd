@@ -11,7 +11,7 @@ class NewTask extends Component {
     this.state = {
       url:"",
       loading:false,
-      screenshotLink: null,
+      screenshotLink: "https://www.hospitalityinhealthcare.com/wp-content/uploads/2017/03/1-WELCOME-IMAGE_medical-personnel-consult.jpg",
       crop: {
         unit: "%",
         width: 30
@@ -41,6 +41,7 @@ class NewTask extends Component {
   async handleUrlSubmit(url,event) {
     event.preventDefault();
     let res = await Api.requestFullScreenshot(this.state.url);
+    console.log(res);
     if (res.code === Api.code.ok) {
         let taskId = res.data.taskId;
         res = await Api.waitFullScreenshot(taskId);
@@ -78,8 +79,6 @@ class NewTask extends Component {
   }
 
   render() {
-    const { croppedImageUrl } = this.state;
-
     return (
       <div className="container mt-2">
         <Search
@@ -91,9 +90,6 @@ class NewTask extends Component {
            onSearch={this.handleUrlSubmit}
         />
           {this.renderCrop()}
-          {croppedImageUrl && (
-            <img alt="Crop" crossOrigin="Anonymous" style={{ maxWidth: "100%" }} src={croppedImageUrl} />
-          )}
       </div>
     );
   }

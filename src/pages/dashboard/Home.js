@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
-import { Card, Icon, Tooltip, PageHeader, Divider, Button, List, Tag, Modal } from 'antd';
-import { Link } from "react-router-dom";
+import { Card, PageHeader, Divider, Button, List, Modal } from 'antd';
 import NewTask from './NewTask';
-import moment from 'moment'
+import TaskItem from './task/TaskItem';
 import api from '../../helpers/Api';
 import './Home.less'
-
-
-const { Meta } = Card;
 
 class Home extends Component {
   constructor(props) {
@@ -17,29 +13,35 @@ class Home extends Component {
       isLoading: true,
       createTaskVisible: false,
       data: [],
+      newSentry:{
+        crop:null,
+      }
     };
     this.loadData();
     this.showCreateTask = this.showCreateTask.bind(this);
+    this.onCropComplete = this.onCropComplete.bind(this);
+    this.handleOk= this.handleOk.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
   };
 
-  handleOk = e => {
+  handleOk(e) {
     console.log(e);
-    this.setState({
-      createTaskVisible: false
-    });
+    // api.createSentry(name, url, x, y, width, height, notification)
+    this.setState({ createTaskVisible: false });
   };
 
-  handleCancel = e => {
+  handleCancel(e) {
     console.log(e);
-    this.setState({
-      createTaskVisible: false
-    });
+    this.setState({ createTaskVisible: false });
   };
 
-  showCreateTask(){
-    this.setState({
-      createTaskVisible: true
-    });
+  showCreateTask() {
+    this.setState({ createTaskVisible: true });
+  }
+
+  onCropComplete(crop) {
+    this.setState({ newSentry: { crop }});
+    console.log('onCropComplete', this.state.newSentry.crop);
   }
 
   async loadData() {
@@ -62,55 +64,7 @@ class Home extends Component {
 
   taskCard(item) {
     return (
-      <List.Item>
-        <Card
-          title={item.name}
-          className="task-card"
-          actions={[
-            <Tooltip title="detail">
-              <Icon type="project" />
-            </Tooltip>,
-            <Tooltip title="edit">
-              <Icon type="edit" />
-            </Tooltip>
-          ]}
-        >
-          <Meta
-            description={
-              <div>
-                <table>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <Tooltip title="URL">
-                          <Tag>
-                            <Icon type="link" />
-                          </Tag>
-                        </Tooltip>
-                      </td>
-                      <td>
-                        <span>{item.url}</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <Tooltip title="last check">
-                          <Tag>
-                            <Icon type="clock-circle" />
-                          </Tag>
-                        </Tooltip>
-                      </td>
-                      <td>
-                        <span>{moment(item.lastCheckTime).fromNow()}</span>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            }
-          />
-        </Card>
-      </List.Item>
+      <TaskItem item={item}/>
     );
   }
 
@@ -119,12 +73,12 @@ class Home extends Component {
     return (
       <div>
         <Modal
-          title="Basic Modal"
+          title="Create New Task"
           visible={this.state.createTaskVisible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
         >
-          <NewTask/>
+          <NewTask onCropComplete = {this.onCropComplete}/>
         </Modal>
         <PageHeader
           title="Active Tasks"
@@ -135,7 +89,6 @@ class Home extends Component {
           }
         />
         <Divider />
-
         <List
           loading={this.state.isLoading}
           grid={{
