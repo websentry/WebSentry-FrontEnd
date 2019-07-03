@@ -46,9 +46,6 @@ class Banner extends Component {
   }
 
   render() {
-    const { msgId, headerId, bootstrapStyle, bgImage } = this.items[0];
-    console.log("")
-
     return (
       <Carousel autoplay>
         {this.renderItems()}
