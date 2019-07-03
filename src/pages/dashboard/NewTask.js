@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
-import { Input } from 'antd';
+import { Input, Spin, Icon  } from 'antd';
 import Api from '../../helpers/Api.js';
+
 const { Search } = Input;
 
 class NewTask extends Component {
   constructor(props){
     super(props);
+    console.log(props);
     this.state = {
       url:"",
-      loading:false,
+      isLoading:false,
       screenshotLink: "https://www.hospitalityinhealthcare.com/wp-content/uploads/2017/03/1-WELCOME-IMAGE_medical-personnel-consult.jpg",
       crop: {
         unit: "%",
@@ -20,9 +22,19 @@ class NewTask extends Component {
 
     this.urlOnchange = this.urlOnchange.bind(this);
     this.handleUrlSubmit = this.handleUrlSubmit.bind(this);
+    this.onLoading = this.onLoading.bind(this);
+    this.cancelLoading = this.cancelLoading.bind(this);
   }
 
-  urlOnchange(event){
+  onLoading() {
+    this.setState({ isLoading: true });
+  }
+
+  cancelLoading() {
+    this.setState({ isLoading: false });
+  }
+
+  urlOnchange(event) {
     this.setState({ url: event.target.value});
   }
 
@@ -40,6 +52,7 @@ class NewTask extends Component {
 
   async handleUrlSubmit(url,event) {
     event.preventDefault();
+    this.onLoading();
     let res = await Api.requestFullScreenshot(this.state.url);
     console.log(res);
     if (res.code === Api.code.ok) {
@@ -55,10 +68,22 @@ class NewTask extends Component {
           );
         }
     }
+    this.cancelLoading();
   }
 
   renderCrop() {
-    const { crop, screenshotLink } = this.state;
+    const { crop, screenshotLink, isLoading } = this.state;
+    const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
+
+    if(isLoading) {
+      return(
+        <div className="container mt-4">
+          <div className="d-flex justify-content-center">
+              <Spin indicator={antIcon} size="large"/>
+          </div>
+        </div>
+      )
+    }
     if(screenshotLink) {
       return(
         <div className = "mt-3">
@@ -66,15 +91,15 @@ class NewTask extends Component {
             src={screenshotLink}
             crop={crop}
             onImageLoaded={this.onImageLoaded}
-            onComplete={this.onCropComplete}
+            onComplete={this.props.onCropComplete}
             onChange={this.onCropChange}
           />
         </div>
-
       )
     }
     return(
-      <div className="jumbotron mt-3 fixedHeight"></div>
+      <div className="jumbotron mt-3 fixedHeight">
+      </div>
     )
   }
 
