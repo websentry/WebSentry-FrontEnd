@@ -2,7 +2,7 @@ import React from 'react';
 import AppLayout from '../layouts/AppLayout';
 import { Carousel,Icon } from 'antd';
 import laptop from "../assets/laptop.png";
-
+import Banner from "./explore/Banner";
 
 import './Explore.less';
 
@@ -11,38 +11,7 @@ class Explore extends React.Component {
   render() {
     return (
       <AppLayout>
-        <Carousel autoplay>
-          <div className="carousel-item carousel-image-1">
-            <div className="container">
-              <div className="carousel-caption d-none d-sm-block text-right mb-5">
-                <div className="display-3 text-white">Heading One</div>
-                <p className="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste, aperiam vel ullam deleniti reiciendis ratione
-                  quod aliquid inventore vero perspiciatis.</p>
-                <div href="#" className="btn btn-danger btn-lg">Sign Up Now</div>
-              </div>
-            </div>
-          </div>
-          <div className="carousel-item carousel-image-2">
-            <div className="container">
-              <div className="carousel-caption d-none d-sm-block mb-5">
-                <div className="display-3">Heading Two</div>
-                <p className="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste, aperiam vel ullam deleniti reiciendis ratione
-                  quod aliquid inventore vero perspiciatis.</p>
-                <a href="#" className="btn btn-primary btn-lg">Learn More</a>
-              </div>
-            </div>
-          </div>
-          <div className="carousel-item carousel-image-3">
-            <div className="container">
-              <div className="carousel-caption d-none d-sm-block text-right mb-5">
-                <div className="display-3">Heading Three</div>
-                <p className="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste, aperiam vel ullam deleniti reiciendis ratione
-                  quod aliquid inventore vero perspiciatis.</p>
-                <a href="#" className="btn btn-success btn-lg">Learn More</a>
-              </div>
-            </div>
-          </div>
-        </Carousel>
+        <Banner/>
 
         <section className="py-5">
           <div className="container">
