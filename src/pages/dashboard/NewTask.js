@@ -42,10 +42,6 @@ class NewTask extends Component {
     console.log('onImageLoaded', image)
   }
 
-  onCropComplete = crop => {
-    console.log('onCropComplete', crop)
-  }
-
   onCropChange = crop => {
     this.setState({ crop })
   }
