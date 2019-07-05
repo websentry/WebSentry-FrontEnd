@@ -8,6 +8,7 @@ const { Search } = Input;
 const InputGroup = Input.Group;
 const { Option } = Select;
 const initialState = {
+  error:null,
   isFormLoading: false,     // form loading
   isUrlLoading:false,        // url loading
   okText:"Submit",
@@ -33,6 +34,7 @@ class NewTask extends Component {
     this.notifOnchange = e => {this.onSentryValueChange("notification", e)}
     this.handleUrlSubmit = this.handleUrlSubmit.bind(this);
     this.handleSentrySubmit = this.handleSentrySubmit.bind(this);
+    this.onCancel = this.onCancel.bind(this);
   }
 
   onSentryValueChange(key,val) {
@@ -44,7 +46,6 @@ class NewTask extends Component {
   }
 
   onCropChange = crop => {
-    console.log(crop);
     this.setState({ crop })
   }
 
@@ -69,18 +70,27 @@ class NewTask extends Component {
     this.setState({ isUrlLoading: false });
   }
 
+  onCancel(){
+    this.props.onCloseModal();
+    this.setState(initialState);
+  }
+
   async handleSentrySubmit(){
     const { name, url, notification } = this.state;
     const { x, y, width, height } = this.state.crop;
 
-    this.setState({ isFormLoading: true });
-    // let res = await Api.createSentry(name, url, x, y, width, height, notification);
-    if (1) {
+    this.setState({ isFormLoading: true, error: null });
+    let res = await Api.createSentry(name, url, x, y, width, height, notification);
+    console.log(res);
+    if (res.code === Api.code.ok) {
       this.setState({ isFormLoading: false });
       this.setState({ okButtonProps: { disabled: true }});
       this.setState({ okText: "Success!" });
       setTimeout(() => { this.props.onCloseModal(); }, 1000);
       setTimeout(() => { this.setState(initialState); }, 1000);
+    } else {
+      this.setState({ isFormLoading: false });
+      this.setState({ error: "Failed to create a new task!" });
     }
   }
 
@@ -117,13 +127,12 @@ class NewTask extends Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <Modal
         title="Create New Task"
         visible={this.props.visible}
         onOk={this.handleSentrySubmit}
-        onCancel={this.props.onCloseModal}
+        onCancel={this.onCancel}
         confirmLoading={this.state.isFormLoading}
         okText={this.state.okText}
         okButtonProps={this.state.okButtonProps}
@@ -157,6 +166,7 @@ class NewTask extends Component {
               <Option value="Monthly">Monthly</Option>
             </Select>
           </InputGroup>
+          {this.state.error?<div className="text-danger mt-1">{this.state.error}</div>:null}
         </div>
       </Modal>
     );

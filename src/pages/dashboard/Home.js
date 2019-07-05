@@ -36,6 +36,7 @@ class Home extends Component {
     }
 
     const response = await api.getAllSentries();
+    console.log(response);
     if (response.code === api.code.ok) {
       this.setState({
         isLoading: false,

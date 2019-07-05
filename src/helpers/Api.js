@@ -114,7 +114,7 @@ api.createSentry = async (name, url, x, y, width, height, notification) => {
         height: height,
         notification: notification
     };
-    return await requestApi('sentry/request_full_screenshot', params, null, true);
+    return await requestApi('sentry/create', params, null, true);
 }
 
 api.getAllNotifications = async () => {
