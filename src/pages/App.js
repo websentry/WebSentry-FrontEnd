@@ -43,7 +43,6 @@ class App extends Component {
     };
 
     this.switchLang = () => {
-      console.log(this.state);
       switch (this.state.lang.split('-')[0]) {
         case 'en':
           this.setState({ lang:'zh-CN' });
@@ -58,13 +57,23 @@ class App extends Component {
       console.log(this.state);
     }
 
+    this.onLoading = () => {
+      this.setState({ isLoading: true });
+    }
+
+    this.cancelLoading = () => {
+      this.setState({ isLoading: false });
+    }
+
     this.state = {
       lang:navigator.language,
       isLoading: true,
       isLoggedIn: false,
       userEmail: "",
       toggleRefreash: () => this.userContextToggleRefreash,
-      switchLang: this.switchLang
+      switchLang: this.switchLang,
+      onLoading: this.onLoading,
+      cancelLoading: this.cancelLoading
     };
 
     // async function, don't wait

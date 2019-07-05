@@ -22,6 +22,7 @@ class DashboardLayout extends React.Component {
               console.log(collapsed, type);
             }}
           >
+
             <img className="dashboard-logo" src={logo} alt=""/>
             <Menu theme="dark" mode="inline" defaultSelectedKeys={["dashboardHome"]}>
               <Menu.Item key="dashboardHome">

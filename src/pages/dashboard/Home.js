@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Card, PageHeader, Divider, Button, List, Modal } from 'antd';
+import { Card, PageHeader, Divider, Button, List, Modal, Spin } from 'antd';
 import NewTask from './NewTask';
 import TaskItem from './task/TaskItem';
+import { UserContext } from '../../UserContext';
 import api from '../../helpers/Api';
 import './Home.less'
 
@@ -13,35 +14,20 @@ class Home extends Component {
       isLoading: true,
       createTaskVisible: false,
       data: [],
-      newSentry:{
-        crop:null,
-      }
     };
     this.loadData();
     this.showCreateTask = this.showCreateTask.bind(this);
-    this.onCropComplete = this.onCropComplete.bind(this);
-    this.handleOk= this.handleOk.bind(this);
-    this.handleCancel = this.handleCancel.bind(this);
+    this.onCloseModal = this.onCloseModal.bind(this);
   };
 
-  handleOk(e) {
-    console.log(e);
-    // api.createSentry(name, url, x, y, width, height, notification)
-    this.setState({ createTaskVisible: false });
-  };
 
-  handleCancel(e) {
+  onCloseModal(e) {
     console.log(e);
     this.setState({ createTaskVisible: false });
   };
 
   showCreateTask() {
     this.setState({ createTaskVisible: true });
-  }
-
-  onCropComplete(crop) {
-    this.setState({ newSentry: { crop }});
-    console.log('onCropComplete', this.state.newSentry.crop);
   }
 
   async loadData() {
@@ -69,21 +55,20 @@ class Home extends Component {
   }
 
   render() {
-
     return (
       <div>
-        <Modal
-          title="Create New Task"
+        <NewTask
           visible={this.state.createTaskVisible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-        >
-          <NewTask onCropComplete = {this.onCropComplete}/>
-        </Modal>
+          onCloseModal={this.onCloseModal}
+        />
         <PageHeader
           title="Active Tasks"
           extra={
-            <Button type="primary" icon="plus-circle" size="default" onClick={this.showCreateTask}>
+            <Button
+              type="primary"
+              icon="plus-circle"
+              size="default"
+              onClick={this.showCreateTask}>
               Create task
             </Button>
           }
@@ -97,7 +82,6 @@ class Home extends Component {
           dataSource={this.state.data}
           renderItem={this.taskCard}
         />
-
       </div>
     );
   }
