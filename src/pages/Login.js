@@ -30,10 +30,9 @@ class Login extends Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <UserContext.Consumer>
-      {({isLoading,isLoggedIn})=>{
-        console.log(isLoading,isLoggedIn);
-        if(isLoggedIn){
-          console.log(this.props.history.push("/"));
+      {({isLoading,isLoggedIn}) => {
+        if(isLoggedIn) {
+          this.props.history.push("/");
         }else{
           return(
             <AppLayout>
@@ -65,13 +64,13 @@ class Login extends Component {
                     })(
                       <Checkbox>Remember me</Checkbox>
                     )}
-                    <a href="" className="login-form-forgot">Forgot password</a>
+                    <a href="/" className="login-form-forgot">Forgot password</a>
                     <Button type="primary"
                             htmlType="submit"
                             className="login-form-button" block>
                       Login
                     </Button>
-                    Or <a href="">register now!</a>
+                    Or <a href="/">register now!</a>
                   </Form.Item>
                 </Form>
               </Card>

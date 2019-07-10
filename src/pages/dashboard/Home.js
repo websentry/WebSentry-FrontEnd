@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Card, PageHeader, Divider, Button, List, Modal, Spin } from 'antd';
+import { PageHeader, Divider, Button, List } from 'antd';
 import NewTask from './NewTask';
 import TaskItem from './task/TaskItem';
-import { UserContext } from '../../UserContext';
 import api from '../../helpers/Api';
 import './Home.less'
 
@@ -14,15 +13,17 @@ class Home extends Component {
       isLoading: true,
       createTaskVisible: false,
       data: [],
+      notificationList:[]
     };
     this.loadData();
     this.showCreateTask = this.showCreateTask.bind(this);
     this.onCloseModal = this.onCloseModal.bind(this);
   };
 
+  componentWillMount() {
+  }
 
   onCloseModal(e) {
-    console.log(e);
     this.setState({ createTaskVisible: false });
   };
 
@@ -36,15 +37,20 @@ class Home extends Component {
     }
 
     const response = await api.getAllSentries();
+    const response2 = await api.getAllNotifications();
+
     console.log(response);
-    if (response.code === api.code.ok) {
+    console.log(response2);
+    if (response.code === api.code.ok && response2.code === api.code.ok) {
       this.setState({
         isLoading: false,
         data: response.data.sentries,
+        notificationList: response2.data.notifications
       });
     } else {
       console.log("---- Error ----");
       console.log(response);
+      console.log(response2);
     }
 
   }
@@ -55,13 +61,22 @@ class Home extends Component {
     );
   }
 
+  renderNewTask(){
+    if(this.state.isLoading === false){
+      return (
+        <NewTask
+          visible={this.state.createTaskVisible}
+          notificationList={this.state.notificationList}
+          onCloseModal={this.onCloseModal}
+        />
+      )
+    }
+  }
+
   render() {
     return (
       <div>
-        <NewTask
-          visible={this.state.createTaskVisible}
-          onCloseModal={this.onCloseModal}
-        />
+        {this.renderNewTask()}
         <PageHeader
           title="Active Tasks"
           extra={

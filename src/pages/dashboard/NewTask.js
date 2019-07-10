@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import { Input, Spin, Icon, Select, Modal } from 'antd';
-import Api from '../../helpers/Api.js';
+import api from '../../helpers/Api.js';
 
 const { Search } = Input;
 const InputGroup = Input.Group;
@@ -17,7 +17,8 @@ const initialState = {
   },
   url:"",
   name:"",
-  notification:"Monthly",
+  notification:null,
+  notificationId:null,
   screenshotLink: "https://www.hospitalityinhealthcare.com/wp-content/uploads/2017/03/1-WELCOME-IMAGE_medical-personnel-consult.jpg",
   crop: {
     unit: "%",
@@ -29,9 +30,12 @@ class NewTask extends Component {
   constructor(props){
     super(props);
     this.state = initialState;
-    this.urlOnchange = e => {this.onSentryValueChange("url", e.target.value)}
-    this.nameOnchange = e => {this.onSentryValueChange("name", e.target.value)}
-    this.notifOnchange = e => {this.onSentryValueChange("notification", e)}
+    this.urlOnchange = e => {this.onSentryValueChange("url", e.target.value);};
+    this.nameOnchange = e => {this.onSentryValueChange("name", e.target.value);};
+    this.notifOnchange = (value, e) => {
+      this.onSentryValueChange("notification", value);
+      this.onSentryValueChange("notificationId", e.key);
+    };
     this.handleUrlSubmit = this.handleUrlSubmit.bind(this);
     this.handleSentrySubmit = this.handleSentrySubmit.bind(this);
     this.onCancel = this.onCancel.bind(this);
@@ -39,6 +43,19 @@ class NewTask extends Component {
 
   onSentryValueChange(key,val) {
     this.setState({[key]: val });
+  }
+
+  setDefaultNotification(){
+    this.setState({ notification: this.props.notificationList[0].type });
+    this.setState({ notificationId: this.props.notificationList[0]._id });
+  }
+
+  componentDidMount() {
+    if(this.props.notificationList[0] == null){
+      this.setState({ error: "Failed to load notification list" });
+    }else{
+      this.setDefaultNotification();
+    }
   }
 
   onImageLoaded = image => {
@@ -52,17 +69,17 @@ class NewTask extends Component {
   async handleUrlSubmit(url,event) {
     event.preventDefault();
     this.setState({ isUrlLoading: true });
-    let res = await Api.requestFullScreenshot(this.state.url);
+    let res = await api.requestFullScreenshot(this.state.url);
     console.log(res);
-    if (res.code === Api.code.ok) {
+    if (res.code === api.code.ok) {
         let taskId = res.data.taskId;
-        res = await Api.waitFullScreenshot(taskId);
+        res = await api.waitFullScreenshot(taskId);
         console.log(res);
-        if (res.code === Api.code.ok) {
+        if (res.code === api.code.ok) {
           this.setState(
             {
               screenshotLink:
-                Api.getFullScreenshotLink(taskId, res.data.imageToken)
+                api.getFullScreenshotLink(taskId, res.data.imageToken)
             }
           );
         }
@@ -73,21 +90,27 @@ class NewTask extends Component {
   onCancel(){
     this.props.onCloseModal();
     this.setState(initialState);
+    this.setDefaultNotification();
   }
 
   async handleSentrySubmit(){
-    const { name, url, notification } = this.state;
+    const { name, url, notificationId } = this.state;
     const { x, y, width, height } = this.state.crop;
 
     this.setState({ isFormLoading: true, error: null });
-    let res = await Api.createSentry(name, url, x, y, width, height, notification);
+    let res = await api.createSentry(name, url, x, y,
+                                        width, height, notificationId);
     console.log(res);
-    if (res.code === Api.code.ok) {
+    if (res.code === api.code.ok) {
       this.setState({ isFormLoading: false });
       this.setState({ okButtonProps: { disabled: true }});
       this.setState({ okText: "Success!" });
       setTimeout(() => { this.props.onCloseModal(); }, 1000);
-      setTimeout(() => { this.setState(initialState); }, 1000);
+      setTimeout(() => {
+        this.setState(initialState);
+        this.setDefaultNotification();
+      }, 1000);
+      window.location.reload();
     } else {
       this.setState({ isFormLoading: false });
       this.setState({ error: "Failed to create a new task!" });
@@ -158,12 +181,15 @@ class NewTask extends Component {
             <Select
               size="large"
               style={{ width: '30%' }}
-              defaultValue="Monthly"
+              defaultValue = {this.props.notificationList[0].type}
               onSelect={this.notifOnchange}
             >
-              <Option value="Hourly">Hourly</Option>
-              <Option value="Weekly">Weekly</Option>
-              <Option value="Monthly">Monthly</Option>
+              {this.props.notificationList.map( notification => {
+                return (
+                  <Option value={notification.type} key={notification._id}>
+                    {notification.type}
+                  </Option>)
+              })}
             </Select>
           </InputGroup>
           {this.state.error?<div className="text-danger mt-1">{this.state.error}</div>:null}
