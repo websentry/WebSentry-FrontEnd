@@ -3,6 +3,7 @@ import AppLayout from '../layouts/AppLayout';
 import { Carousel,Icon } from 'antd';
 import laptop from "../assets/laptop.png";
 import Banner from "./explore/Banner";
+import HomeSection from "./explore/HomeSection";
 
 import './Explore.less';
 
@@ -12,34 +13,7 @@ class Explore extends React.Component {
     return (
       <AppLayout>
         <Banner/>
-
-        <section className="py-5">
-          <div className="container">
-            <div className="row">
-              <div className="col-md-4 mb-4 text-center">
-                <div className="display-2">
-                  <Icon type="setting" />
-                </div>
-                <h3>Turning Gears</h3>
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Libero, veniam.</p>
-              </div>
-              <div className="col-md-4 mb-4 text-center">
-                <div className="display-2">
-                  <Icon type="cloud" />
-                </div>
-                <h3>Sending Data</h3>
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Libero, veniam.</p>
-              </div>
-              <div className="col-md-4 mb-4 text-center">
-                <div className="display-2">
-                  <Icon type="shopping-cart" />
-                </div>
-                <h3>Making Money</h3>
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Libero, veniam.</p>
-              </div>
-            </div>
-          </div>
-        </section>
+        <HomeSection/>
 
         <section id="home-heading" className="p-5">
           <div className="dark-overlay">

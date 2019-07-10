@@ -4,7 +4,7 @@ import BannerItem from './BannerItem';
 import './Banner.less';
 
 class Banner extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.items = [
         {
@@ -28,7 +28,7 @@ class Banner extends Component {
     ];
   }
 
-  renderItems(){
+  renderItems() {
     let items = [];
     for (let i = 0; i < this.items.length; i++) {
       const { msgId, headerId, bootstrapStyle, bgImage } = this.items[i];
