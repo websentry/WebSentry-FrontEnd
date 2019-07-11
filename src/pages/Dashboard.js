@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Spin } from 'antd';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Container from './dashboard/Container';
 import DashboardLayout from '../layouts/DashboardLayout';
 import { UserContext } from '../UserContext';

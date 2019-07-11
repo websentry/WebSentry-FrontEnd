@@ -37,10 +37,12 @@ class AppHeader extends React.Component {
                     </Link>
                   </Menu.Item>
                   <Menu.Item key="signIn">
-                    <FormattedMessage
-                      id='signIn'
-                      defaultMessage='Sign in'
-                    />
+                    <Link to="/login">
+                      <FormattedMessage
+                        id='signIn'
+                        defaultMessage='Sign in'
+                      />
+                    </Link>
                   </Menu.Item>
                   <Menu.Item key="signUp">
                     <FormattedMessage

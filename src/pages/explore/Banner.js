@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Carousel,Icon } from 'antd';
+import { Carousel } from 'antd';
 import BannerItem from './BannerItem';
 import './Banner.less';
 
