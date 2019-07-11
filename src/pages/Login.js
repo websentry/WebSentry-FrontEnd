@@ -98,7 +98,7 @@ class Login extends Component {
                       />
                     )}
                   </Form.Item>
-                  {this.state.error?<div className="text-danger">{this.state.error}</div>:null}
+                  {this.state.error?<div className="red-6">{this.state.error}</div>:null}
                   <Form.Item>
                     {getFieldDecorator('remember', {
                       valuePropName: 'checked',

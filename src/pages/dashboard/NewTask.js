@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
-import { Input, Spin, Icon, Select, Modal } from 'antd';
+import { Input, Spin, Icon, Select, Modal, Row } from 'antd';
 import api from '../../helpers/Api.js';
 
 const { Search } = Input;
@@ -121,12 +121,12 @@ class NewTask extends Component {
     const { crop, screenshotLink, isUrlLoading } = this.state;
     const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
-    if(isUrlLoading) {
+    if(1) {
       return(
-        <div className="container mt-4">
-          <div className="d-flex justify-content-center">
-              <Spin indicator={antIcon} size="large"/>
-          </div>
+        <div className="mt-4">
+          <Row justify={"center"} type = {"flex"} align={"middle"}>
+             <Spin indicator={antIcon} size="large"/>
+          </Row>
         </div>
       )
     }
@@ -160,7 +160,7 @@ class NewTask extends Component {
         okText={this.state.okText}
         okButtonProps={this.state.okButtonProps}
       >
-        <div className="container mt-2">
+        <div className="mt-2">
           <Search
              placeholder="Enter website: www.google.com"
              enterButton="Search"
@@ -192,7 +192,7 @@ class NewTask extends Component {
               })}
             </Select>
           </InputGroup>
-          {this.state.error?<div className="text-danger mt-1">{this.state.error}</div>:null}
+          {this.state.error?<div className="red-6 mt-1">{this.state.error}</div>:null}
         </div>
       </Modal>
     );
