@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import AppLayout from '../layouts/AppLayout';
-import { Button, Card, Checkbox, Form, Icon, Input, Modal } from 'antd';
+import { Button, Card, Checkbox, Form, Icon, Input } from 'antd';
 import { UserContext } from '../UserContext';
 import './Login.less';
 import api from '../helpers/Api.js';
