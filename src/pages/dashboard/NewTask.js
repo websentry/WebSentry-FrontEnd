@@ -19,7 +19,7 @@ const initialState = {
   name:"",
   notification:null,
   notificationId:null,
-  screenshotLink: "https://www.hospitalityinhealthcare.com/wp-content/uploads/2017/03/1-WELCOME-IMAGE_medical-personnel-consult.jpg",
+  screenshotLink: "",
   crop: {
     unit: "%",
     width: 30
