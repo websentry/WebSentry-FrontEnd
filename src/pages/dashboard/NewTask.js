@@ -121,7 +121,7 @@ class NewTask extends Component {
     const { crop, screenshotLink, isUrlLoading } = this.state;
     const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
-    if(1) {
+    if(isUrlLoading) {
       return(
         <div className="mt-4">
           <Row justify={"center"} type = {"flex"} align={"middle"}>

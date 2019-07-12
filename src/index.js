@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.less';
-import 'bootstrap/dist/css/bootstrap.css';
+import './marginPaddingHelper.less';
 import App from './pages/App';
 import * as serviceWorker from './serviceWorker';
 
