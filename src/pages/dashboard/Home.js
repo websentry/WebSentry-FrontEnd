@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import { Card, Icon, Tooltip, PageHeader, Divider, Button, List, Tag } from 'antd';
-import moment from 'moment'
+import { PageHeader, Divider, Button, List } from 'antd';
+import NewTask from './NewTask';
+import TaskItem from './task/TaskItem';
 import api from '../../helpers/Api';
 import './Home.less'
-
-
-const { Meta } = Card;
 
 class Home extends Component {
   constructor(props) {
@@ -13,10 +11,25 @@ class Home extends Component {
 
     this.state = {
       isLoading: true,
+      createTaskVisible: false,
       data: [],
+      notificationList:[]
     };
     this.loadData();
+    this.showCreateTask = this.showCreateTask.bind(this);
+    this.onCloseModal = this.onCloseModal.bind(this);
   };
+
+  componentWillMount() {
+  }
+
+  onCloseModal(e) {
+    this.setState({ createTaskVisible: false });
+  };
+
+  showCreateTask() {
+    this.setState({ createTaskVisible: true });
+  }
 
   async loadData() {
     if (!this.state.isLoading) {
@@ -24,79 +37,59 @@ class Home extends Component {
     }
 
     const response = await api.getAllSentries();
-    if (response.code === api.code.ok) {
+    const response2 = await api.getAllNotifications();
+
+    console.log(response);
+    console.log(response2);
+    if (response.code === api.code.ok && response2.code === api.code.ok) {
       this.setState({
         isLoading: false,
         data: response.data.sentries,
+        notificationList: response2.data.notifications
       });
     } else {
       console.log("---- Error ----");
       console.log(response);
+      console.log(response2);
     }
 
   }
 
   taskCard(item) {
     return (
-      <List.Item>
-        <Card
-          title={item.name}
-          className="task-card"
-          actions={[
-            <Tooltip title="detail">
-              <Icon type="project" />
-            </Tooltip>,
-            <Tooltip title="edit">
-              <Icon type="edit" />
-            </Tooltip>
-          ]}
-        >
-          <Meta
-            description={
-              <div>
-                <table>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <Tooltip title="URL">
-                          <Tag>
-                            <Icon type="link" />
-                          </Tag>
-                        </Tooltip>
-                      </td>
-                      <td>
-                        <span>{item.url}</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <Tooltip title="last check">
-                          <Tag>
-                            <Icon type="clock-circle" />
-                          </Tag>
-                        </Tooltip>
-                      </td>
-                      <td>
-                        <span>{moment(item.lastCheckTime).fromNow()}</span>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            }
-          />
-        </Card>
-      </List.Item>
+      <TaskItem item={item}/>
     );
   }
 
-  render() {
+  renderNewTask(){
+    if(this.state.isLoading === false){
+      return (
+        <NewTask
+          visible={this.state.createTaskVisible}
+          notificationList={this.state.notificationList}
+          onCloseModal={this.onCloseModal}
+        />
+      )
+    }
+  }
 
+  render() {
     return (
       <div>
-        <PageHeader title="Active Tasks" extra={<Button type="primary" icon="plus-circle" size="default">Create task</Button>} />
+        {this.renderNewTask()}
+        <PageHeader
+          title="Active Tasks"
+          extra={
+            <Button
+              type="primary"
+              icon="plus-circle"
+              size="default"
+              onClick={this.showCreateTask}>
+              Create task
+            </Button>
+          }
+        />
         <Divider />
-
         <List
           loading={this.state.isLoading}
           grid={{
@@ -105,7 +98,6 @@ class Home extends Component {
           dataSource={this.state.data}
           renderItem={this.taskCard}
         />
-
       </div>
     );
   }

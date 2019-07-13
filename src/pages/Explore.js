@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
 import AppLayout from '../layouts/AppLayout';
+import './Explore.less';
 
-class App extends Component {
+class Explore extends React.Component {
+
   render() {
     return (
       <AppLayout>
-            <div>
-                hahahahahaha
-            </div>
-        </AppLayout>
+        blank exlore page
+      </AppLayout>
     );
   }
 }
 
-export default App;
+export default Explore;

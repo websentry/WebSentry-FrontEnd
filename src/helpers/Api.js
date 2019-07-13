@@ -68,9 +68,9 @@ api.login = async (email, password) => {
     localStorage.removeItem('ws-token');
 
     const params = {email: email};
-    var formData = new FormData(); 
+    var formData = new FormData();
     formData.set("password", password);
-    
+
     let response = await requestApi('login', params, formData, false);
     if (response.code === api.code.ok) {
         localStorage.setItem('ws-token', response.data.token);
@@ -80,6 +80,45 @@ api.login = async (email, password) => {
 
 api.getAllSentries = async () => {
     return await requestApi('sentry/list', {}, null, true);
+}
+
+api.requestFullScreenshot = async (url) => {
+    const params = {url: url};
+    return await requestApi('sentry/request_full_screenshot', params, null, true);
+}
+
+api.waitFullScreenshot = async (taskId) => {
+    const params = {taskId: taskId};
+    let response = null;
+    do {
+        console.log("requesting...");
+        response = await requestApi('sentry/wait_full_screenshot', params, null, true);
+    } while (response.code === api.code.ok && response.data.complete === false);
+
+    return response;
+}
+
+api.getFullScreenshotLink = (taskId, imageToken) => {
+    return process.env.REACT_APP_BACKEND_URL +
+           'common/get_full_screenshot_image?taskId=' + taskId +
+           '&imageToken=' + imageToken;
+}
+
+api.createSentry = async (name, url, x, y, width, height, notification) => {
+    const params = {
+        name: name,
+        url: url,
+        x: x,
+        y: y,
+        width: width,
+        height: height,
+        notification: notification
+    };
+    return await requestApi('sentry/create', params, null, true);
+}
+
+api.getAllNotifications = async () => {
+    return await requestApi('notification/list', {}, null, true);
 }
 
 export default api;

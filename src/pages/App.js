@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Dashboard from './Dashboard';
 import Explore from './Explore';
 import NoMatch from './NoMatch';
+import Login from './Login';
 import {UserContext} from '../UserContext'
 import Api from '../helpers/Api';
 
@@ -25,6 +26,7 @@ class App extends Component {
       }
 
       const response = await Api.getUserInfo();
+      console.log(response);
       if (response.code === Api.code.ok) {
         this.setState({
           isLoading: false,
@@ -41,7 +43,6 @@ class App extends Component {
     };
 
     this.switchLang = () => {
-      console.log(this.state);
       switch (this.state.lang.split('-')[0]) {
         case 'en':
           this.setState({ lang:'zh-CN' });
@@ -56,20 +57,28 @@ class App extends Component {
       console.log(this.state);
     }
 
+    this.onLoading = () => {
+      this.setState({ isLoading: true });
+    }
+
+    this.cancelLoading = () => {
+      this.setState({ isLoading: false });
+    }
+
     this.state = {
       lang:navigator.language,
       isLoading: true,
       isLoggedIn: false,
       userEmail: "",
       toggleRefreash: () => this.userContextToggleRefreash,
-      switchLang: this.switchLang
+      switchLang: this.switchLang,
+      onLoading: this.onLoading,
+      cancelLoading: this.cancelLoading
     };
 
     // async function, don't wait
     this.userContextToggleRefreash();
   }
-
-
 
   chooseLocale() {
     switch(this.state.lang.split('-')[0]){
@@ -91,6 +100,7 @@ class App extends Component {
               <Switch>
                 <Route exact path="/" component={Explore} />
                 <Route path="/dashboard" component={Dashboard} />
+                <Route path="/login" component={Login} />
                 <Route component={NoMatch} />
               </Switch>
           </Router>
