@@ -6,6 +6,7 @@ import './DashboardHeader.less'
 const { Header } = Layout;
 
 class AppHeader extends React.Component {
+    // TODO: to import pictures locally 
     render() {
       return (
         <Header className="dashboard-header">
