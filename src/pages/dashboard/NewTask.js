@@ -21,9 +21,14 @@ const initialState = {
   notificationId:null,
   screenshotLink: "",
   crop: {
-    unit: "%",
-    width: 30
-  }
+    unit: '%',
+    x: 25,
+    y: 25,
+    width: 50,
+    height: 50
+  },
+  scaleX: 0,
+  scaleY: 0
 }
 
 class NewTask extends Component {
@@ -59,11 +64,15 @@ class NewTask extends Component {
   }
 
   onImageLoaded = image => {
-    console.log('onImageLoaded', image)
+    console.log('onImageLoaded', image);
+    this.setState({
+      screenshotScaleX: image.naturalWidth / 100,
+      screenshotScaleY: image.naturalHeight / 100 
+    });
   }
 
-  onCropChange = crop => {
-    this.setState({ crop })
+  onCropChange = (_, percentCrop) => {
+    this.setState({ crop: percentCrop })
   }
 
   async handleUrlSubmit(url,event) {
@@ -95,7 +104,12 @@ class NewTask extends Component {
 
   async handleSentrySubmit(){
     const { name, url, notificationId } = this.state;
-    const { x, y, width, height } = this.state.crop;
+    let { x, y, width, height } = this.state.crop;
+    
+    x = Math.round(x * this.state.screenshotScaleX);
+    y = Math.round(y * this.state.screenshotScaleY);
+    width = Math.round(width * this.state.screenshotScaleX);
+    height = Math.round(height * this.state.screenshotScaleY);
 
     this.setState({ isFormLoading: true, error: null });
     let res = await api.createSentry(name, url, x, y,
@@ -139,6 +153,7 @@ class NewTask extends Component {
             onImageLoaded={this.onImageLoaded}
             onComplete={this.props.onCropComplete}
             onChange={this.onCropChange}
+            keepSelection={true}
           />
         </div>
       )
