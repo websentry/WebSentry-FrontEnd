@@ -13,12 +13,12 @@ class Login extends Component {
     this.state = {
       loading: false,
       error: null,
-      username: '',
+      email: '',
       password: '',
     };
 
-    this.usernameOnchange = (e) => {
-      this.onLoginValueChange('username', e.target.value);
+    this.emailOnchange = (e) => {
+      this.onLoginValueChange('email', e.target.value);
     };
 
     this.passwordOnchange = (e) => {
@@ -49,9 +49,9 @@ class Login extends Component {
     });
 
     let success = false;
-    const { username, password } = this.state;
+    const { email, password } = this.state;
     if (formIsValid) {
-      const res = await api.login(username, password);
+      const res = await api.login(email, password);
       if (res.code !== api.code.ok) {
         this.setState({ error: res.msg });
         console.log('---- Error ----');
@@ -81,19 +81,19 @@ class Login extends Component {
                 <Card className="login-form-card">
                   <Form onSubmit={this.handleSubmit} className="login-form">
                     <Form.Item>
-                      { getFieldDecorator('userName', {
+                      { getFieldDecorator('email', {
                         rules: [{ required: true, message: 'Please input your username!' }],
                       })(
                         <Input
                           prefix={(
                             <Icon
-                              type="user"
+                              type="mail"
                               style={{ color: 'rgba(0,0,0,.25)' }}
                             />
 )}
                           size="large"
-                          placeholder="Username"
-                          onChange={this.usernameOnchange}
+                          placeholder="Email"
+                          onChange={this.emailOnchange}
                         />,
                       )}
                     </Form.Item>
