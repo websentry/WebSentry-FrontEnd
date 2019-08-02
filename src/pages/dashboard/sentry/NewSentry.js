@@ -48,6 +48,7 @@ class NewSentry extends Component {
   }
 
   onSentryValueChange(key,val) {
+    console.log(key,val);
     this.setState({[key]: val });
   }
 
@@ -82,7 +83,7 @@ class NewSentry extends Component {
     let res = await api.requestFullScreenshot(this.state.url);
     console.log(res);
     if (res.code === api.code.ok) {
-        let sentryId = res.data.sentryId;
+        let sentryId = res.data.taskId;
         res = await api.waitFullScreenshot(sentryId);
         console.log(res);
         if (res.code === api.code.ok) {
@@ -202,7 +203,6 @@ class NewSentry extends Component {
                 onSelect={this.notifOnchange}
               >
                 {this.props.notificationList.map( notification => {
-                  console.log(notification);
                   return (
                     <Option value={notification.name} key={notification.id}>
                       {notification.name}
