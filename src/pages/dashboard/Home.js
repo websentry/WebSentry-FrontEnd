@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { PageHeader, Divider, Button, List } from 'antd';
-import NewTask from './NewTask';
-import TaskItem from './task/TaskItem';
+import NewSentry from './sentry/NewSentry';
+import SentryItem from './sentry/SentryItem';
 import api from '../../helpers/Api';
 import './Home.less'
 
@@ -11,24 +11,21 @@ class Home extends Component {
 
     this.state = {
       isLoading: true,
-      createTaskVisible: false,
+      createSentryVisible: false,
       data: [],
       notificationList:[]
     };
     this.loadData();
-    this.showCreateTask = this.showCreateTask.bind(this);
-    this.onCloseModal = this.onCloseModal.bind(this);
+    this.showCreateSentry = this.showCreateSentry.bind(this);
+    this.hideCreateSentry = this.hideCreateSentry.bind(this);
   };
 
-  componentWillMount() {
-  }
-
-  onCloseModal(e) {
-    this.setState({ createTaskVisible: false });
+  hideCreateSentry(e) {
+    this.setState({ createSentryVisible: false });
   };
 
-  showCreateTask() {
-    this.setState({ createTaskVisible: true });
+  showCreateSentry() {
+    this.setState({ createSentryVisible: true });
   }
 
   async loadData() {
@@ -55,17 +52,17 @@ class Home extends Component {
 
   }
 
-  taskCard(item) {
+  SentryCard(item) {
     return (
-      <TaskItem item={item}/>
+      <SentryItem item={item}/>
     );
   }
 
-  renderNewTask(){
+  renderNewSentry(){
     if(this.state.isLoading === false){
       return (
-        <NewTask
-          visible={this.state.createTaskVisible}
+        <NewSentry
+          visible={this.state.createSentryVisible}
           notificationList={this.state.notificationList}
           onCloseModal={this.onCloseModal}
         />
@@ -74,32 +71,37 @@ class Home extends Component {
   }
 
   render() {
-    return (
-      <div>
-        {this.renderNewTask()}
-        <PageHeader
-          title="Active Tasks"
-          extra={
-            <Button
-              type="primary"
-              icon="plus-circle"
-              size="default"
-              onClick={this.showCreateTask}>
-              Create task
-            </Button>
-          }
-        />
-        <Divider />
-        <List
-          loading={this.state.isLoading}
-          grid={{
-            gutter: 4, xs: 1, sm: 1, md: 2, xl: 3, xxl: 4,
-          }}
-          dataSource={this.state.data}
-          renderItem={this.taskCard}
-        />
-      </div>
-    );
+    if(this.state.createSentryVisible === false) {
+      return (
+        <div>
+          <PageHeader
+            title="Active Sentrys"
+            extra={
+              <Button
+                type="primary"
+                icon="plus-circle"
+                size="default"
+                onClick={this.showCreateSentry}>
+                Create Sentry
+              </Button>
+            }
+          />
+          <Divider />
+          <List
+            loading={this.state.isLoading}
+            grid={{
+              gutter: 4, xs: 1, sm: 1, md: 2, xl: 3, xxl: 4,
+            }}
+            dataSource={this.state.data}
+            renderItem={this.SentryCard}
+          />
+        </div>
+      );
+    }
+    return <NewSentry
+              notificationList={this.state.notificationList}
+              hideCreateSentry={this.hideCreateSentry}
+          />
   }
 }
 

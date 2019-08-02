@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
-import { Input, Spin, Icon, Select, Modal, Row } from 'antd';
-import api from '../../helpers/Api.js';
+import { Input, Spin, Icon, Select, Col, Row, PageHeader, Divider, Button } from 'antd';
+import api from '../../../helpers/Api.js';
 
 const { Search } = Input;
 const InputGroup = Input.Group;
@@ -31,7 +31,8 @@ const initialState = {
   scaleY: 0
 }
 
-class NewTask extends Component {
+class NewSentry extends Component {
+
   constructor(props){
     super(props);
     this.state = initialState;
@@ -67,7 +68,7 @@ class NewTask extends Component {
     console.log('onImageLoaded', image);
     this.setState({
       screenshotScaleX: image.naturalWidth / 100,
-      screenshotScaleY: image.naturalHeight / 100 
+      screenshotScaleY: image.naturalHeight / 100
     });
   }
 
@@ -105,7 +106,7 @@ class NewTask extends Component {
   async handleSentrySubmit(){
     const { name, url, notificationId } = this.state;
     let { x, y, width, height } = this.state.crop;
-    
+
     x = Math.round(x * this.state.screenshotScaleX);
     y = Math.round(y * this.state.screenshotScaleY);
     width = Math.round(width * this.state.screenshotScaleX);
@@ -147,14 +148,16 @@ class NewTask extends Component {
     if(screenshotLink) {
       return(
         <div className = "mt-3 mb-2">
-          <ReactCrop
-            src={screenshotLink}
-            crop={crop}
-            onImageLoaded={this.onImageLoaded}
-            onComplete={this.props.onCropComplete}
-            onChange={this.onCropChange}
-            keepSelection={true}
-          />
+          <Row justify={"center"} type = {"flex"} align={"middle"}>
+            <ReactCrop
+              src={screenshotLink}
+              crop={crop}
+              onImageLoaded={this.onImageLoaded}
+              onComplete={this.props.onCropComplete}
+              onChange={this.onCropChange}
+              keepSelection={true}
+            />
+          </Row>
         </div>
       )
     }
@@ -164,27 +167,26 @@ class NewTask extends Component {
     )
   }
 
+
   render() {
     return (
-      <Modal
-        title="Create New Task"
-        visible={this.props.visible}
-        onOk={this.handleSentrySubmit}
-        onCancel={this.onCancel}
-        confirmLoading={this.state.isFormLoading}
-        okText={this.state.okText}
-        okButtonProps={this.state.okButtonProps}
-      >
-        <div className="mt-2">
-          <Search
-             placeholder="Enter website: www.google.com"
-             enterButton="Search"
-             size="large"
-             value={this.state.url}
-             onChange={this.urlOnchange}
-             onSearch={this.handleUrlSubmit}
-          />
-            {this.renderCrop()}
+      <div>
+        <PageHeader
+          title="New Sentry"
+        />
+        <Divider />
+        <div className="pl-7 pr-7">
+          <div className="mt-2">
+            <Search
+               placeholder="Enter website: www.google.com"
+               enterButton="search"
+               size="large"
+               value={this.state.url}
+               onChange={this.urlOnchange}
+               onSearch={this.handleUrlSubmit}
+            />
+          </div>
+          {this.renderCrop()}
           <InputGroup compact>
             <Input
               size="large"
@@ -193,25 +195,35 @@ class NewTask extends Component {
               onChange={this.nameOnchange}
               placeholder="Enter name: John"
             />
-            <Select
-              size="large"
-              style={{ width: '30%' }}
-              defaultValue = {this.props.notificationList[0].type}
-              onSelect={this.notifOnchange}
-            >
-              {this.props.notificationList.map( notification => {
-                return (
-                  <Option value={notification.type} key={notification._id}>
-                    {notification.type}
-                  </Option>)
-              })}
-            </Select>
+              <Select
+                size="large"
+                style={{ width: '30%' }}
+                defaultValue = {this.props.notificationList[0].type}
+                onSelect={this.notifOnchange}
+              >
+                {this.props.notificationList.map( notification => {
+                  return (
+                    <Option value={notification.type} key={notification._id}>
+                      {notification.type}
+                    </Option>)
+                })}
+              </Select>
           </InputGroup>
-          {this.state.error?<div className="red-6 mt-1">{this.state.error}</div>:null}
+            {this.state.error?<div className="red-6 mt-1">{this.state.error}</div>:null}
+            <Row style={{ marginTop: 10 }}>
+              <Col span={24} style={{ textAlign: 'center' }}>
+                <Button type="primary" htmlType="submit" size="large">
+                  Sumbit
+                </Button>
+                <Button style={{ marginLeft: 8 }} onClick={this.props.hideCreateSentry} size="large">
+                  Cancel
+                </Button>
+              </Col>
+            </Row>
+          </div>
         </div>
-      </Modal>
     );
   }
 }
 
-export default NewTask;
+export default NewSentry;
