@@ -20,7 +20,8 @@ class App extends Component {
     super(props);
 
     // user context
-    this.userContextToggleRefreash = async () => {
+    this.userContextToggleRefresh = async () => {
+
       if (!this.state.isLoading) {
         this.setState({isLoading: true});
       }
@@ -70,14 +71,14 @@ class App extends Component {
       isLoading: true,
       isLoggedIn: false,
       userEmail: "",
-      toggleRefreash: () => this.userContextToggleRefreash,
+      toggleRefresh: this.userContextToggleRefresh,
       switchLang: this.switchLang,
       onLoading: this.onLoading,
       cancelLoading: this.cancelLoading
     };
 
     // async function, don't wait
-    this.userContextToggleRefreash();
+    this.userContextToggleRefresh();
   }
 
   chooseLocale() {

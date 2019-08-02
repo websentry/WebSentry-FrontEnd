@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
   Button, Card, Form, Icon, Input,
 } from 'antd';
+import queryString from 'query-string'
 import AppLayout from '../layouts/AppLayout';
 import { UserContext } from '../UserContext';
 import './Login.less';
@@ -62,9 +63,10 @@ class Login extends Component {
     }
     this.setState({ loading: false });
     if (success) {
-      // TODO: set loggin state instead
-      this.props.history.push('/dashboard');
-      window.location.reload();
+      // async function, no need to wait
+      // once finished, this will cause the whole page rerender
+      // then the isLoggedIn check below will handle the redirection
+      this.props.userContext.toggleRefresh();      
     }
   }
 
@@ -72,9 +74,14 @@ class Login extends Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <UserContext.Consumer>
-        {({ isLoading, isLoggedIn }) => {
+        {({ isLoggedIn }) => {
           if (isLoggedIn) {
-            this.props.history.push('/');
+            const values = queryString.parse(this.props.location.search);
+            if (values.path) {
+              this.props.history.push('/' + values.path);
+            } else {
+              this.props.history.push('/dashboard');
+            }
           } else {
             return (
               <AppLayout>
@@ -157,4 +164,12 @@ class Login extends Component {
   }
 }
 
-export default Form.create()(Login);
+const WithContext = (Component) => {
+  return (props) => (
+      <UserContext.Consumer>
+           {userContext =>  <Component {...props} userContext={userContext} />}
+      </UserContext.Consumer>
+  )
+}
+
+export default Form.create()(WithContext(Login));
