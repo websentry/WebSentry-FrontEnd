@@ -92,7 +92,7 @@ class Login extends Component {
                             />
 )}
                           size="large"
-                          placeholder="username"
+                          placeholder="Username"
                           onChange={this.usernameOnchange}
                         />,
                       )}
@@ -110,7 +110,7 @@ class Login extends Component {
 )}
                           size="large"
                           type="password"
-                          placeholder="password"
+                          placeholder="Password"
                           onChange={this.passwordOnchange}
                         />,
                       )}
