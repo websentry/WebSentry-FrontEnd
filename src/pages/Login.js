@@ -54,7 +54,20 @@ class Login extends Component {
     if (formIsValid) {
       const res = await api.login(email, password);
       if (res.code !== api.code.ok) {
-        this.setState({ error: res.msg });
+        switch (res.code) {
+          case -1:
+            this.setState({ error: 'Authorization error' })
+            break
+          case -4:
+            this.setState({ error: 'Request too often' })
+            break
+          case -5:
+            this.setState({ error: 'Email did not exist' })
+            break
+          default:
+            this.setState({ error: 'Unknown error' })
+            break
+        }
         console.log('---- Error ----');
         console.log(res);
       } else {
@@ -101,7 +114,7 @@ class Login extends Component {
                           prefix={(
                             <Icon
                               type="mail"
-                              style={{ color: 'rgba(0,0,0,.25)' }}
+                              style={{ fontSize: '16px', color: 'rgba(0,0,0,.25)' }}
                             />
                           )}
                           size="large"
@@ -114,11 +127,11 @@ class Login extends Component {
                       {getFieldDecorator('password', {
                         rules: [{ required: true, message: 'Please input your Password!' }],
                       })(
-                        <Input
+                        <Input.Password
                           prefix={(
                             <Icon
                               type="lock"
-                              style={{ color: 'rgba(0,0,0,.25)' }}
+                              style={{ fontSize: '16px', color: 'rgba(0,0,0,.25)' }}
                             />
                           )}
                           size="large"
@@ -167,7 +180,7 @@ class Login extends Component {
 const WithContext = (Component) => {
   return (props) => (
       <UserContext.Consumer>
-           {userContext =>  <Component {...props} userContext={userContext} />}
+        {userContext =>  <Component {...props} userContext={userContext} />}
       </UserContext.Consumer>
   )
 }
