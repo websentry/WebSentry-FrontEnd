@@ -82,14 +82,14 @@ class NewSentry extends Component {
     let res = await api.requestFullScreenshot(this.state.url);
     console.log(res);
     if (res.code === api.code.ok) {
-        let taskId = res.data.taskId;
-        res = await api.waitFullScreenshot(taskId);
+        let sentryId = res.data.sentryId;
+        res = await api.waitFullScreenshot(sentryId);
         console.log(res);
         if (res.code === api.code.ok) {
           this.setState(
             {
               screenshotLink:
-                api.getFullScreenshotLink(taskId, res.data.imageToken)
+                api.getFullScreenshotLink(sentryId, res.data.imageToken)
             }
           );
         }
@@ -98,7 +98,7 @@ class NewSentry extends Component {
   }
 
   onCancel(){
-    this.props.onCloseModal();
+    this.props.hideCreateSentry();
     this.setState(initialState);
     this.setDefaultNotification();
   }
@@ -128,7 +128,7 @@ class NewSentry extends Component {
       window.location.reload();
     } else {
       this.setState({ isFormLoading: false });
-      this.setState({ error: "Failed to create a new task!" });
+      this.setState({ error: "Failed to create a new sentry!" });
     }
   }
 
@@ -202,9 +202,10 @@ class NewSentry extends Component {
                 onSelect={this.notifOnchange}
               >
                 {this.props.notificationList.map( notification => {
+                  console.log(notification);
                   return (
-                    <Option value={notification.type} key={notification._id}>
-                      {notification.type}
+                    <Option value={notification.name} key={notification.id}>
+                      {notification.name}
                     </Option>)
                 })}
               </Select>
@@ -212,10 +213,10 @@ class NewSentry extends Component {
             {this.state.error?<div className="red-6 mt-1">{this.state.error}</div>:null}
             <Row style={{ marginTop: 10 }}>
               <Col span={24} style={{ textAlign: 'center' }}>
-                <Button type="primary" htmlType="submit" size="large">
+                <Button type="primary" onClick={this.handleSentrySubmit} size="large">
                   Sumbit
                 </Button>
-                <Button style={{ marginLeft: 8 }} onClick={this.props.hideCreateSentry} size="large">
+                <Button style={{ marginLeft: 8 }} onClick={this.onCancel} size="large">
                   Cancel
                 </Button>
               </Col>
