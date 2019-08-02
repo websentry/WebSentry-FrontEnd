@@ -82,7 +82,13 @@ class Login extends Component {
                   <Form onSubmit={this.handleSubmit} className="login-form">
                     <Form.Item>
                       { getFieldDecorator('email', {
-                        rules: [{ required: true, message: 'Please input your username!' }],
+                        rules: [{
+                          type: 'email',
+                          message: 'The input is not valid E-mail!',
+                        }, {
+                          required: true,
+                          message: 'Please input your E-mail!',
+                        }],
                       })(
                         <Input
                           prefix={(
@@ -90,7 +96,7 @@ class Login extends Component {
                               type="mail"
                               style={{ color: 'rgba(0,0,0,.25)' }}
                             />
-)}
+                          )}
                           size="large"
                           placeholder="Email"
                           onChange={this.emailOnchange}
@@ -107,7 +113,7 @@ class Login extends Component {
                               type="lock"
                               style={{ color: 'rgba(0,0,0,.25)' }}
                             />
-)}
+                          )}
                           size="large"
                           type="password"
                           placeholder="Password"
