@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Button, Card, Form, Icon, Input,
+  Alert, Button, Card, Checkbox, Form, Icon, Input,
 } from 'antd';
 import queryString from 'query-string'
 import AppLayout from '../layouts/AppLayout';
@@ -18,14 +18,6 @@ class Login extends Component {
       password: '',
     };
 
-    this.emailOnchange = (e) => {
-      this.onLoginValueChange('email', e.target.value);
-    };
-
-    this.passwordOnchange = (e) => {
-      this.onLoginValueChange('password', e.target.value);
-    };
-
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -41,47 +33,42 @@ class Login extends Component {
       error: null,
     });
 
-    let formIsValid = true;
-    this.props.form.validateFields((err, values) => {
-      console.log('Received values of form: ', values);
-      if (err) {
-        formIsValid = false;
+    this.props.form.validateFields(async (err, values) => {
+      let success;
+      if (!err) {
+        console.log('Received values of form: ', values);
+        
+        const res = await api.login(values['email'], values['password']);
+        if (res.code !== api.code.ok) {
+          switch (res.code) {
+            case -1:
+              this.setState({ error: 'Incorrect password' })
+              break
+            case -4:
+              this.setState({ error: 'Request too often' })
+              break
+            case -5:
+              this.setState({ error: 'Email did not exist' })
+              break
+            default:
+              this.setState({ error: 'Unknown error' })
+              break
+          }
+        } else {
+          success = true;
+        }
+      }
+
+      this.setState({ loading: false });
+
+      if (success) {
+        // async function, no need to wait
+        // once finished, this will cause the whole page rerender
+        // then the isLoggedIn check below will handle the redirection
+        this.props.userContext.toggleRefresh();
       }
     });
-
-    let success = false;
-    const { email, password } = this.state;
-    if (formIsValid) {
-      const res = await api.login(email, password);
-      if (res.code !== api.code.ok) {
-        switch (res.code) {
-          case -1:
-            this.setState({ error: 'Authorization error' })
-            break
-          case -4:
-            this.setState({ error: 'Request too often' })
-            break
-          case -5:
-            this.setState({ error: 'Email did not exist' })
-            break
-          default:
-            this.setState({ error: 'Unknown error' })
-            break
-        }
-        console.log('---- Error ----');
-        console.log(res);
-      } else {
-        success = true;
-      }
-    }
-    this.setState({ loading: false });
-    if (success) {
-      // async function, no need to wait
-      // once finished, this will cause the whole page rerender
-      // then the isLoggedIn check below will handle the redirection
-      this.props.userContext.toggleRefresh();      
-    }
-  }
+  };
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -119,12 +106,12 @@ class Login extends Component {
                           )}
                           size="large"
                           placeholder="Email"
-                          onChange={this.emailOnchange}
+                          style={{ marginBottom: '12px' }}
                         />,
                       )}
                     </Form.Item>
                     <Form.Item>
-                      {getFieldDecorator('password', {
+                      { getFieldDecorator('password', {
                         rules: [{ required: true, message: 'Please input your Password!' }],
                       })(
                         <Input.Password
@@ -137,21 +124,27 @@ class Login extends Component {
                           size="large"
                           type="password"
                           placeholder="Password"
-                          onChange={this.passwordOnchange}
                         />,
                       )}
                     </Form.Item>
-                    {this.state.error ? <div className="red-6">{this.state.error}</div> : null}
-                    <Form.Item className="last-form-item">
-                      { // TODO remember me
-                    /* {getFieldDecorator('remember', {
-                      valuePropName: 'checked',
-                      initialValue: true,
-                    })(
+                    { this.state.error ? 
+                      <div className="red-6">{
+                        <Alert
+                          message={this.state.error}
+                          type="error"
+                          closable="true"
+                          showIcon />}
+                      </div> : null
+                    }
+                    <Form.Item style={{ marginBottom: '0px' }}>
+                      { getFieldDecorator('remember', {
+                        valuePropName: 'checked',
+                        initialValue: true,
+                      })(
                       <Checkbox>Remember me</Checkbox>
-                    )}
-                    // TODO forgot password
-                    <a href="/" className="login-form-forgot">Forgot password</a> */}
+                      )}
+                      {/* TODO forgot password
+                      <a href="/" className="login-form-forgot">Forgot password</a> */}
                       <Button
                         type="primary"
                         size="large"
@@ -162,9 +155,9 @@ class Login extends Component {
                       >
                       Login
                       </Button>
-                    Or
+                      Or
                       {' '}
-                      <a href="/">register now!</a>
+                      <a href="/register">register now!</a>
                     </Form.Item>
                   </Form>
                 </Card>
