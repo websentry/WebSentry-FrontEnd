@@ -14,15 +14,9 @@ class Login extends Component {
     this.state = {
       loading: false,
       error: null,
-      email: '',
-      password: '',
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  onLoginValueChange(key, val) {
-    this.setState({ [key]: val });
   }
 
   async handleSubmit(e) {
@@ -38,7 +32,9 @@ class Login extends Component {
       if (!err) {
         console.log('Received values of form: ', values);
         
-        const res = await api.login(values['email'], values['password']);
+        const res = await api.login(values['email'],
+                                    values['password'],
+                                    values['remember']);
         if (res.code !== api.code.ok) {
           switch (res.code) {
             case -1:
