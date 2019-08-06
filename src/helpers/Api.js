@@ -89,6 +89,25 @@ api.login = async (email, password, remember = true) => {
     return response;
 }
 
+api.verification = async (email) => {
+    const params = { email: email };
+
+    let response = await requestApi('get_verification', params, null, false);
+    return response;
+}
+
+api.register = async (email, password, verification) => {
+    const params = {
+        email: email,
+        verification: verification
+    };
+    var formData = new FormData();
+    formData.set("password", password);
+    
+    let response = await requestApi('create_user', params, formData, false);
+    return response
+}
+
 api.getAllSentries = async () => {
     return await requestApi('sentry/list', {}, null, true);
 }
