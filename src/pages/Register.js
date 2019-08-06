@@ -128,7 +128,7 @@ class Register extends Component {
           msg = "Wrong parameter";
           break;
         case -6:
-          msg = "Email already exists";
+          msg = "Account already exists";
           break;
         default:
           msg = "Unknown error";
