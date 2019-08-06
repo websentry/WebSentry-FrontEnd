@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import AppLayout from '../layouts/AppLayout'
 import {
-  Button, Card, Col, Form, Icon, Input, Result, Row, Steps, message
+  Button, Card, Col, Form, Icon, Input, Result, Row, Steps, Tooltip, message
 } from 'antd'
 import './Register.less'
 import api from '../helpers/Api.js'
 
 const { Step } = Steps;
+const MIN_PASSWORD_LENGTH = 8;
+const MAX_PASSWORD_LENGTH = 64;
 
 class Register extends Component {
   constructor(props) {
@@ -158,17 +160,31 @@ class Register extends Component {
 
   validateToNextPassword = (rule, value, callback) => {
     const { form } = this.props;
-    if (value && this.state.confirmDirty) {
-      form.validateFields(['confirm'], { force: true });
+    if (value && this.state.confirmDirty && value.length > MIN_PASSWORD_LENGTH) {
+        form.validateFields(['confirm'], { force: true });
+    } else if (value.length < MIN_PASSWORD_LENGTH) {
+      callback('Password length is too short!')
+    } else if (value.length > MAX_PASSWORD_LENGTH) {
+      callback('Password length is too long!')
     }
     callback();
   }
 
   stepZero() {
     const { getFieldDecorator } = this.props.form;
+    const formItemLayout = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 8 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 16 },
+      },
+    };
     return (
-      <Form>
-        <Form.Item className="register-form-item" >
+      <Form {...formItemLayout} >
+        <Form.Item label="E-mail" className="register-form-item" >
           { getFieldDecorator('email', {
             rules: [{
               type: 'email',
@@ -177,9 +193,20 @@ class Register extends Component {
               required: true,
               message: 'Please input your E-mail!',
             },],
-          }) (<Input placeholder="E-mail" onChange={this.emailOnChange} />)}
+          }) (<Input onChange={this.emailOnChange} />)}
         </Form.Item>
-        <Form.Item className="register-form-item" hasFeedback>
+        <Form.Item
+          className="register-form-item"
+          hasFeedback
+          label={
+            <span>
+              Password&nbsp;
+              <Tooltip title="Password length: 8~64 characters">
+                <Icon type="question-circle-o" />
+              </Tooltip>
+            </span>
+          }
+        >
           { getFieldDecorator('password', {
             rules: [{
               required: true,
@@ -187,9 +214,13 @@ class Register extends Component {
             }, {
               validator: this.validateToNextPassword,
             },],
-          }) (<Input.Password placeholder="Password" />)}
+          }) (<Input.Password />)}
         </Form.Item>
-        <Form.Item className="register-form-item" hasFeedback>
+        <Form.Item
+          className="register-form-item"
+          hasFeedback
+          label="Confirm Password"
+        >
           { getFieldDecorator('confirm', {
             rules: [{
               required: true,
@@ -197,9 +228,7 @@ class Register extends Component {
             }, {
               validator: this.compareToFirstPassword,
             },],
-          }) (<Input.Password
-                placeholder="Confirm password"
-                onBlur={this.handleConfirmBlur}
+          }) (<Input.Password onBlur={this.handleConfirmBlur}
             />)}
         </Form.Item>
       </Form>
