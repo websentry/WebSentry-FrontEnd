@@ -165,9 +165,9 @@ class Register extends Component {
         value.length >= MIN_PASSWORD_LENGTH &&
         value.length <= MAX_PASSWORD_LENGTH ) {
         form.validateFields(['confirm'], { force: true });
-    } else if (value.length < MIN_PASSWORD_LENGTH) {
+    } else if (value && value.length < MIN_PASSWORD_LENGTH) {
       callback('Password length is too short!')
-    } else if (value.length > MAX_PASSWORD_LENGTH) {
+    } else if (value && value.length > MAX_PASSWORD_LENGTH) {
       callback('Password length is too long!')
     }
     callback();
