@@ -160,12 +160,13 @@ class Register extends Component {
 
   validateToNextPassword = (rule, value, callback) => {
     const { form } = this.props;
-    if (value && this.state.confirmDirty && value.length > MIN_PASSWORD_LENGTH) {
+    // 8-64 characters, at least one letter and one number
+    const re = new RegExp("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d^a-zA-Z0-9].{7,63}$");
+
+    if (value && this.state.confirmDirty && re.test(value)) {
         form.validateFields(['confirm'], { force: true });
-    } else if (value.length < MIN_PASSWORD_LENGTH) {
-      callback('Password length is too short!')
-    } else if (value.length > MAX_PASSWORD_LENGTH) {
-      callback('Password length is too long!')
+    } else if (!re.test(value)) {
+      callback('Password is not valid!')
     }
     callback();
   }
@@ -201,7 +202,8 @@ class Register extends Component {
           label={
             <span>
               Password&nbsp;
-              <Tooltip title="Password length: 8~64 characters">
+              <Tooltip title="Password requires 8~64 characters, 
+                at least one letter and one number.">
                 <Icon type="question-circle-o" />
               </Tooltip>
             </span>
