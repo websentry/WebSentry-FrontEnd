@@ -204,8 +204,7 @@ class Register extends Component {
           label={
             <span>
               Password&nbsp;
-              <Tooltip title="Password requires 8~64 characters, 
-                at least one letter and one number.">
+              <Tooltip title="Password requires 8~64 characters.">
                 <Icon type="question-circle-o" />
               </Tooltip>
             </span>
