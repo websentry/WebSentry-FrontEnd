@@ -1,7 +1,18 @@
 import React, { Component } from 'react'
 import AppLayout from '../layouts/AppLayout'
 import {
-  Button, Card, Col, Form, Icon, Input, Result, Row, Steps, Tooltip, message
+  Alert,
+  Button,
+  Card,
+  Col,
+  Form,
+  Icon,
+  Input,
+  Result,
+  Row,
+  Steps,
+  Tooltip,
+  message
 } from 'antd'
 import './Register.less'
 import api from '../helpers/Api.js'
@@ -21,7 +32,8 @@ class Register extends Component {
       verificationLoading: false,
       verificationError: null,
       registerLoading: false,
-      registerError: null
+      registerError: null,
+      success: false,
     }
 
     this.emailOnChange = (e) => {
@@ -136,9 +148,13 @@ class Register extends Component {
           msg = "Unknown error";
           break;
       }
-      this.setState({ verificationError: msg })
+      this.setState({
+        success: false,
+        verificationError: msg,
+      })
       message.info(msg);
     } else {
+      this.setState({ success: true })
       message.info('Verification code has been sent!');
     }
     this.setState({ verificationLoading: false })
@@ -264,12 +280,25 @@ class Register extends Component {
               loading={this.verificationLoading}
               onClick={this.handleVerification}
               className="verification-button"
+              disabled={this.state.success}
               block
             >
               Get verification code!
             </Button>
           </Col>
           </Row>
+        </Form.Item>
+        <Form.Item>
+          { this.state.success ?
+            <div>
+              <Alert
+                message="Please check your e-mail inbox."
+                type="success"
+                banner="true"
+                block
+              />
+            </div> : null
+          }
         </Form.Item>
       </Form>
     );
