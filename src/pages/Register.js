@@ -164,7 +164,7 @@ class Register extends Component {
         })
       } else {
         this.setState({
-          alertMsg: "Please use the previous e-mail verification code."
+          alertMsg: "Please use the verification code from previous e-mail."
         })
       }
     }
