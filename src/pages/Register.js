@@ -89,8 +89,6 @@ class Register extends Component {
 
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
-        console.log('Received register values of form: ', values);
-
         const res = await api.register(
           this.state.email,
           this.state.password,
@@ -113,7 +111,10 @@ class Register extends Component {
               msg = "Unknown error";
               break
           }
-          this.setState({ registerError: msg })
+          this.setState({
+            registerError: msg,
+            success: false
+          })
           message.info(msg)
         } else {
           this.next()
