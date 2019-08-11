@@ -34,6 +34,7 @@ class Register extends Component {
       registerLoading: false,
       registerError: null,
       success: false,
+      alertMsg: null
     }
 
     this.emailOnChange = (e) => {
@@ -155,7 +156,17 @@ class Register extends Component {
       message.info(msg);
     } else {
       this.setState({ success: true })
-      message.info('Verification code has been sent!');
+
+      if (res.data['generated']) {
+        message.info('Verification code has been sent!');
+        this.setState({
+          alertMsg: "Please check your e-mail inbox for verification code."
+        })
+      } else {
+        this.setState({
+          alertMsg: "Please use the previous e-mail verification code."
+        })
+      }
     }
     this.setState({ verificationLoading: false })
   }
@@ -292,7 +303,7 @@ class Register extends Component {
           { this.state.success ?
             <div>
               <Alert
-                message="Please check your e-mail inbox."
+                message={this.state.alertMsg}
                 type="success"
                 banner="true"
                 block
