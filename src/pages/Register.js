@@ -1,7 +1,18 @@
 import React, { Component } from 'react'
 import AppLayout from '../layouts/AppLayout'
 import {
-  Button, Card, Col, Form, Icon, Input, Result, Row, Steps, Tooltip, message
+  Alert,
+  Button,
+  Card,
+  Col,
+  Form,
+  Icon,
+  Input,
+  Result,
+  Row,
+  Steps,
+  Tooltip,
+  message
 } from 'antd'
 import './Register.less'
 import api from '../helpers/Api.js'
@@ -21,7 +32,9 @@ class Register extends Component {
       verificationLoading: false,
       verificationError: null,
       registerLoading: false,
-      registerError: null
+      registerError: null,
+      success: false,
+      alertMsg: null
     }
 
     this.emailOnChange = (e) => {
@@ -136,10 +149,24 @@ class Register extends Component {
           msg = "Unknown error";
           break;
       }
-      this.setState({ verificationError: msg })
+      this.setState({
+        success: false,
+        verificationError: msg,
+      })
       message.info(msg);
     } else {
-      message.info('Verification code has been sent!');
+      this.setState({ success: true })
+
+      if (res.data['generated']) {
+        message.info('Verification code has been sent!');
+        this.setState({
+          alertMsg: "Please check your e-mail inbox for verification code."
+        })
+      } else {
+        this.setState({
+          alertMsg: "Please use the verification code from previous e-mail."
+        })
+      }
     }
     this.setState({ verificationLoading: false })
   }
@@ -165,9 +192,9 @@ class Register extends Component {
         value.length >= MIN_PASSWORD_LENGTH &&
         value.length <= MAX_PASSWORD_LENGTH ) {
         form.validateFields(['confirm'], { force: true });
-    } else if (value.length < MIN_PASSWORD_LENGTH) {
+    } else if (value && value.length < MIN_PASSWORD_LENGTH) {
       callback('Password length is too short!')
-    } else if (value.length > MAX_PASSWORD_LENGTH) {
+    } else if (value && value.length > MAX_PASSWORD_LENGTH) {
       callback('Password length is too long!')
     }
     callback();
@@ -204,8 +231,7 @@ class Register extends Component {
           label={
             <span>
               Password&nbsp;
-              <Tooltip title="Password requires 8~64 characters, 
-                at least one letter and one number.">
+              <Tooltip title="Password requires 8~64 characters.">
                 <Icon type="question-circle-o" />
               </Tooltip>
             </span>
@@ -265,12 +291,25 @@ class Register extends Component {
               loading={this.verificationLoading}
               onClick={this.handleVerification}
               className="verification-button"
+              disabled={this.state.success}
               block
             >
               Get verification code!
             </Button>
           </Col>
           </Row>
+        </Form.Item>
+        <Form.Item>
+          { this.state.success ?
+            <div>
+              <Alert
+                message={this.state.alertMsg}
+                type="success"
+                banner="true"
+                block
+              />
+            </div> : null
+          }
         </Form.Item>
       </Form>
     );
