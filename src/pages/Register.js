@@ -70,7 +70,8 @@ class Register extends Component {
 
         this.setState({
           email: values['email'],
-          password: values['password']
+          password: values['password'],
+          success: false
         })
 
         this.next();
@@ -119,9 +120,9 @@ class Register extends Component {
         } else {
           this.next()
         }
-        this.setState({ registerLoading: false })
       }
     })
+    this.setState({ registerLoading: false })
   }
 
   // request verification code
@@ -338,7 +339,7 @@ class Register extends Component {
             <Step key={"Complete"} title={"Complete"} />
           </Steps>
           <div className="steps-content">{
-            <Form>
+            <div>
               {(() => {
                 switch (this.state.current) {
                   case 0: return this.stepZero();
@@ -347,7 +348,7 @@ class Register extends Component {
                   default: return null;
                 }
               })()}
-            </Form>
+            </div>
           }
           </div>
           <Row gutter={24} >
