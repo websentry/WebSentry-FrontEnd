@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from "react-router-dom";
 import {
   Alert, Button, Card, Checkbox, Form, Icon, Input,
 } from 'antd';
@@ -28,7 +29,7 @@ class Login extends Component {
     });
 
     this.props.form.validateFields(async (err, values) => {
-      let success;
+      let success = false;
       if (!err) {
         console.log('Received values of form: ', values);
         
@@ -153,7 +154,7 @@ class Login extends Component {
                       </Button>
                       Or
                       {' '}
-                      <a href="/register">register now!</a>
+                      <Link to="/register/">register now!</Link>
                     </Form.Item>
                   </Form>
                 </Card>
