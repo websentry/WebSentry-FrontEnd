@@ -298,14 +298,17 @@ class NewSentry extends Component {
     if(this.state.currentSection === 2) { doneIcon = <Icon type="smile-o" />; };
 
     return (
-      <div className = "cropHeight p-6">
-        <Steps current={this.state.currentSection} className = "mb-5">
+      <div>
+        <Steps current={this.state.currentSection} className = "my-3 px-5">
           <Step title="Enter an url" icon={urlIcon}/>
           <Step title="Crop and enter basic info" icon={cropIcon} />
           <Step title="Done" icon={doneIcon}/>
         </Steps>
-        {this.renderSection()}
+        <div className = "cropHeight p-6">
+          {this.renderSection()}
+        </div>
       </div>
+
     );
   }
 }
