@@ -12,7 +12,7 @@ class BottomNav extends Component {
             size="large"
             disabled={this.props.loading}
           >
-            Go Back
+            {this.props.goBackButtonText}
           </Button>
         </Col>
         <Col span={12} style={{ textAlign: 'right', paddingRight: "6px" }}>
@@ -23,7 +23,7 @@ class BottomNav extends Component {
             htmlType="submit"
             loading={this.props.loading}
           >
-            {this.props.goNextButton}
+            {this.props.goNextButtonText}
           </Button>
         </Col>
       </Row>

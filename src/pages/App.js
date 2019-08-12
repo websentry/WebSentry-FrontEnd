@@ -4,7 +4,7 @@ import Dashboard from './Dashboard';
 import Explore from './Explore';
 import NoMatch from './NoMatch';
 import Login from './Login';
-import {UserContext} from '../UserContext'
+import { UserContext } from '../UserContext';
 import Api from '../helpers/Api';
 
 import {IntlProvider, addLocaleData} from 'react-intl';

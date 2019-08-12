@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Row, Typography, Spin, Icon, Card, Select, Form} from 'antd';
+import { Input, Row, Typography, Spin, Icon, Card, Select, Form, Steps} from 'antd';
 import ReactCrop from 'react-image-crop';
 import BottomNav from './BottomNav';
 import 'react-image-crop/dist/ReactCrop.css';
@@ -9,18 +9,14 @@ import './NewSentry.less';
 const { Title } = Typography;
 const { Search } = Input;
 const { Option } = Select;
-
+const { Step } = Steps;
 
 const initialState = {
   error:null,
   urlError:null,
-  showUrlSection:true,
-  showCropSection:false,
-  showInfoSection:false,
+  currentSection:0,
   isFormLoading:false,     // form loading
   isUrlLoading:false,        // url loading
-  submit:"Submit",
-  next:"Next",
   url:"",
   name:"",
   screenshotLink: "",
@@ -40,27 +36,31 @@ class NewSentry extends Component {
   constructor(props) {
     super(props);
     this.state = initialState;
-    console.log(props);
+    this.loadData();
     this.urlOnchange = e => {this.onSentryValueChange("url", e.target.value);};
     this.onCropComplete = val => {this.onSentryValueChange("crop", val);};
-    this.goUrlSection = () => {
-      this.setSectionVisibility(true, false, false);
-    };
-    this.goCropSection = () => {
-      this.setSectionVisibility(false, true, false);
-    };
-    this.goInfoSection = () => {
-      this.setSectionVisibility(false, false, true);
-    };
+    this.goUrlSection = () => {this.setState({ currentSection: 0});};
+    this.goCropSection = () => {this.setState({ currentSection: 1});};
+    this.goInfoSection = () => {this.setState({ currentSection: 2});};
+    this.resetState = () => { this.setState(initialState); };
+    this.goDashboard = () => { props.history.push('/dashboard'); };
     this.handleUrlSubmit = this.handleUrlSubmit.bind(this);
     this.handleSentrySubmit = this.handleSentrySubmit.bind(this);
     this.onCropChange = this.onCropChange.bind(this);
     this.onImageLoaded = this.onImageLoaded.bind(this);
   }
 
-  componentDidMount() {
-    if(this.props.notificationList[0] == null) {
-      this.setState({ error: "Failed to load notification list" });
+  async loadData() {
+    const response = await api.getAllNotifications();
+
+    console.log(response);
+    if (response.code === api.code.ok) {
+      this.setState({
+        notificationList: response.data.notifications
+      });
+    } else {
+      console.log("---- Error ----");
+      console.log(response);
     }
   }
 
@@ -102,11 +102,10 @@ class NewSentry extends Component {
           if (res.code === api.code.ok) {
             this.setState(
               {
+                isUrlLoading: false,
                 screenshotLink:
                   api.getFullScreenshotLink(sentryId, res.data.imageToken),
-                showUrlSection: false,
-                showCropSection: true,
-                showInfoSection: false,
+                currentSection: 1
               }
             );
           } else {
@@ -115,14 +114,13 @@ class NewSentry extends Component {
       } else {
         this.setState({ isUrlLoading: false, urlError: res.msg  });
       }
-      this.setState({ isUrlLoading: false });
     } else {
       this.setState({ urlError: "Please enter url"  });
     }
   }
 
   async handleSentrySubmit() {
-    const { notificationList, form } = this.props;
+    const { form } = this.props;
 
     form.validateFields((err, values) => {
       console.log('Received values of form: ', values);
@@ -132,7 +130,7 @@ class NewSentry extends Component {
     });
 
     let notificationDic = {};
-    notificationList.map( notification =>
+    this.state.notificationList.map( notification =>
       notificationDic[notification.name] = notification.id
     );
     const { sentryName, notificationMethod } = form.getFieldsValue();
@@ -151,9 +149,7 @@ class NewSentry extends Component {
                           width, height, notificationDic[notificationMethod]);
     console.log(res);
     if (res.code === api.code.ok) {
-      this.setState({ isFormLoading: false });
-      // this.setState({ submit: "Success!" });
-      window.location.reload();
+      this.setState({ isFormLoading: false, currentSection: 2 });
     } else {
       this.setState({ isFormLoading: false });
       this.setState({ error: "Failed to create a new sentry!" });
@@ -161,8 +157,7 @@ class NewSentry extends Component {
   }
 
   renderSection() {
-    const { crop, showCropSection, showInfoSection, screenshotLink, isUrlLoading } = this.state;
-    const antIcon = <Icon type="loading" style={{ fontSize: 60 }} spin />;
+    const { crop, screenshotLink, isUrlLoading, currentSection, notificationList } = this.state;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -177,32 +172,12 @@ class NewSentry extends Component {
 
     if(isUrlLoading) {
       return(
-        <Row justify={"center"} type = {"flex"} align={"middle"}>
-           <Spin indicator={antIcon} size="large"/>
+        <Row className="mt-8" justify={"center"} type = {"flex"} align={"middle"}>
+           <Spin size="large"/>
         </Row>
       )
     }
-    if(showCropSection) {
-      return(
-        <div>
-          <Row justify={"center"} type = {"flex"} align={"middle"}>
-            <ReactCrop
-              src={screenshotLink}
-              crop={crop}
-              onImageLoaded={this.onImageLoaded}
-              onComplete={this.onCropComplete}
-              onChange={this.onCropChange}
-              keepSelection={true}
-            />
-          </Row>
-          <BottomNav
-            goBack = {this.goUrlSection}
-            goNext = {this.goInfoSection}
-            goNextButton = {this.state.next}
-          />
-        </div>
-      )
-    } else if(showInfoSection) {
+    if(currentSection === 1) {
       return (
         <div>
           <Form {...formItemLayout} onSubmit={this.handleSubmit}>
@@ -217,9 +192,19 @@ class NewSentry extends Component {
                   ],
                 })(<Input size="large"/>)}
               </Form.Item>
+              <Form.Item label="Crop">
+                <ReactCrop
+                  src={screenshotLink}
+                  crop={crop}
+                  onImageLoaded={this.onImageLoaded}
+                  onComplete={this.onCropComplete}
+                  onChange={this.onCropChange}
+                  keepSelection={true}
+                />
+              </Form.Item>
               <Form.Item label="Notification Method">
                 {getFieldDecorator('notificationMethod', {
-                  initialValue:this.props.notificationList[0].name,
+                  initialValue:notificationList[0].name,
                   rules: [
                     {
                       required: true,
@@ -232,7 +217,7 @@ class NewSentry extends Component {
                     style={{ width: '50%' }}
                     onSelect={this.notifOnchange}
                   >
-                    {this.props.notificationList.map( notification => {
+                    {notificationList.map( notification => {
                       return (
                         <Option value={notification.name} key={notification.id}>
                           {notification.name}
@@ -244,13 +229,31 @@ class NewSentry extends Component {
             </Card>
             {this.state.error?<div className="red mt-1">{this.state.error}</div>:null}
             <BottomNav
-              goBack = {this.goCropSection}
+              goBack = {this.goUrlSection}
               goNext = {this.handleSentrySubmit}
               loading = {this.state.isFormLoading}
-              goNextButton = {this.state.submit}
+              goBackButtonText = {"Back"}
+              goNextButtonText = {"Sumbit"}
             />
           </Form>
         </div>
+      )
+    } else if (currentSection === 2) {
+      return (
+        <Row className="mt-8 px-7" >
+          <Row justify={"center"} type = {"flex"} align={"middle"}>
+            <Title level={2}>Congradulations! All done!</Title>
+          </Row>
+          <Row className="px-8">
+            <BottomNav
+              goBack = {this.goDashboard}
+              goNext = {this.resetState}
+              goBackButtonText = {"Close"}
+              goNextButtonText = {"Create Another"}
+            />
+          </Row>
+
+        </Row>
       )
     }
     return (
@@ -273,8 +276,25 @@ class NewSentry extends Component {
   }
 
   render() {
+    let urlIcon = null;
+    let cropIcon = null;
+    let doneIcon = null;
+    if(this.state.isUrlLoading) {
+      urlIcon = <Icon type="loading" />;
+    }
+    if(this.state.isFormLoading) {
+      cropIcon = <Icon type="loading" />;
+    }
+    if(this.state.currentSection === 2) {
+      doneIcon = <Icon type="smile-o" />;
+    }
     return (
       <div className = "cropHeight p-6">
+        <Steps current={this.state.currentSection} className = "mb-5">
+          <Step title="Enter an url" icon={urlIcon}/>
+          <Step title="Crop and enter basic info" icon={cropIcon} />
+          <Step title="Done" icon={doneIcon}/>
+        </Steps>
         {this.renderSection()}
       </div>
     );
