@@ -15,7 +15,11 @@ async function requestApi(method, params, formData, requireToken) {
         }
 
         if (requireToken) {
-            const token = localStorage.getItem('ws-token');
+            let token = sessionStorage.getItem('ws-token');
+            if (!token) {
+                token = localStorage.getItem('ws-token');
+            }
+
             if (!token) {
                 return {
                     code: api.code.authError,
@@ -30,6 +34,8 @@ async function requestApi(method, params, formData, requireToken) {
 
         if (res.data.code === api.code.authError) {
             // auth fail, logout
+            sessionStorage.removeItem('ws-token');
+            localStorage.removeItem('ws-token');
         }
         return res.data;
     } catch (error) {
@@ -64,8 +70,9 @@ api.getUserInfo = async () => {
     return response;
 }
 
-api.login = async (email, password) => {
+api.login = async (email, password, remember = true) => {
     localStorage.removeItem('ws-token');
+    sessionStorage.removeItem('ws-token');
 
     const params = {email: email};
     var formData = new FormData();
@@ -73,9 +80,32 @@ api.login = async (email, password) => {
 
     let response = await requestApi('login', params, formData, false);
     if (response.code === api.code.ok) {
-        localStorage.setItem('ws-token', response.data.token);
+        if (remember) {
+            localStorage.setItem('ws-token', response.data.token);
+        } else {
+            sessionStorage.setItem('ws-token', response.data.token);
+        }
     }
     return response;
+}
+
+api.verification = async (email) => {
+    const params = { email: email };
+
+    let response = await requestApi('get_verification', params, null, false);
+    return response;
+}
+
+api.register = async (email, password, verification) => {
+    const params = {
+        email: email,
+        verification: verification
+    };
+    var formData = new FormData();
+    formData.set("password", password);
+    
+    let response = await requestApi('create_user', params, formData, false);
+    return response
 }
 
 api.getAllSentries = async () => {

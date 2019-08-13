@@ -4,7 +4,8 @@ import Dashboard from './Dashboard';
 import Explore from './Explore';
 import NoMatch from './NoMatch';
 import Login from './Login';
-import { UserContext } from '../UserContext';
+import Register from './Register';
+import {UserContext} from '../UserContext';
 import Api from '../helpers/Api';
 
 import {IntlProvider, addLocaleData} from 'react-intl';
@@ -20,7 +21,8 @@ class App extends Component {
     super(props);
 
     // user context
-    this.userContextToggleRefreash = async () => {
+    this.userContextToggleRefresh = async () => {
+
       if (!this.state.isLoading) {
         this.setState({isLoading: true});
       }
@@ -70,14 +72,14 @@ class App extends Component {
       isLoading: true,
       isLoggedIn: false,
       userEmail: "",
-      toggleRefreash: () => this.userContextToggleRefreash,
+      toggleRefresh: this.userContextToggleRefresh,
       switchLang: this.switchLang,
       onLoading: this.onLoading,
       cancelLoading: this.cancelLoading
     };
 
     // async function, don't wait
-    this.userContextToggleRefreash();
+    this.userContextToggleRefresh();
   }
 
   chooseLocale() {
@@ -101,6 +103,7 @@ class App extends Component {
                 <Route exact path="/" component={Explore} />
                 <Route path="/dashboard" component={Dashboard} />
                 <Route path="/login" component={Login} />
+                <Route path="/register" component={Register} />
                 <Route component={NoMatch} />
               </Switch>
           </Router>
