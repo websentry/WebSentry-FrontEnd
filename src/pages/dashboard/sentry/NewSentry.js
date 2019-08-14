@@ -166,7 +166,7 @@ class NewSentry extends Component {
         <Search
            className = "mt-3"
            placeholder="Enter website: https://www.google.com"
-           enterButton="Search"
+           enterButton="Go"
            size="large"
            onChange={this.urlOnchange}
            value={this.state.url}
