@@ -38,7 +38,6 @@ class NewSentry extends Component {
     this.state = initialState;
     this.loadData();
     this.urlOnchange = e => {this.onSentryValueChange("url", e.target.value);};
-    this.onCropComplete = val => {this.onSentryValueChange("crop", val);};
     this.goUrlSection = () => {this.setState({ currentSection: 0});};
     this.goCropSection = () => {this.setState({ currentSection: 1});};
     this.goInfoSection = () => {this.setState({ currentSection: 2});};
@@ -83,6 +82,8 @@ class NewSentry extends Component {
 
   onImageLoaded = image => {
     console.log('onImageLoaded', image);
+    console.log('onImageLoaded', image.naturalWidth);
+    console.log('onImageLoaded', image.naturalHeight);
     this.setState({
       screenshotScaleX: image.naturalWidth / 100,
       screenshotScaleY: image.naturalHeight / 100
@@ -267,7 +268,6 @@ class NewSentry extends Component {
             goNextButtonText = {"Create Another"}
           />
         </Row>
-
       </Row>
     )
   }
