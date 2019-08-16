@@ -14,7 +14,7 @@ const { Step } = Steps;
 const initialState = {
   error:null,
   urlError:null,
-  currentSection:2,
+  currentSection:0,
   isFormLoading:false,     // form loading
   isUrlLoading:false,        // url loading
   url:"",
@@ -158,7 +158,6 @@ class NewSentry extends Component {
   }
 
   renderUrlSection() {
-    console.log("??");
     return (
       <div>
         <Row>
@@ -297,10 +296,9 @@ class NewSentry extends Component {
     let urlIcon = null;
     let cropIcon = null;
     let doneIcon = null;
-    if(this.state.isUrlLoading) {urlIcon = <Icon type="loading" />;};
+    if(this.state.isUrlLoading) { urlIcon = <Icon type="loading" />; };
     if(this.state.isFormLoading) { cropIcon = <Icon type="loading" />; };
     if(this.state.currentSection === 2) { doneIcon = <Icon type="smile-o" />; };
-
     return (
       <div>
         <Steps current={this.state.currentSection} className = "my-3 px-5">
