@@ -14,7 +14,7 @@ const { Step } = Steps;
 const initialState = {
   error:null,
   urlError:null,
-  currentSection:0,
+  currentSection:2,
   isFormLoading:false,     // form loading
   isUrlLoading:false,        // url loading
   url:"",
@@ -183,12 +183,14 @@ class NewSentry extends Component {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
-        xs: { span: 8 },
-        sm: { span: 4 },
+        lg: { span: 6 },
+        md: { span: 8 },
+        sm: { span: 12 },
       },
       wrapperCol: {
-        xs: { span: 40 },
-        sm: { span: 20 },
+        lg: { span: 18 },
+        md: { span: 16 },
+        sm: { span: 12 },
       },
     };
 
@@ -260,10 +262,12 @@ class NewSentry extends Component {
         <Row justify={"center"} type = {"flex"} align={"middle"}>
           <Title level={2}>Congradulations! All done!</Title>
         </Row>
-        <Row className="px-8">
+        <Row className="reponsive-bottom-nav">
           <BottomNav
             goBack = {this.goDashboard}
             goNext = {this.resetState}
+            goBackClassName = {"bottom-nav-left-responsive"}
+            goNextClassName = {"bottom-nav-right-responsive"}
             goBackButtonText = {"Close"}
             goNextButtonText = {"Create Another"}
           />
