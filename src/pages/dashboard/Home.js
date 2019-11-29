@@ -1,35 +1,22 @@
 import React, { Component } from 'react';
 import { PageHeader, Divider, Button, List } from 'antd';
-import NewTask from './NewTask';
-import TaskItem from './task/TaskItem';
+import SentryItem from './sentry/SentryItem';
 import api from '../../helpers/Api';
 import './Home.less'
 
 class Home extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       isLoading: true,
-      createTaskVisible: false,
       data: [],
       notificationList:[]
     };
     this.loadData();
-    this.showCreateTask = this.showCreateTask.bind(this);
-    this.onCloseModal = this.onCloseModal.bind(this);
+    this.showCreateSentry = () => {
+      props.history.push('/dashboard/newSentry');
+    };
   };
-
-  componentWillMount() {
-  }
-
-  onCloseModal(e) {
-    this.setState({ createTaskVisible: false });
-  };
-
-  showCreateTask() {
-    this.setState({ createTaskVisible: true });
-  }
 
   async loadData() {
     if (!this.state.isLoading) {
@@ -55,37 +42,24 @@ class Home extends Component {
 
   }
 
-  taskCard(item) {
+  SentryCard(item) {
     return (
-      <TaskItem item={item}/>
+      <SentryItem item={item}/>
     );
-  }
-
-  renderNewTask(){
-    if(this.state.isLoading === false){
-      return (
-        <NewTask
-          visible={this.state.createTaskVisible}
-          notificationList={this.state.notificationList}
-          onCloseModal={this.onCloseModal}
-        />
-      )
-    }
   }
 
   render() {
     return (
       <div>
-        {this.renderNewTask()}
         <PageHeader
-          title="Active Tasks"
+          title="Active Sentrys"
           extra={
             <Button
               type="primary"
               icon="plus-circle"
               size="default"
-              onClick={this.showCreateTask}>
-              Create task
+              onClick={this.showCreateSentry}>
+              Create Sentry
             </Button>
           }
         />
@@ -96,7 +70,7 @@ class Home extends Component {
             gutter: 4, xs: 1, sm: 1, md: 2, xl: 3, xxl: 4,
           }}
           dataSource={this.state.data}
-          renderItem={this.taskCard}
+          renderItem={this.SentryCard}
         />
       </div>
     );

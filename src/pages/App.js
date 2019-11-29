@@ -4,8 +4,8 @@ import Dashboard from './Dashboard';
 import Explore from './Explore';
 import NoMatch from './NoMatch';
 import Login from './Login';
-import Register from './Register'
-import {UserContext} from '../UserContext'
+import Register from './Register';
+import {UserContext} from '../UserContext';
 import Api from '../helpers/Api';
 
 import {IntlProvider, addLocaleData} from 'react-intl';
