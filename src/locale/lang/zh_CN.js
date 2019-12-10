@@ -1,5 +1,5 @@
 const zh_CN = {
-  lang:'语言：简体中文',
+  lang:'Language: English',
   explore: '发现',
   dashboard: '主页',
   signIn:'登陆',

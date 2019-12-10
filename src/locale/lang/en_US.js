@@ -1,5 +1,5 @@
 const en_US = {
-  langh:'Language:English',
+  lang:'语言：简体中文',
   explore: 'Explore',
   dashboard: 'Dashboard',
   signIn:'Sign in',

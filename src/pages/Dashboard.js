@@ -3,6 +3,8 @@ import { Spin } from 'antd';
 import Container from './dashboard/Container';
 import DashboardLayout from '../layouts/DashboardLayout';
 import { UserContext } from '../UserContext';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import Login from './Login';
 import './Dashboard.less';
 
 class Dashboard extends Component {
@@ -16,9 +18,9 @@ class Dashboard extends Component {
       )
     };
     return (
-      <div>
-        Need Login.
-      </div>
+      <Router>
+        <Route path="/dashboard" component={Login} /> 
+      </Router>
     )
   }
 
