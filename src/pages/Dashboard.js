@@ -18,7 +18,7 @@ class Dashboard extends Component {
     };
     return (
       <AppLayout>
-        <div style={{ background: '#4190f7', padding: 24, minHeight: '100%' }}>
+        <div style={{ background: '#4190f7', padding: 24, minHeight: '100%', boxShadow: 'inset 0 0 5rem' }}>
           <div style={{ color: '#ffffff', textAlign: 'center', fontSize: '40px', marginTop: '15%' }}>
             WebSentry
           </div>
