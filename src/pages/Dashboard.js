@@ -13,7 +13,7 @@ class Dashboard extends Component {
     if (isLoggedIn) {
       return (
         <DashboardLayout>
-          <Container/>
+          <Container />
         </DashboardLayout>
       )
     };
