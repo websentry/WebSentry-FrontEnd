@@ -4,30 +4,31 @@ import { Card, Col, Row, TreeSelect } from 'antd';
 const Language = [
   {
     title: 'English',
-    value: 'us',
+    value: 'English',
     key: 'us',
   },
   {
     title: '简体中文',
-    value: 'cn',
+    value: '简体中文',
     key: 'cn',
   },
 ];
 
 class Setting extends Component {
 
-  state = {
-    language: undefined,
-    timezone: undefined,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      language: undefined,
+      timezone: undefined,
+    }
+  }
 
   onLanguageChange = e => {
-    console.log(e);
     this.setState({ language: e });
   };
 
   onTimezoneChange = e => {
-    console.log(e);
     this.setState({ timezone: e });
   };
 
@@ -54,6 +55,7 @@ class Setting extends Component {
             <Col span={8}><h3>Language</h3></Col>
             <Col span={16}>
               <TreeSelect
+                showSearch
                 style={{ width: '100%', fontSize: '16px' }}
                 value={ this.state.language }
                 dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
@@ -69,6 +71,7 @@ class Setting extends Component {
             <Col span={8}><h3>Timezone</h3></Col>
             <Col span={16}>
               <TreeSelect
+                showSearch
                 style={{ width: '100%', fontSize: '16px' }}
                 value={ this.state.timezone }
                 dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
