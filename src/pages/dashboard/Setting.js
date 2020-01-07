@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Col, Row, TreeSelect, Button } from 'antd';
+import { Card, Col, Row, TreeSelect, Button, PageHeader, Divider } from 'antd';
 
 const Language = [
   {
@@ -47,11 +47,19 @@ class Setting extends Component {
     
     return (
       <div>
-        <Card
-          title={<h2>Setting</h2>} 
-          // extra={<a href="#">More</a>} 
-          style={{ height: '80%', width: '80%', marginLeft: '10%', marginRight: '10%', marginTop: '10%', marginBottom: '10%' }}
-        >
+        <PageHeader 
+          title={<h2>Setting</h2>}
+          extra={
+            <Button 
+              type="primary"
+              icon="check-circle"
+              size="default">
+              Save
+            </Button>
+          }
+        />
+        <Divider />
+        <Card>
           <Row style={{marginBottom: '24px'}}>
             <Col span={8}><h3>Language</h3></Col>
             <Col span={16}>
@@ -82,14 +90,6 @@ class Setting extends Component {
                 onChange={ this.onTimezoneChange }
                 defaultValue={ "(GMT" + moment.tz(local_timezone).format('Z') + ") " + local_timezone }
               />
-            </Col>
-          </Row>
-          <Row>
-            <Col span={20}></Col>
-            <Col span={4}>
-              <Button type="primary" value="large" block>
-                <div style={{fontSize: '16px' }}>Save</div>
-              </Button>
             </Col>
           </Row>
         </Card>

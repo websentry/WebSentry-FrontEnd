@@ -52,7 +52,7 @@ class Home extends Component {
     return (
       <div>
         <PageHeader
-          title="Active Sentrys"
+          title={<h2>Active Sentrys</h2>}
           extra={
             <Button
               type="primary"
