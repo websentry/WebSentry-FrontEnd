@@ -1,7 +1,7 @@
 const zh_CN = {
-  lang:'Language: English',
-  explore: '发现',
-  dashboard: '主页',
+  lang:'English',
+  home: '主页',
+  dashboard: '首页',
   signIn:'登陆',
   signUp:'注册',
   signOut:'登出'

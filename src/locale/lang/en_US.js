@@ -1,6 +1,6 @@
 const en_US = {
-  lang:'语言：简体中文',
-  explore: 'Explore',
+  lang:'简体中文',
+  home: 'Home',
   dashboard: 'Dashboard',
   signIn:'Sign in',
   signUp:'Sign up',
