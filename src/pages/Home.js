@@ -1,8 +1,8 @@
 import React from 'react';
 import AppLayout from '../layouts/AppLayout';
-import './Explore.less';
+import './Home.less';
 
-class Explore extends React.Component {
+class Home extends React.Component {
 
   render() {
     return (
@@ -20,4 +20,4 @@ class Explore extends React.Component {
   }
 }
 
-export default Explore;
+export default Home;
