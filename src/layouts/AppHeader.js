@@ -94,19 +94,19 @@ class AppHeader extends React.Component {
                         />
                       </Menu.Item>
                     </SubMenu>
-                    <Menu.Item key="signIn" style={{ float: "right" }}>
-                      <Link to="/login">
-                        <FormattedMessage
-                          id='signIn'
-                          defaultMessage='Sign in'
-                        />
-                      </Link>
-                    </Menu.Item>
                     <Menu.Item key="signUp" style={{ float: "right" }}>
                       <Link to='/register'>
                         <FormattedMessage
                           id='signUp'
                           defaultMessage='Sign up'
+                        />
+                      </Link>
+                    </Menu.Item>
+                    <Menu.Item key="signIn" style={{ float: "right" }}>
+                      <Link to="/login">
+                        <FormattedMessage
+                          id='signIn'
+                          defaultMessage='Sign in'
                         />
                       </Link>
                     </Menu.Item>
