@@ -13,6 +13,7 @@ class AppHeader extends React.Component {
   render() {
     return (
       <UserContext.Consumer>
+        {/* TODO check loading state */}
         { ({switchLang, isLoggedIn}) => {
             return (
               <Header className="app-header">
