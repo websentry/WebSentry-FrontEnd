@@ -81,7 +81,7 @@ class Login extends Component {
             }
           } else {
             return (
-              <AppLayout>
+              <AppLayout page="login">
                 <Card className="login-form-card">
                   <Form onSubmit={this.handleSubmit} className="login-form">
                     <Form.Item>

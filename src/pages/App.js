@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Dashboard from './Dashboard';
-import Explore from './Explore';
+import Home from './Home';
 import NoMatch from './NoMatch';
 import Login from './Login';
 import Register from './Register';
@@ -100,7 +100,7 @@ class App extends Component {
         <IntlProvider locale={this.state.lang}  messages={this.chooseLocale()}>
           <Router>
               <Switch>
-                <Route exact path="/" component={Explore} />
+                <Route exact path="/" component={Home} />
                 <Route path="/dashboard" component={Dashboard} />
                 <Route path="/login" component={Login} />
                 <Route path="/register" component={Register} />
