@@ -6,7 +6,7 @@ class Home extends React.Component {
 
   render() {
     return (
-      <AppLayout>
+      <AppLayout page="home">
         <div style={{ background: '#4190f7', padding: 24, minHeight: '100%', boxShadow: 'inset 0 0 5rem' }}>
           <div style={{ color: '#ffffff', textAlign: 'center', fontSize: '64px', marginTop: '12%' }}>
             WebSentry

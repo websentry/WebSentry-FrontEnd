@@ -10,7 +10,7 @@ class AppLayout extends React.Component {
   render() {
     return (
       <Layout className="home-layout">
-        <AppHeader />
+        <AppHeader selected={this.props.page}/>
         <Content>
           {this.props.children}
         </Content>

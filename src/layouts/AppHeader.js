@@ -23,10 +23,12 @@ class AppHeader extends React.Component {
                     theme="dark"
                     mode="horizontal"
                     style={{ lineHeight: "64px" }}
-                    selectable={false}
+                    defaultSelectedKeys={["home"]}
+                    selectedKeys={[this.props.selected]}
                   >
                     <Menu.Item
                       key="home"
+                      style={{ width: "80px", textAlign: "center"}}
                     >
                       <Link to="/">
                         <FormattedMessage
@@ -65,7 +67,8 @@ class AppHeader extends React.Component {
                     theme="dark"
                     mode="horizontal"
                     style={{ lineHeight: "64px" }}
-                    selectable={false}
+                    defaultSelectedKeys={["home"]}
+                    selectedKeys={[this.props.selected]}
                   >
                     <Menu.Item
                       key="home"
@@ -94,7 +97,7 @@ class AppHeader extends React.Component {
                         />
                       </Menu.Item>
                     </SubMenu>
-                    <Menu.Item key="signUp" style={{ float: "right" }}>
+                    <Menu.Item key="register" style={{ float: "right" }}>
                       <Link to='/register'>
                         <FormattedMessage
                           id='signUp'
@@ -102,7 +105,7 @@ class AppHeader extends React.Component {
                         />
                       </Link>
                     </Menu.Item>
-                    <Menu.Item key="signIn" style={{ float: "right" }}>
+                    <Menu.Item key="login" style={{ float: "right" }}>
                       <Link to="/login">
                         <FormattedMessage
                           id='signIn'

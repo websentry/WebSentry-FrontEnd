@@ -331,7 +331,7 @@ class Register extends Component {
 
   render() {
     return (
-      <AppLayout>
+      <AppLayout page="register">
         <Card className="register-form-card">
           <Steps current={this.state.current}>
             <Step key={"Register"} title={"Register"} />
