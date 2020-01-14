@@ -28,7 +28,7 @@ class AppHeader extends React.Component {
                   >
                     <Menu.Item
                       key="home"
-                      style={{ width: "80px", textAlign: "center"}}
+                      style={{ width: "80px", textAlign: "center" }}
                     >
                       <Link to="/">
                         <FormattedMessage
@@ -72,7 +72,7 @@ class AppHeader extends React.Component {
                   >
                     <Menu.Item
                       key="home"
-                      style={{ width: "80px", textAlign: "center"}}
+                      style={{ width: "80px", textAlign: "center" }}
                     >
                       <Link to="/">
                         <FormattedMessage
@@ -97,7 +97,10 @@ class AppHeader extends React.Component {
                         />
                       </Menu.Item>
                     </SubMenu>
-                    <Menu.Item key="register" style={{ float: "right" }}>
+                    <Menu.Item
+                      key="register"
+                      style={{ width: "80px", textAlign: "center", float: "right" }}
+                    >
                       <Link to='/register'>
                         <FormattedMessage
                           id='signUp'
@@ -105,7 +108,10 @@ class AppHeader extends React.Component {
                         />
                       </Link>
                     </Menu.Item>
-                    <Menu.Item key="login" style={{ float: "right" }}>
+                    <Menu.Item 
+                      key="login"
+                      style={{ width: "80px", textAlign: "center", float: "right" }}
+                    >
                       <Link to="/login">
                         <FormattedMessage
                           id='signIn'
