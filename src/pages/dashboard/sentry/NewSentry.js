@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Row, Typography, Spin, Icon, Card, Select, Form, Steps} from 'antd';
+import { Input, Row, Typography, Spin, Icon, Card, Select, Form, Steps, Button, Modal, Alert } from 'antd';
 import ReactCrop from 'react-image-crop';
 import BottomNav from './BottomNav';
 import 'react-image-crop/dist/ReactCrop.css';
@@ -28,7 +28,10 @@ const initialState = {
     height: 50
   },
   scaleX: 0,
-  scaleY: 0
+  scaleY: 0,
+  visible: false,
+  addServerChan: false,
+  addLoading: false
 }
 
 class NewSentry extends Component {
@@ -37,14 +40,15 @@ class NewSentry extends Component {
     super(props);
     this.state = initialState;
     this.loadData();
-    this.urlOnchange = e => {this.onSentryValueChange("url", e.target.value);};
-    this.goUrlSection = () => {this.setState({ currentSection: 0});};
-    this.goCropSection = () => {this.setState({ currentSection: 1});};
-    this.goInfoSection = () => {this.setState({ currentSection: 2});};
+    this.urlOnchange = e => { this.onSentryValueChange("url", e.target.value); };
+    this.goUrlSection = () => { this.setState({ currentSection: 0 }); };
+    this.goCropSection = () => { this.setState({ currentSection: 1 }); };
+    this.goInfoSection = () => { this.setState({ currentSection: 2 }); };
     this.resetState = () => { this.setState(initialState); };
     this.goDashboard = () => { props.history.push('/dashboard'); };
     this.handleUrlSubmit = this.handleUrlSubmit.bind(this);
     this.handleSentrySubmit = this.handleSentrySubmit.bind(this);
+    this.handleServerChanSubmit = this.handleServerChanSubmit.bind(this);
     this.onCropChange = this.onCropChange.bind(this);
     this.onImageLoaded = this.onImageLoaded.bind(this);
   }
@@ -72,7 +76,7 @@ class NewSentry extends Component {
   }
 
   onSentryValueChange = (key, val) => {
-    console.log(key,val);
+    console.log(key, val);
     this.setState({[key]: val });
   }
 
@@ -125,7 +129,7 @@ class NewSentry extends Component {
 
     form.validateFields((err, values) => {
       console.log('Received values of form: ', values);
-      if(err){
+      if (err) {
         return;
       }
     });
@@ -157,6 +161,48 @@ class NewSentry extends Component {
     }
   }
 
+  async handleServerChanSubmit(e) {
+    this.setState({
+      addLoading: true,
+    });
+
+    e.preventDefault();
+
+    this.props.form.validateFields(async (err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+
+        const res = await api.addServerChan(values['sckey']);
+
+        if (res.code === api.code.ok) {
+          this.setState({
+            addLoading: false,
+            addServerChan: true,
+            alertMsg: "SCKEY has been added into the notification method."
+          })
+        }
+      }
+    });
+  }
+
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  };
+
+  handleOk (e) {
+    this.setState({
+      addLoading: true,
+    });
+  };
+
+  handleCancel = e => {
+    this.setState({
+      visible: false,
+    });
+  };
+
   renderUrlSection() {
     return (
       <div>
@@ -164,15 +210,18 @@ class NewSentry extends Component {
           <Title level={3}> Enter an URL to create a new task </Title>
         </Row>
         <Search
-           className = "mt-3"
-           placeholder="Enter website: https://www.google.com"
-           enterButton="Go"
-           size="large"
-           onChange={this.urlOnchange}
-           value={this.state.url}
-           onSearch={this.handleUrlSubmit}
+          className="mt-3"
+          placeholder="Enter website: https://www.google.com"
+          enterButton="Go"
+          size="large"
+          onChange={this.urlOnchange}
+          value={this.state.url}
+          onSearch={this.handleUrlSubmit}
         />
-        {this.state.urlError?<div className="red mt-1">{this.state.urlError}</div>:null}
+        { this.state.urlError ?
+          <div className="red mt-1">
+            {this.state.urlError}
+          </div> : null}
       </div>
     )
   }
@@ -192,7 +241,6 @@ class NewSentry extends Component {
         sm: { span: 12 },
       },
     };
-
     return (
       <div>
         <Form {...formItemLayout} onSubmit={this.handleSubmit}>
@@ -240,15 +288,75 @@ class NewSentry extends Component {
                   })}
                 </Select>
               )}
+              <Button
+                type="primary"
+                icon="plus-circle"
+                size="default"
+                style={{ marginLeft: "32px" }}
+                onClick={this.showModal}
+              >
+                Create Notification Method
+              </Button>
+              <Modal
+                title="Create Notification Method"
+                visible={this.state.visible}
+                onOk={this.handleOk}
+                onCancel={this.handleCancel}
+                footer={[
+                  <Button key="back" onClick={this.handleCancel}>
+                    Return
+                  </Button>,
+                  <Button
+                    key="submit"
+                    type="primary"
+                    loading={this.state.addLoading}
+                    onClick={this.handleServerChanSubmit}
+                    disabled={this.state.addServerChan}
+                  >
+                    Submit
+                  </Button>,
+                ]}
+              >
+                <h3>ServerChan</h3>
+                <Form {...formItemLayout} onSubmit={this.handleServerChanSubmit}>
+                  <Form.Item label="SCKEY">
+                    {getFieldDecorator('sckey', {
+                      rules: [
+                        {
+                          type: 'string',
+                          message: 'The input is not valid string!',
+                        },
+                        {
+                          required: true,
+                          message: 'Please input your sckey!',
+                        },
+                      ],
+                    })(<Input />)}
+                  </Form.Item>
+                  { this.state.addServerChan ?
+                    <div>
+                      <Alert
+                        message={this.state.alertMsg}
+                        type="success"
+                        banner="true"
+                        block
+                      />
+                    </div> : null
+                  }
+                </Form>
+              </Modal>
             </Form.Item>
           </Card>
-          {this.state.error?<div className="red mt-1">{this.state.error}</div>:null}
+          { this.state.error ?
+            <div className="red mt-1">
+              { this.state.error }
+            </div> : null }
           <BottomNav
-            goBack = {this.goUrlSection}
-            goNext = {this.handleSentrySubmit}
-            loading = {this.state.isFormLoading}
-            goBackButtonText = {"Back"}
-            goNextButtonText = {"Sumbit"}
+            goBack={this.goUrlSection}
+            goNext={this.handleSentrySubmit}
+            loading={this.state.isFormLoading}
+            goBackButtonText={"Back"}
+            goNextButtonText={"Sumbit"}
           />
         </Form>
       </div>
@@ -258,17 +366,17 @@ class NewSentry extends Component {
   renderCompleteSection() {
     return (
       <Row className="mt-8 px-7" >
-        <Row justify={"center"} type = {"flex"} align={"middle"}>
+        <Row justify={"center"} type={"flex"} align={"middle"}>
           <Title level={2}>Congradulations! All done!</Title>
         </Row>
         <Row className="reponsive-bottom-nav">
           <BottomNav
-            goBack = {this.goDashboard}
-            goNext = {this.resetState}
-            goBackClassName = {"bottom-nav-left-responsive"}
-            goNextClassName = {"bottom-nav-right-responsive"}
-            goBackButtonText = {"Close"}
-            goNextButtonText = {"Create Another"}
+            goBack={this.goDashboard}
+            goNext={this.resetState}
+            goBackClassName={"bottom-nav-left-responsive"}
+            goNextClassName={"bottom-nav-right-responsive"}
+            goBackButtonText={"Close"}
+            goNextButtonText={"Create Another"}
           />
         </Row>
       </Row>
@@ -277,14 +385,14 @@ class NewSentry extends Component {
 
   renderSection() {
     const { isUrlLoading, currentSection } = this.state;
-    if(isUrlLoading) {
-      return(
-        <Row className="mt-8" justify={"center"} type = {"flex"} align={"middle"}>
-           <Spin size="large"/>
+    if (isUrlLoading) {
+      return (
+        <Row className="mt-8" justify={"center"} type={"flex"} align={"middle"}>
+          <Spin size="large"/>
         </Row>
       )
     }
-    if(currentSection === 1) {
+    if (currentSection === 1) {
       return this.renderCropSection();
     } else if (currentSection === 2) {
       return this.renderCompleteSection();
@@ -296,21 +404,20 @@ class NewSentry extends Component {
     let urlIcon = null;
     let cropIcon = null;
     let doneIcon = null;
-    if(this.state.isUrlLoading) { urlIcon = <Icon type="loading" />; };
-    if(this.state.isFormLoading) { cropIcon = <Icon type="loading" />; };
-    if(this.state.currentSection === 2) { doneIcon = <Icon type="smile-o" />; };
+    if (this.state.isUrlLoading) { urlIcon = <Icon type="loading" />; };
+    if (this.state.isFormLoading) { cropIcon = <Icon type="loading" />; };
+    if (this.state.currentSection === 2) { doneIcon = <Icon type="smile-o" />; };
     return (
       <div>
-        <Steps current={this.state.currentSection} className = "my-3 px-5">
+        <Steps current={this.state.currentSection} className="my-3 px-5">
           <Step title="Enter an url" icon={urlIcon}/>
           <Step title="Crop and enter basic info" icon={cropIcon} />
           <Step title="Done" icon={doneIcon}/>
         </Steps>
-        <div className = "cropHeight p-6">
+        <div className="cropHeight p-6">
           {this.renderSection()}
         </div>
       </div>
-
     );
   }
 }
