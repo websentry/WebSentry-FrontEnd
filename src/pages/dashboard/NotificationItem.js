@@ -11,16 +11,12 @@ class TaskItem extends Component {
     return (
       <List.Item
         actions={[
-          <a key="delete">
-            <Tooltip title="Delete">
-              <Icon type="delete" style={{ fontSize: "18px" }} />
-            </Tooltip>
-          </a>,
-          <a key="edit">
-            <Tooltip title="Edit">
-              <Icon type="edit" style={{ fontSize: "18px" }} />
-            </Tooltip>
-          </a>
+          <Tooltip title="Delete">
+            <Icon type="delete" style={{ fontSize: "18px", color: "#f5222d" }} />
+          </Tooltip>,
+          <Tooltip title="Edit">
+            <Icon type="edit" style={{ fontSize: "18px", color: "#1890ff" }} />
+          </Tooltip>
         ]}
       >
         { this.item.type.localeCompare("email") ?
