@@ -43,7 +43,7 @@ class Notifications extends Component {
         <PageHeader 
           title={<h2>Notification Methods</h2>}
         />
-        <Divider />
+        <Divider style={{ marginBottom: "0px" }}/>
         <List 
           itemLayout="horizontal"
           loading={this.state.isLoading}
