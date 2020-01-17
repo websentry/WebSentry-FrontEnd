@@ -34,7 +34,7 @@ class TaskItem extends Component {
             title={
               <div>
                 {this.item.name}
-                <Tag color="red" style={{ marginLeft: "8px" }}>E-mail</Tag>
+                <Tag color="#87d068" style={{ marginLeft: "8px" }}>E-mail</Tag>
               </div>
             }
             description={this.item.setting.email}

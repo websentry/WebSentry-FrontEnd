@@ -12,13 +12,13 @@ const { Option } = Select;
 const { Step } = Steps;
 
 const initialState = {
-  error:null,
-  urlError:null,
-  currentSection:0,
-  isFormLoading:false,     // form loading
-  isUrlLoading:false,        // url loading
-  url:"",
-  name:"",
+  error: null,
+  urlError: null,
+  currentSection: 0,
+  isFormLoading: false,     // form loading
+  isUrlLoading: false,        // url loading
+  url: "",
+  name: "",
   screenshotLink: "",
   crop: {
     unit: '%',
@@ -31,7 +31,9 @@ const initialState = {
   scaleY: 0,
   visible: false,
   addServerChan: false,
-  addLoading: false
+  addLoading: false,
+  alertMsg: "",
+  alertType: ""
 }
 
 class NewSentry extends Component {
@@ -178,9 +180,17 @@ class NewSentry extends Component {
           this.setState({
             addLoading: false,
             addServerChan: true,
+            alertType: "success",
             alertMsg: "SCKEY has been added into the notification method."
-          })
+          });
         }
+      } else {
+        this.setState({
+          addLoading: false,
+          addServerChan: true,
+          alertType: "error",
+          alertMsg: err['sentryName']['errors'][0]['message']
+        });
       }
     });
   }
@@ -319,8 +329,8 @@ class NewSentry extends Component {
               >
                 <h3>ServerChan</h3>
                 <Form {...formItemLayout} onSubmit={this.handleServerChanSubmit}>
-                  <Form.Item label="name">
-                    {getFieldDecorator('Name', {
+                  <Form.Item label="Name">
+                    {getFieldDecorator('name', {
                       rules: [
                         {
                           type: 'string',
@@ -333,8 +343,8 @@ class NewSentry extends Component {
                       ],
                     })(<Input />)}
                   </Form.Item>
-                  <Form.Item label="sckey">
-                    {getFieldDecorator('SCKEY', {
+                  <Form.Item label="SCKEY">
+                    {getFieldDecorator('sckey', {
                       rules: [
                         {
                           type: 'string',
@@ -351,8 +361,8 @@ class NewSentry extends Component {
                     <div>
                       <Alert
                         message={this.state.alertMsg}
-                        type="success"
-                        banner="true"
+                        type={this.state.alertType}
+                        showIcon
                         block
                       />
                     </div> : null
