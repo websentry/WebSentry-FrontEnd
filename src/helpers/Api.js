@@ -151,9 +151,9 @@ api.getAllNotifications = async () => {
     return await requestApi('notification/list', {}, null, true);
 }
 
-api.addServerChan = async (sckey) => {
+api.addServerChan = async (name, sckey) => {
     const params = {
-        name: "method1",
+        name: name,
         sckey: sckey
     };
     return await requestApi('notification/add_serverchan', params, null, true);
