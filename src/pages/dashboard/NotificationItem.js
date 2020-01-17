@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon, List, Tooltip } from 'antd';
+import { Icon, List, Tag, Tooltip } from 'antd';
 
 class TaskItem extends Component {
   constructor(props){
@@ -21,12 +21,22 @@ class TaskItem extends Component {
       >
         { this.item.type.localeCompare("email") ?
           <List.Item.Meta
-            title={this.item.name}
+            title={
+              <div>
+                {this.item.name}
+                <Tag color="#4b90de" style={{ marginLeft: "8px" }}>ServerChan</Tag>
+              </div>
+            }
             description={this.item.setting.sckey}
           />
         :
           <List.Item.Meta
-            title={this.item.name}
+            title={
+              <div>
+                {this.item.name}
+                <Tag color="red" style={{ marginLeft: "8px" }}>E-mail</Tag>
+              </div>
+            }
             description={this.item.setting.email}
           />
         }
