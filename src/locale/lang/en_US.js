@@ -4,6 +4,7 @@ const en_US = {
   dashboard: 'Dashboard',
   signIn:'Sign in',
   signUp:'Sign up',
-  signOut:'Sign out'
+  signOut:'Sign out',
+  defaultEmail:'Default Email'
 }
 export default en_US;

@@ -162,11 +162,11 @@ class Register extends Component {
       if (res.data['generated']) {
         message.info('Verification code has been sent!');
         this.setState({
-          alertMsg: "Please check your e-mail inbox for verification code."
+          alertMsg: "Please check your email inbox for verification code."
         })
       } else {
         this.setState({
-          alertMsg: "Please use the verification code from previous e-mail."
+          alertMsg: "Please use the verification code from previous email."
         })
       }
     }
@@ -216,14 +216,14 @@ class Register extends Component {
     };
     return (
       <Form {...formItemLayout} >
-        <Form.Item label="E-mail" className="register-form-item" >
+        <Form.Item label="Email" className="register-form-item" >
           { getFieldDecorator('email', {
             rules: [{
               type: 'email',
-              message: 'The input is not valid E-mail!',
+              message: 'The input is not valid Email!',
             }, {
               required: true,
-              message: 'Please input your E-mail!',
+              message: 'Please input your Email!',
             },],
           }) (<Input onChange={this.emailOnChange} />)}
         </Form.Item>
@@ -272,7 +272,7 @@ class Register extends Component {
     return (
       <Form>
         <Form.Item className="register-form-item" >
-        <Input placeholder="E-mail" value={this.state.email} disabled />
+        <Input placeholder="Email" value={this.state.email} disabled />
         </Form.Item>
         <Form.Item
           className="register-form-item"
@@ -290,7 +290,7 @@ class Register extends Component {
           <Col span={12}>
             <Button
               type="primary"
-              loading={this.verificationLoading}
+              loading={this.state.verificationLoading}
               onClick={this.handleVerification}
               className="verification-button"
               disabled={this.state.success}

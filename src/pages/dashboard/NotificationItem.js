@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { Icon, List, Tag, Tooltip } from 'antd';
 
 class TaskItem extends Component {
@@ -33,8 +34,11 @@ class TaskItem extends Component {
           <List.Item.Meta
             title={
               <div>
-                {this.item.name}
-                <Tag color="#87d068" style={{ marginLeft: "8px" }}>E-mail</Tag>
+                <FormattedMessage
+                  id='defaultEmail'
+                  defaultMessage='Default Email'
+                />
+                <Tag color="#87d068" style={{ marginLeft: "8px" }}>Email</Tag>
               </div>
             }
             description={this.item.setting.email}
