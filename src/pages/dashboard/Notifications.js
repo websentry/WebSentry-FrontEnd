@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Divider, List, PageHeader } from 'antd';
+import { Alert, Button, Divider, Form, Input, List, Modal, PageHeader } from 'antd';
 import NotificationItem from './NotificationItem';
 import api from '../../helpers/Api.js';
 
@@ -8,9 +8,15 @@ class Notifications extends Component {
     super(props);
     this.state = {
       isLoading: false,
-      notificationList: []
+      notificationList: [],
+      visible: false,
+      addServerChan: false,
+      addLoading: false,
+      alertMsg: "",
+      alertType: ""
     };
     this.loadData();
+    this.handleServerChanSubmit = this.handleServerChanSubmit.bind(this);
   }
 
   async loadData() {
@@ -31,17 +37,84 @@ class Notifications extends Component {
     }
   }
 
+  async handleServerChanSubmit(e) {
+    this.setState({
+      addLoading: true,
+    });
+
+    e.preventDefault();
+
+    this.props.form.validateFields(async (err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+
+        const res = await api.addServerChan(values['name'], values['sckey']);
+
+        if (res.code === api.code.ok) {
+          this.setState({
+            addLoading: false,
+            addServerChan: true,
+            alertType: "success",
+            alertMsg: "SCKEY has been added into the notification method."
+          });
+        }
+      }
+    });
+  }
+
   NotificationCard(item) {
     return (
       <NotificationItem item={item} />
     )
   }
 
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  };
+
+  handleOk (e) {
+    this.setState({
+      addLoading: true,
+    });
+  };
+
+  handleCancel = e => {
+    this.setState({
+      visible: false,
+    });
+  };
+
   render() {
+    const { getFieldDecorator } = this.props.form;
+    const formItemLayout = {
+      labelCol: {
+        lg: { span: 6 },
+        md: { span: 8 },
+        sm: { span: 12 },
+      },
+      wrapperCol: {
+        lg: { span: 18 },
+        md: { span: 16 },
+        sm: { span: 12 },
+      },
+    };
     return (
       <div>
         <PageHeader 
           title={<h2>Notification Methods</h2>}
+          extra={
+            <Button
+              type="primary"
+              icon="plus-circle"
+              size="default"
+              style={{ marginLeft: "32px" }}
+              onClick={this.showModal}
+            >
+              Create Notification Method
+            </Button>
+          }
         />
         <Divider style={{ marginBottom: "0px" }}/>
         <List 
@@ -50,9 +123,71 @@ class Notifications extends Component {
           dataSource={this.state.notificationList}
           renderItem={this.NotificationCard}
         />
+        <Modal
+          title="Create Notification Method"
+          visible={this.state.visible}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+          footer={[
+            <Button key="back" onClick={this.handleCancel}>
+              Return
+            </Button>,
+            <Button
+              key="submit"
+              type="primary"
+              loading={this.state.addLoading}
+              onClick={this.handleServerChanSubmit}
+              disabled={this.state.addServerChan}
+            >
+              Submit
+            </Button>,
+          ]}
+        >
+          <h3>ServerChan</h3>
+          <Form {...formItemLayout} onSubmit={this.handleServerChanSubmit}>
+            <Form.Item label="Name">
+              {getFieldDecorator('name', {
+                rules: [
+                  {
+                    type: 'string',
+                    message: 'The input is not valid string!',
+                  },
+                  {
+                    required: true,
+                    message: 'Please input your method name!',
+                  },
+                ],
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="SCKEY">
+              {getFieldDecorator('sckey', {
+                rules: [
+                  {
+                    type: 'string',
+                    message: 'The input is not valid string!',
+                  },
+                  {
+                    required: true,
+                    message: 'Please input your sckey!',
+                  },
+                ],
+              })(<Input />)}
+            </Form.Item>
+            { this.state.addServerChan ?
+              <div>
+                <Alert
+                  message={this.state.alertMsg}
+                  type={this.state.alertType}
+                  showIcon
+                  block
+                />
+              </div> : null
+            }
+          </Form>
+        </Modal>
       </div>
     );
   }
 }
 
-export default Notifications;
+export default Form.create()(Notifications);
