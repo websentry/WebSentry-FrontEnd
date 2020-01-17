@@ -21,12 +21,12 @@ class TaskItem extends Component {
       >
         { this.item.type.localeCompare("email") ?
           <List.Item.Meta
-            title="ServerChan"
+            title={this.item.name}
             description={this.item.setting.sckey}
           />
         :
           <List.Item.Meta
-            title="Email"
+            title={this.item.name}
             description={this.item.setting.email}
           />
         }

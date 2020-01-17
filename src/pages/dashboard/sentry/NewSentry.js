@@ -172,7 +172,7 @@ class NewSentry extends Component {
       if (!err) {
         console.log('Received values of form: ', values);
 
-        const res = await api.addServerChan(values['sckey']);
+        const res = await api.addServerChan(values['name'], values['sckey']);
 
         if (res.code === api.code.ok) {
           this.setState({
@@ -319,8 +319,22 @@ class NewSentry extends Component {
               >
                 <h3>ServerChan</h3>
                 <Form {...formItemLayout} onSubmit={this.handleServerChanSubmit}>
-                  <Form.Item label="SCKEY">
-                    {getFieldDecorator('sckey', {
+                  <Form.Item label="name">
+                    {getFieldDecorator('Name', {
+                      rules: [
+                        {
+                          type: 'string',
+                          message: 'The input is not valid string!',
+                        },
+                        {
+                          required: true,
+                          message: 'Please input your method name!',
+                        },
+                      ],
+                    })(<Input />)}
+                  </Form.Item>
+                  <Form.Item label="sckey">
+                    {getFieldDecorator('SCKEY', {
                       rules: [
                         {
                           type: 'string',
