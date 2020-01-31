@@ -183,6 +183,7 @@ class NewSentry extends Component {
             alertType: "success",
             alertMsg: "SCKEY has been added into the notification method."
           });
+          this.loadData();
         }
       } else {
         this.setState({
