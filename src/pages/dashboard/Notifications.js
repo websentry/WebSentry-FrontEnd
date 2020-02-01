@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Button, Divider, Form, Input, List, Modal, PageHeader } from 'antd';
+import { Button, Divider, Form, Input, List, message, Modal, PageHeader } from 'antd';
 import NotificationItem from './NotificationItem';
 import api from '../../helpers/Api.js';
 
@@ -12,8 +12,7 @@ class Notifications extends Component {
       visible: false,
       addServerChan: false,
       addLoading: false,
-      alertMsg: "",
-      alertType: ""
+      alertMsg: ""
     };
     this.loadData();
     this.handleServerChanSubmit = this.handleServerChanSubmit.bind(this);
@@ -54,10 +53,19 @@ class Notifications extends Component {
           this.setState({
             addLoading: false,
             addServerChan: true,
-            alertType: "success",
             alertMsg: "SCKEY has been added into the notification method."
           });
           this.loadData();
+          this.handleCancel();
+          message.success(this.state.alertMsg);
+        } else {
+          this.setState({
+            addLoading: false,
+            addServerChan: true,
+            alertMsg: err['sentryName']['errors'][0]['message']
+          });
+          this.handleCancel();
+          message.error(this.state.alertMsg);
         }
       }
     });
@@ -174,16 +182,6 @@ class Notifications extends Component {
                 ],
               })(<Input />)}
             </Form.Item>
-            { this.state.addServerChan ?
-              <div>
-                <Alert
-                  message={this.state.alertMsg}
-                  type={this.state.alertType}
-                  showIcon
-                  block
-                />
-              </div> : null
-            }
           </Form>
         </Modal>
       </div>

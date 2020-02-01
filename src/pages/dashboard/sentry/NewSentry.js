@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Row, Typography, Spin, Icon, Card, Select, Form, Steps, Button, Modal, Alert } from 'antd';
+import { Button, Card, Form, Icon, Input, message, Modal, Row, Select, Spin, Steps, Typography } from 'antd';
 import ReactCrop from 'react-image-crop';
 import BottomNav from './BottomNav';
 import 'react-image-crop/dist/ReactCrop.css';
@@ -32,8 +32,7 @@ const initialState = {
   visible: false,
   addServerChan: false,
   addLoading: false,
-  alertMsg: "",
-  alertType: ""
+  alertMsg: ""
 }
 
 class NewSentry extends Component {
@@ -180,18 +179,20 @@ class NewSentry extends Component {
           this.setState({
             addLoading: false,
             addServerChan: true,
-            alertType: "success",
             alertMsg: "SCKEY has been added into the notification method."
           });
           this.loadData();
+          this.handleCancel();
+          message.success(this.state.alertMsg);
         }
       } else {
         this.setState({
           addLoading: false,
           addServerChan: true,
-          alertType: "error",
           alertMsg: err['sentryName']['errors'][0]['message']
         });
+        this.handleCancel();
+        message.error(this.state.alertMsg);
       }
     });
   }
@@ -358,16 +359,6 @@ class NewSentry extends Component {
                       ],
                     })(<Input />)}
                   </Form.Item>
-                  { this.state.addServerChan ?
-                    <div>
-                      <Alert
-                        message={this.state.alertMsg}
-                        type={this.state.alertType}
-                        showIcon
-                        block
-                      />
-                    </div> : null
-                  }
                 </Form>
               </Modal>
             </Form.Item>
