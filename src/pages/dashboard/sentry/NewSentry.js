@@ -30,7 +30,6 @@ const initialState = {
   scaleX: 0,
   scaleY: 0,
   visible: false,
-  addServerChan: false,
   addLoading: false,
   alertMsg: ""
 }
@@ -178,20 +177,20 @@ class NewSentry extends Component {
         if (res.code === api.code.ok) {
           this.setState({
             addLoading: false,
-            addServerChan: true,
             alertMsg: "SCKEY has been added into the notification method."
           });
           this.loadData();
           this.handleCancel();
+          this.props.form.resetFields();
           message.success(this.state.alertMsg);
         }
       } else {
         this.setState({
           addLoading: false,
-          addServerChan: true,
           alertMsg: err['sentryName']['errors'][0]['message']
         });
         this.handleCancel();
+        this.props.form.resetFields();
         message.error(this.state.alertMsg);
       }
     });
@@ -323,7 +322,6 @@ class NewSentry extends Component {
                     type="primary"
                     loading={this.state.addLoading}
                     onClick={this.handleServerChanSubmit}
-                    disabled={this.state.addServerChan}
                   >
                     Submit
                   </Button>,
