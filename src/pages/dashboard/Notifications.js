@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Divider, Form, Input, List, message, Modal, PageHeader } from 'antd';
 import NotificationItem from './NotificationItem';
+import {injectIntl} from 'react-intl'; 
 import api from '../../helpers/Api.js';
 
 class Notifications extends Component {
@@ -95,6 +96,7 @@ class Notifications extends Component {
   };
 
   render() {
+    const { intl } = this.props;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -109,7 +111,7 @@ class Notifications extends Component {
       },
     };
     return (
-      <div>
+      <div page="dashboardNotifications">
         <PageHeader 
           title={<h2>Notification Methods</h2>}
           extra={
@@ -154,11 +156,11 @@ class Notifications extends Component {
                 rules: [
                   {
                     type: 'string',
-                    message: 'The input is not valid string!',
+                    message: intl.formatMessage({ id: "invalidString" }),
                   },
                   {
                     required: true,
-                    message: 'Please input your method name!',
+                    message: intl.formatMessage({ id: "inputName" }),
                   },
                 ],
               })(<Input />)}
@@ -168,11 +170,11 @@ class Notifications extends Component {
                 rules: [
                   {
                     type: 'string',
-                    message: 'The input is not valid string!',
+                    message: intl.formatMessage({ id: "invalidString" }),
                   },
                   {
                     required: true,
-                    message: 'Please input your sckey!',
+                    message: intl.formatMessage({ id: "inputSCKEY" }),
                   },
                 ],
               })(<Input />)}
@@ -184,4 +186,4 @@ class Notifications extends Component {
   }
 }
 
-export default Form.create()(Notifications);
+export default injectIntl(Form.create()(Notifications));

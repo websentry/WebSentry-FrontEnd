@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Card, Form, Icon, Input, message, Modal, Row, Select, Spin, Steps, Typography } from 'antd';
+import { Card, Form, Icon, Input, Row, Select, Spin, Steps, Typography } from 'antd';
 import ReactCrop from 'react-image-crop';
 import BottomNav from './BottomNav';
 import 'react-image-crop/dist/ReactCrop.css';
