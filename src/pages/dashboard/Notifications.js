@@ -137,9 +137,6 @@ class Notifications extends Component {
           onOk={this.handleOk}
           onCancel={this.handleCancel}
           footer={[
-            <Button key="back" onClick={this.handleCancel}>
-              Return
-            </Button>,
             <Button
               key="submit"
               type="primary"
