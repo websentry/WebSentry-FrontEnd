@@ -8,11 +8,11 @@ class Container extends Component {
   render() {
     return(
       <Router>
-          <Switch>
-            <Route exact path="/dashboard" component={Home} />
-            <Route path="/dashboard/newSentry" component={NewSentry} />
-            <Route path="/dashboard/notification" component={Notifications} />
-          </Switch>
+        <Switch>
+          <Route exact path="/dashboard" component={Home} />
+          <Route path="/dashboard/newSentry" component={NewSentry} />
+          <Route path="/dashboard/notifications" component={Notifications} />
+        </Switch>
       </Router>
     );
   }
