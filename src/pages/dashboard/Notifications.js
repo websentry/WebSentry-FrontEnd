@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Divider, Form, Input, List, message, Modal, PageHeader } from 'antd';
 import NotificationItem from './NotificationItem';
-import {injectIntl} from 'react-intl'; 
+import { injectIntl } from 'react-intl'; 
 import api from '../../helpers/Api.js';
 
 class Notifications extends Component {
@@ -42,7 +42,7 @@ class Notifications extends Component {
     });
 
     e.preventDefault();
-
+    const { intl } = this.props;
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
@@ -52,7 +52,7 @@ class Notifications extends Component {
         if (res.code === api.code.ok) {
           this.setState({
             addLoading: false,
-            alertMsg: "SCKEY has been added into the notification method."
+            alertMsg: intl.formatMessage({ id: "successAdd" })
           });
           this.loadData();
           this.handleCancel();

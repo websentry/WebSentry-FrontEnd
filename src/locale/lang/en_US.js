@@ -8,6 +8,7 @@ const en_US = {
   defaultEmail: 'Default Email',
   notification: 'Notifications',
   setting: 'Setting',
+  successAdd: 'Successfully added!',
   invalidString: 'The input is not valid string!',
   inputName: 'Please input your ServerChan name!',
   inputSCKEY: 'Please input your SCKEY!'
