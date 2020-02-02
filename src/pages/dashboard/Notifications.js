@@ -80,6 +80,7 @@ class Notifications extends Component {
   showModal = () => {
     this.setState({
       visible: true,
+      addLoading: false
     });
   };
 
