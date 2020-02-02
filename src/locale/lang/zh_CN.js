@@ -8,9 +8,9 @@ const zh_CN = {
   defaultEmail: '默认邮箱',
   notification: '通知',
   setting: '设置',
-  successAdd: '添加成功！',
-  invalidString: 'The input is not valid string!',
-  inputName: 'Please input your ServerChan name!',
-  inputSCKEY: 'Please input your SCKEY!'
+  notificationSuccessAdd: '添加成功！',
+  notificationInvalidString: 'The input is not valid string!',
+  notificationServerChanName: 'Please input your ServerChan name!',
+  notificationServerChanSCKEY: 'Please input your SCKEY!'
 }
 export default zh_CN;

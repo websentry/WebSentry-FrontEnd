@@ -52,7 +52,7 @@ class Notifications extends Component {
         if (res.code === api.code.ok) {
           this.setState({
             addLoading: false,
-            alertMsg: intl.formatMessage({ id: "successAdd" })
+            alertMsg: intl.formatMessage({ id: "notificationSuccessAdd" })
           });
           this.loadData();
           this.handleCancel();
@@ -156,11 +156,11 @@ class Notifications extends Component {
                 rules: [
                   {
                     type: 'string',
-                    message: intl.formatMessage({ id: "invalidString" }),
+                    message: intl.formatMessage({ id: "notificationInvalidString" }),
                   },
                   {
                     required: true,
-                    message: intl.formatMessage({ id: "inputName" }),
+                    message: intl.formatMessage({ id: "notificationServerChanName" }),
                   },
                 ],
               })(<Input />)}
@@ -170,11 +170,11 @@ class Notifications extends Component {
                 rules: [
                   {
                     type: 'string',
-                    message: intl.formatMessage({ id: "invalidString" }),
+                    message: intl.formatMessage({ id: "notificationInvalidString" }),
                   },
                   {
                     required: true,
-                    message: intl.formatMessage({ id: "inputSCKEY" }),
+                    message: intl.formatMessage({ id: "notificationServerChanSCKEY" }),
                   },
                 ],
               })(<Input />)}

@@ -8,9 +8,9 @@ const en_US = {
   defaultEmail: 'Default Email',
   notification: 'Notifications',
   setting: 'Setting',
-  successAdd: 'Successfully added!',
-  invalidString: 'The input is not valid string!',
-  inputName: 'Please input your ServerChan name!',
-  inputSCKEY: 'Please input your SCKEY!'
+  notificationSuccessAdd: 'Successfully added!',
+  notificationInvalidString: 'The input is not valid string!',
+  notificationServerChanName: 'Please input your ServerChan name!',
+  notificationServerChanSCKEY: 'Please input your SCKEY!'
 }
 export default en_US;
