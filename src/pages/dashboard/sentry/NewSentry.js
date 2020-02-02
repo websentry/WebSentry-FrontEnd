@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Row, Typography, Spin, Icon, Card, Select, Form, Steps} from 'antd';
+import { Card, Form, Icon, Input, Row, Select, Spin, Steps, Typography } from 'antd';
 import ReactCrop from 'react-image-crop';
 import BottomNav from './BottomNav';
 import 'react-image-crop/dist/ReactCrop.css';
@@ -12,13 +12,13 @@ const { Option } = Select;
 const { Step } = Steps;
 
 const initialState = {
-  error:null,
-  urlError:null,
-  currentSection:0,
-  isFormLoading:false,     // form loading
-  isUrlLoading:false,        // url loading
-  url:"",
-  name:"",
+  error: null,
+  urlError: null,
+  currentSection: 0,
+  isFormLoading: false,     // form loading
+  isUrlLoading: false,        // url loading
+  url: "",
+  name: "",
   screenshotLink: "",
   crop: {
     unit: '%',
@@ -28,7 +28,7 @@ const initialState = {
     height: 50
   },
   scaleX: 0,
-  scaleY: 0
+  scaleY: 0,
 }
 
 class NewSentry extends Component {
@@ -37,10 +37,10 @@ class NewSentry extends Component {
     super(props);
     this.state = initialState;
     this.loadData();
-    this.urlOnchange = e => {this.onSentryValueChange("url", e.target.value);};
-    this.goUrlSection = () => {this.setState({ currentSection: 0});};
-    this.goCropSection = () => {this.setState({ currentSection: 1});};
-    this.goInfoSection = () => {this.setState({ currentSection: 2});};
+    this.urlOnchange = e => { this.onSentryValueChange("url", e.target.value); };
+    this.goUrlSection = () => { this.setState({ currentSection: 0 }); };
+    this.goCropSection = () => { this.setState({ currentSection: 1 }); };
+    this.goInfoSection = () => { this.setState({ currentSection: 2 }); };
     this.resetState = () => { this.setState(initialState); };
     this.goDashboard = () => { props.history.push('/dashboard'); };
     this.handleUrlSubmit = this.handleUrlSubmit.bind(this);
@@ -72,7 +72,7 @@ class NewSentry extends Component {
   }
 
   onSentryValueChange = (key, val) => {
-    console.log(key,val);
+    console.log(key, val);
     this.setState({[key]: val });
   }
 
@@ -125,7 +125,7 @@ class NewSentry extends Component {
 
     form.validateFields((err, values) => {
       console.log('Received values of form: ', values);
-      if(err){
+      if (err) {
         return;
       }
     });
@@ -164,15 +164,18 @@ class NewSentry extends Component {
           <Title level={3}> Enter an URL to create a new task </Title>
         </Row>
         <Search
-           className = "mt-3"
-           placeholder="Enter website: https://www.google.com"
-           enterButton="Go"
-           size="large"
-           onChange={this.urlOnchange}
-           value={this.state.url}
-           onSearch={this.handleUrlSubmit}
+          className="mt-3"
+          placeholder="Enter website: https://www.google.com"
+          enterButton="Go"
+          size="large"
+          onChange={this.urlOnchange}
+          value={this.state.url}
+          onSearch={this.handleUrlSubmit}
         />
-        {this.state.urlError?<div className="red mt-1">{this.state.urlError}</div>:null}
+        { this.state.urlError ?
+          <div className="red mt-1">
+            {this.state.urlError}
+          </div> : null}
       </div>
     )
   }
@@ -192,7 +195,6 @@ class NewSentry extends Component {
         sm: { span: 12 },
       },
     };
-
     return (
       <div>
         <Form {...formItemLayout} onSubmit={this.handleSubmit}>
@@ -242,13 +244,16 @@ class NewSentry extends Component {
               )}
             </Form.Item>
           </Card>
-          {this.state.error?<div className="red mt-1">{this.state.error}</div>:null}
+          { this.state.error ?
+            <div className="red mt-1">
+              { this.state.error }
+            </div> : null }
           <BottomNav
-            goBack = {this.goUrlSection}
-            goNext = {this.handleSentrySubmit}
-            loading = {this.state.isFormLoading}
-            goBackButtonText = {"Back"}
-            goNextButtonText = {"Sumbit"}
+            goBack={this.goUrlSection}
+            goNext={this.handleSentrySubmit}
+            loading={this.state.isFormLoading}
+            goBackButtonText={"Back"}
+            goNextButtonText={"Sumbit"}
           />
         </Form>
       </div>
@@ -258,17 +263,17 @@ class NewSentry extends Component {
   renderCompleteSection() {
     return (
       <Row className="mt-8 px-7" >
-        <Row justify={"center"} type = {"flex"} align={"middle"}>
+        <Row justify={"center"} type={"flex"} align={"middle"}>
           <Title level={2}>Congradulations! All done!</Title>
         </Row>
         <Row className="reponsive-bottom-nav">
           <BottomNav
-            goBack = {this.goDashboard}
-            goNext = {this.resetState}
-            goBackClassName = {"bottom-nav-left-responsive"}
-            goNextClassName = {"bottom-nav-right-responsive"}
-            goBackButtonText = {"Close"}
-            goNextButtonText = {"Create Another"}
+            goBack={this.goDashboard}
+            goNext={this.resetState}
+            goBackClassName={"bottom-nav-left-responsive"}
+            goNextClassName={"bottom-nav-right-responsive"}
+            goBackButtonText={"Close"}
+            goNextButtonText={"Create Another"}
           />
         </Row>
       </Row>
@@ -277,14 +282,14 @@ class NewSentry extends Component {
 
   renderSection() {
     const { isUrlLoading, currentSection } = this.state;
-    if(isUrlLoading) {
-      return(
-        <Row className="mt-8" justify={"center"} type = {"flex"} align={"middle"}>
-           <Spin size="large"/>
+    if (isUrlLoading) {
+      return (
+        <Row className="mt-8" justify={"center"} type={"flex"} align={"middle"}>
+          <Spin size="large"/>
         </Row>
       )
     }
-    if(currentSection === 1) {
+    if (currentSection === 1) {
       return this.renderCropSection();
     } else if (currentSection === 2) {
       return this.renderCompleteSection();
@@ -296,21 +301,20 @@ class NewSentry extends Component {
     let urlIcon = null;
     let cropIcon = null;
     let doneIcon = null;
-    if(this.state.isUrlLoading) { urlIcon = <Icon type="loading" />; };
-    if(this.state.isFormLoading) { cropIcon = <Icon type="loading" />; };
-    if(this.state.currentSection === 2) { doneIcon = <Icon type="smile-o" />; };
+    if (this.state.isUrlLoading) { urlIcon = <Icon type="loading" />; };
+    if (this.state.isFormLoading) { cropIcon = <Icon type="loading" />; };
+    if (this.state.currentSection === 2) { doneIcon = <Icon type="smile-o" />; };
     return (
       <div>
-        <Steps current={this.state.currentSection} className = "my-3 px-5">
+        <Steps current={this.state.currentSection} className="my-3 px-5">
           <Step title="Enter an url" icon={urlIcon}/>
           <Step title="Crop and enter basic info" icon={cropIcon} />
           <Step title="Done" icon={doneIcon}/>
         </Steps>
-        <div className = "cropHeight p-6">
+        <div className="cropHeight p-6">
           {this.renderSection()}
         </div>
       </div>
-
     );
   }
 }
