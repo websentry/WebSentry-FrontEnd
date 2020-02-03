@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Divider, Form, Input, List, message, Modal, PageHeader } from 'antd';
+import DashboardLayout from '../../layouts/DashboardLayout';
 import NotificationItem from './NotificationItem';
 import { injectIntl } from 'react-intl'; 
 import api from '../../helpers/Api.js';
@@ -22,7 +23,7 @@ class Notifications extends Component {
     if (!this.state.isLoading) {
       this.setState({isLoading: true});
     }
-
+    // TODO: Handle loading state
     const response = await api.getAllNotifications();
 
     if (response.code === api.code.ok) {
@@ -112,6 +113,7 @@ class Notifications extends Component {
       },
     };
     return (
+      <DashboardLayout page="notifications">
       <div page="dashboardNotifications">
         <PageHeader 
           title={<h2>Notification Methods</h2>}
@@ -183,6 +185,7 @@ class Notifications extends Component {
           </Form>
         </Modal>
       </div>
+      </DashboardLayout>
     );
   }
 }
