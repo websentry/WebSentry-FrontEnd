@@ -1,6 +1,7 @@
 import React from 'react';
 import { Layout, Menu, Icon } from 'antd';
 import { Link } from 'react-router-dom';
+import { injectIntl } from 'react-intl'; 
 import AppFooter from './AppFooter';
 import logo from '../assets/logo.png'
 import './DashboardLayout.less'
@@ -9,6 +10,7 @@ const { Content, Sider } = Layout;
 
 class DashboardLayout extends React.Component {
   render() {
+    const { intl } = this.props;
     return (
       <Layout className="dashboard-layout">
         <Sider
@@ -29,19 +31,19 @@ class DashboardLayout extends React.Component {
             <Menu.Item key="home">
               <Link to="/dashboard/">
                 <Icon type="database" />
-                <span>Home</span>
+                <span>{intl.formatMessage({ id: "dashboardSidebarHome" })}</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="notifications">
               <Link to="/dashboard/notifications">
                 <Icon type="bell" />
-                <span>Notifications</span>
+                <span>{intl.formatMessage({ id: "dashboardSidebarNotifications" })}</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="settings">
               <Link to="/dashboard/settings">
                 <Icon type="setting" />
-                <span>Setting</span>
+                <span>{intl.formatMessage({ id: "dashboardSidebarSetting" })}</span>
               </Link>
             </Menu.Item>
           </Menu>
@@ -59,4 +61,4 @@ class DashboardLayout extends React.Component {
   }
 }
 
-export default DashboardLayout;
+export default injectIntl(DashboardLayout);
