@@ -11,6 +11,10 @@ const zh_CN = {
   notificationSuccessAdd: '添加成功！',
   notificationInvalidString: 'The input is not valid string!',
   notificationServerChanName: 'Please input your ServerChan name!',
-  notificationServerChanSCKEY: 'Please input your SCKEY!'
+  notificationServerChanSCKEY: 'Please input your SCKEY!',
+
+  dashboardSidebarHome: 'Sentries',
+  dashboardSidebarNotifications: '通知方式',
+  dashboardSidebarSetting: '设置'
 }
 export default zh_CN;

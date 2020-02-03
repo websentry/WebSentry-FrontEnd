@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { PageHeader, Divider, Button, List } from 'antd';
+import DashboardLayout from '../../layouts/DashboardLayout';
 import SentryItem from './sentry/SentryItem';
 import api from '../../helpers/Api';
 import './Home.less'
@@ -50,6 +51,7 @@ class Home extends Component {
 
   render() {
     return (
+      <DashboardLayout page="home">
       <div>
         <PageHeader
           title="Active Sentrys"
@@ -73,6 +75,7 @@ class Home extends Component {
           renderItem={this.SentryCard}
         />
       </div>
+      </DashboardLayout>
     );
   }
 }

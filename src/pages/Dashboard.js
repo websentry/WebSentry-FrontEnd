@@ -1,39 +1,35 @@
 import React, { Component } from 'react';
 import { Spin } from 'antd';
 import Container from './dashboard/Container';
-import DashboardLayout from '../layouts/DashboardLayout';
 import { UserContext } from '../UserContext';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import Login from './Login';
+import { Redirect } from 'react-router-dom';
 import './Dashboard.less';
 
 class Dashboard extends Component {
 
-  renderMain(isLoggedIn) {
-    if (isLoggedIn) {
+  renderMain(isLoading, isLoggedIn) {
+    if (isLoading) {
       return (
-        <DashboardLayout>
-          <Container />
-        </DashboardLayout>
-      )
-    };
-    return (
-      <Router>
-        <Route path="/dashboard" component={Login} /> 
-      </Router>
-    )
+      <div className="loading-spin-center">
+        <Spin size="large" spinning={true} />
+      </div>)
+    } else {
+      if (isLoggedIn) {
+        return (<Container />)
+      } else {
+        // TODO: pass the current url so it can jump back to this precise page after logged in
+        return (<Redirect to='/login' />)
+      }
+    }
   }
 
   render() {
     return (
       <UserContext.Consumer>
-        { ({isLoading, isLoggedIn, userEmail, toggleRefreash}) => {
+        { ({isLoading, isLoggedIn}) => {
             return (
               <div>
-                <div className="loading-spin-center">
-                  <Spin size="large" spinning={isLoading} />
-                </div>
-                {this.renderMain(isLoggedIn)}
+                {this.renderMain(isLoading, isLoggedIn)}
               </div>
             )
         }}
