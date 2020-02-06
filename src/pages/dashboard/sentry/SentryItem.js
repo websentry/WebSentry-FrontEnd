@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Icon, Tooltip, List, Tag } from 'antd';
+import { Card, Icon, Tooltip, List, Tag, Button } from 'antd';
 import moment from 'moment';
 
 const { Meta } = Card;
@@ -17,11 +17,15 @@ class TaskItem extends Component {
           title={this.item.name}
           className="task-card"
           actions={[
-            <Tooltip title="detail">
-              <Icon type="project" />
+            <Tooltip title="Detail">
+              <Button href={"/dashboard/sentry/" + this.item.id}>
+                <Icon type="project" />
+              </Button>
             </Tooltip>,
-            <Tooltip title="edit">
-              <Icon type="edit" />
+            <Tooltip title="Edit">
+              <Button>
+                <Icon type="edit" />
+              </Button>
             </Tooltip>
           ]}
         >

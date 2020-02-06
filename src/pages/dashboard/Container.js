@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import NewSentry from './sentry/NewSentry';
 import Notifications from './Notifications.js'
 import Home from './Home';
+import SentryDetail from './sentry/SentryDetail';
 
 class Container extends Component {
   render() {
@@ -11,6 +12,7 @@ class Container extends Component {
           <Route exact path="/dashboard" component={Home} />
           <Route path="/dashboard/newSentry" component={NewSentry} />
           <Route path="/dashboard/notifications" component={Notifications} />
+          <Route path="/dashboard/sentry" component={SentryDetail} />
         </Switch>
     );
   }
