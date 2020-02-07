@@ -1,6 +1,7 @@
 import React from 'react';
 import { Layout, Menu, Icon, Dropdown } from 'antd';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { injectIntl } from 'react-intl'; 
 import AppFooter from './AppFooter';
 import logo from '../assets/logo.png'
 import './DashboardLayout.less'
@@ -22,58 +23,64 @@ const menu = (
 
 class DashboardLayout extends React.Component {
   render() {
+    const { intl } = this.props;
     return (
       <UserContext.Consumer>
         {({userEmail}) => (
-          <Router>
-            <Layout className="dashboard-layout">
-              <Sider
-                breakpoint="lg"
-                collapsedWidth="0"
-                onBreakpoint={broken => {
-                  console.log(broken);
-                }}
-                onCollapse={(collapsed, type) => {
-                  console.log(collapsed, type);
-                }}
-              >
+          <Layout className="dashboard-layout">
+            <Sider
+              breakpoint="lg"
+              collapsedWidth="0"
+              onBreakpoint={broken => {
+                console.log(broken);
+              }}
+              onCollapse={(collapsed, type) => {
+                console.log(collapsed, type);
+              }}
+            >
 
-                <img className="dashboard-logo" src={logo} alt=""/>
-                <Menu theme="dark" mode="inline" defaultSelectedKeys={["dashboardHome"]}>
-                  <Menu.Item key="dashboardHome">
+              <img className="dashboard-logo" src={logo} alt="" />
+              <Menu theme="dark" mode="inline" defaultSelectedKeys={["home"]}
+                selectedKeys={[this.props.page]}
+              >
+                <Menu.Item key="home">
+                  <Link to="/dashboard/">
                     <Icon type="database" />
-                    <span>Home</span>
-                  </Menu.Item>
-                  <Menu.Item key="dashboardNotifications">
+                    <span>{intl.formatMessage({ id: "dashboardSidebarHome" })}</span>
+                  </Link>
+                </Menu.Item>
+                <Menu.Item key="notifications">
+                  <Link to="/dashboard/notifications">
                     <Icon type="bell" />
-                    <span>Notifications</span>
-                  </Menu.Item>
-                  <Menu.Item key="dashboardSetting">
+                    <span>{intl.formatMessage({ id: "dashboardSidebarNotifications" })}</span>
+                  </Link>
+                </Menu.Item>
+                <Menu.Item key="settings">
+                  <Link to="/dashboard/settings">
                     <Icon type="setting" />
-                    <span>Setting</span>
-                  </Menu.Item>
-                  <Dropdown overlay={menu}>
-                    <div style={{position:"absolute", left:24, bottom:10}}>
-                      <Icon type="user"/>&nbsp;&nbsp;{userEmail}
-                    </div>
-                  </Dropdown>
-                </Menu>
-              </Sider>
-              <Layout>
-                <Content style={{ margin: "24px 16px 0" }}>
-                  <div style={{ padding: 24, background: "#fff", minHeight: 360 }}>
-                    {this.props.children}
+                    <span>{intl.formatMessage({ id: "dashboardSidebarSetting" })}</span>
+                  </Link>
+                </Menu.Item>
+                <Dropdown overlay={menu}>
+                  <div style={{position:"absolute", left:24, bottom:10}}>
+                    <Icon type="user"/>&nbsp;&nbsp;{userEmail}
                   </div>
-                </Content>
-                <AppFooter />
-              </Layout>
+                 </Dropdown>
+              </Menu>
+            </Sider>
+            <Layout>
+              <Content style={{ margin: "24px 16px 0" }}>
+                <div style={{ padding: 24, background: "#fff", minHeight: 360 }}>
+                  {this.props.children}
+                </div>
+              </Content>
+              <AppFooter />
             </Layout>
-          </Router>
+          </Layout>
         )}
       </UserContext.Consumer>
-      
     );
   }
 }
 
-export default DashboardLayout;
+export default injectIntl(DashboardLayout);

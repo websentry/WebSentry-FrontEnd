@@ -88,10 +88,10 @@ class Login extends Component {
                       { getFieldDecorator('email', {
                         rules: [{
                           type: 'email',
-                          message: 'The input is not valid E-mail!',
+                          message: 'The input is not valid Email!',
                         }, {
                           required: true,
-                          message: 'Please input your E-mail!',
+                          message: 'Please input your Email!',
                         }],
                       })(
                         <Input
