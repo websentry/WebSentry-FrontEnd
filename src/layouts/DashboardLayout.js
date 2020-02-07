@@ -55,7 +55,8 @@ class DashboardLayout extends React.Component {
                   </Link>
                 </Menu.Item>
                 <Dropdown overlay={ <Menu>
-                                      <Menu.Item key="1">{userEmail}</Menu.Item>
+                                      <Menu.Item key="1" style={{ "color": "black", "cursor": "default" }} disabled>{userEmail}</Menu.Item>
+                                      <Menu.Divider />
                                       <Menu.Item key="2" onClick={onClick}>Logout</Menu.Item>
                                     </Menu>}>
                   <div style={{ position:"absolute", left:24, bottom:10 }}>
