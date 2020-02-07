@@ -15,12 +15,6 @@ const onClick = ({ key }) => {
   window.location.href="/login"
 };
 
-const menu = (
-  <Menu onClick={onClick}>
-    <Menu.Item key="1">logout</Menu.Item>
-  </Menu>
-);
-
 class DashboardLayout extends React.Component {
   render() {
     const { intl } = this.props;
@@ -38,7 +32,6 @@ class DashboardLayout extends React.Component {
                 console.log(collapsed, type);
               }}
             >
-
               <img className="dashboard-logo" src={logo} alt="" />
               <Menu theme="dark" mode="inline" defaultSelectedKeys={["home"]}
                 selectedKeys={[this.props.page]}
@@ -61,11 +54,14 @@ class DashboardLayout extends React.Component {
                     <span>{intl.formatMessage({ id: "dashboardSidebarSetting" })}</span>
                   </Link>
                 </Menu.Item>
-                <Dropdown overlay={menu}>
-                  <div style={{position:"absolute", left:24, bottom:10}}>
-                    <Icon type="user"/>&nbsp;&nbsp;{userEmail}
+                <Dropdown overlay={ <Menu>
+                                      <Menu.Item key="1">{userEmail}</Menu.Item>
+                                      <Menu.Item key="2" onClick={onClick}>Logout</Menu.Item>
+                                    </Menu>}>
+                  <div style={{ position:"absolute", left:24, bottom:10 }}>
+                    <Icon type="user"/>&nbsp;&nbsp;{userEmail.length > 15 ? userEmail.substring(0, 15) + "..." : userEmail}
                   </div>
-                 </Dropdown>
+                </Dropdown>
               </Menu>
             </Sider>
             <Layout>
