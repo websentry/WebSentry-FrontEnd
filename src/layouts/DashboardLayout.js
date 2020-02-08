@@ -1,21 +1,20 @@
-import React from 'react';
+import React, { Component} from 'react';
 import { Layout, Menu, Icon, Dropdown } from 'antd';
-import { Link } from 'react-router-dom';
 import { injectIntl } from 'react-intl'; 
 import AppFooter from './AppFooter';
 import logo from '../assets/logo.png'
 import './DashboardLayout.less'
 import { UserContext } from '../UserContext';
+import api from '../helpers/Api';
+import { Link } from "react-router-dom";
 
 const { Content, Sider } = Layout;
 
-const onClick = ({ key }) => {
-  localStorage.removeItem('ws-token');
-  sessionStorage.removeItem('ws-token');
-  window.location.href="/login"
-};
-
-class DashboardLayout extends React.Component {
+class DashboardLayout extends Component {  
+  onClick = () => {
+    api.logout();
+    this.props.userContext.toggleRefresh();
+  };
   render() {
     const { intl } = this.props;
     return (
@@ -57,7 +56,7 @@ class DashboardLayout extends React.Component {
                 <Dropdown overlay={ <Menu>
                                       <Menu.Item key="1" style={{ "color": "black", "cursor": "default" }} disabled>{userEmail}</Menu.Item>
                                       <Menu.Divider />
-                                      <Menu.Item key="2" onClick={onClick}>Logout</Menu.Item>
+                                      <Menu.Item key="2" onClick={this.onClick}>Logout</Menu.Item>
                                     </Menu>}>
                   <div style={{ position:"absolute", left:24, bottom:10 }}>
                     <Icon type="user"/>&nbsp;&nbsp;{userEmail.length > 15 ? userEmail.substring(0, 15) + "..." : userEmail}
@@ -80,4 +79,12 @@ class DashboardLayout extends React.Component {
   }
 }
 
-export default injectIntl(DashboardLayout);
+const WithContext = (Component) => {
+  return (props) => (
+      <UserContext.Consumer>
+        {userContext =>  <Component {...props} userContext={userContext} />}
+      </UserContext.Consumer>
+  )
+}
+
+export default injectIntl(WithContext(DashboardLayout));

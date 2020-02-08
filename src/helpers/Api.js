@@ -159,4 +159,9 @@ api.addServerChan = async (name, sckey) => {
     return await requestApi('notification/add_serverchan', params, null, true);
 }
 
+api.logout = async () => {
+    localStorage.removeItem('ws-token');
+    sessionStorage.removeItem('ws-token');
+}
+
 export default api;
