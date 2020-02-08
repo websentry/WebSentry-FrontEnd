@@ -18,12 +18,12 @@ class TaskItem extends Component {
           className="task-card"
           actions={[
             <Tooltip title="Detail">
-              <Button href={"/dashboard/sentry/" + this.item.id}>
+              <Button href={"/dashboard/sentry/" + this.item.id} type="link">
                 <Icon type="project" />
               </Button>
             </Tooltip>,
             <Tooltip title="Edit">
-              <Button>
+              <Button type="link">
                 <Icon type="edit" />
               </Button>
             </Tooltip>

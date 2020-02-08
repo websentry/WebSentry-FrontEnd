@@ -38,7 +38,6 @@ class SentryDetail extends Component {
     } else {
       console.log("ERROR");
     }
-    console.log("->", this.state);
   }
 
   getHistoryImageURL(filename) {
