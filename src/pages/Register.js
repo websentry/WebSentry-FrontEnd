@@ -334,9 +334,9 @@ class Register extends Component {
       <AppLayout page="register">
         <Card className="register-form-card">
           <Steps current={this.state.current}>
-            <Step key={"Register"} title={"Register"} />
-            <Step key={"Verification"} title={"Verification"} />
-            <Step key={"Complete"} title={"Complete"} />
+            <Step key={"Register"} title={"Register"} icon={<Icon type="user" />} />
+            <Step key={"Verification"} title={"Verification"} icon={<Icon type="solution" />} />
+            <Step key={"Complete"} title={"Complete"} icon={<Icon type="smile-o" />} />
           </Steps>
           <div className="steps-content">{
             <div>

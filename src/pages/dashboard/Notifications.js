@@ -15,8 +15,11 @@ class Notifications extends Component {
       addLoading: false,
       alertMsg: ""
     };
-    this.loadData();
     this.handleServerChanSubmit = this.handleServerChanSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    this.loadData();
   }
 
   async loadData() {
