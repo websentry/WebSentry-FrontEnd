@@ -119,7 +119,7 @@ class Notifications extends Component {
       <DashboardLayout page="notifications">
       <div page="dashboardNotifications">
         <PageHeader 
-          title={<h2>Notification Methods</h2>}
+          title="Notification Methods"
           extra={
             <Button
               type="primary"
