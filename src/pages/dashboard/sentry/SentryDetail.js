@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { FormattedMessage } from 'react-intl';
 import DashboardLayout from '../../../layouts/DashboardLayout';
-import { Collapse, Descriptions, Divider, List, PageHeader } from 'antd';
+import { Collapse, Descriptions, Divider, List, PageHeader, Tag } from 'antd';
 import api from '../../../helpers/Api.js';
 import moment from 'moment';
+import { withRouter } from "react-router";
 
 const { Panel } = Collapse;
 
@@ -11,7 +13,7 @@ class SentryDetail extends Component {
     super(props);
     this.state = {
       loading: true,
-      id: this.props.location.pathname.split("/").pop(),
+      id: this.props.match.params.sentryID,
       data: [],
       notification: [],
       image: [],
@@ -36,6 +38,7 @@ class SentryDetail extends Component {
         imageHistory: response.data.imageHistory.images.reverse()
       });
     } else {
+      // TODO error handling
       console.log("ERROR");
     }
   }
@@ -51,9 +54,7 @@ class SentryDetail extends Component {
           title={"Sentry Detail"}
         />
         <Divider />
-        <List
-          loading={this.state.loading}
-        >
+        <List loading={this.state.loading}>
           <Descriptions column={2} style={{paddingBottom: "24px"}} bordered>
             <Descriptions.Item label="Name">{this.state.data.name}</Descriptions.Item>
             <Descriptions.Item label="Create Time">{moment(this.state.data.createTime).format('MMMM Do YYYY, h:mm A')}</Descriptions.Item>
@@ -61,20 +62,30 @@ class SentryDetail extends Component {
             <Descriptions.Item label="Interval">{this.state.data.interval}</Descriptions.Item>
             <Descriptions.Item label="Checked Count">{this.state.data.checkCount}</Descriptions.Item>
             <Descriptions.Item label="Notified Count">{this.state.data.notifyCount}</Descriptions.Item>
+            <Descriptions.Item label="Notification Method">
+              { this.state.notification.type === "email" ?
+                <div>
+                  <Tag color="#87d068">Email</Tag>
+                  <FormattedMessage
+                    id='defaultEmail'
+                    defaultMessage='Default Email'
+                  />
+                </div>
+                :
+                <div>
+                  <Tag color="#4b90de">ServerChan</Tag>
+                  { this.state.notification.name }
+                </div>
+              }
+            </Descriptions.Item>
           </Descriptions>
         </List>
         <Collapse defaultActiveKey={['1']}>
-          <Panel header="Notification Info" key="1">
-            <Descriptions column={2} bordered>
-              <Descriptions.Item label="Notification Name">{this.state.notification.name}</Descriptions.Item>
-              <Descriptions.Item label="Notification Type">{this.state.notification.type}</Descriptions.Item>
-              }
-            </Descriptions>
-          </Panel>
-          <Panel header="Screenshot History" key="2">
+          <Panel header="Screenshot History" key="1">
             <List 
-              itemLayout="horizontal"
+              itemLayout="vertical"
               dataSource={this.state.imageHistory}
+              pagination={{ pageSize: 3 }}
               renderItem={item => (
                 <List.Item
                   extra={
@@ -99,4 +110,4 @@ class SentryDetail extends Component {
   }
 }
 
-export default SentryDetail;
+export default withRouter(SentryDetail);

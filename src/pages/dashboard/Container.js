@@ -12,7 +12,7 @@ class Container extends Component {
           <Route exact path="/dashboard" component={Home} />
           <Route path="/dashboard/newSentry" component={NewSentry} />
           <Route path="/dashboard/notifications" component={Notifications} />
-          <Route path="/dashboard/sentry" component={SentryDetail} />
+          <Route path="/dashboard/sentry/:sentryID" component={SentryDetail} />
         </Switch>
     );
   }
