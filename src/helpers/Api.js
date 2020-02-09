@@ -112,6 +112,13 @@ api.getAllSentries = async () => {
     return await requestApi('sentry/list', {}, null, true);
 }
 
+api.getSentryInfo = async (id) => {
+    const params = {
+        id: id
+    };
+    return await requestApi('sentry/info', params, null, true);
+}
+
 api.requestFullScreenshot = async (url) => {
     const params = {url: url};
     return await requestApi('sentry/request_full_screenshot', params, null, true);
@@ -157,6 +164,10 @@ api.addServerChan = async (name, sckey) => {
         sckey: sckey
     };
     return await requestApi('notification/add_serverchan', params, null, true);
+}
+
+api.getHistoryImage = (filename) => {
+    return process.env.REACT_APP_BACKEND_URL + 'common/get_history_image?filename=' + filename
 }
 
 export default api;
