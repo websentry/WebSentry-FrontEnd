@@ -5,6 +5,7 @@ import BottomNav from './BottomNav';
 import 'react-image-crop/dist/ReactCrop.css';
 import api from '../../../helpers/Api.js';
 import './NewSentry.less';
+import DashboardLayout from '../../../layouts/DashboardLayout';
 
 const { Title } = Typography;
 const { Search } = Input;
@@ -306,6 +307,7 @@ class NewSentry extends Component {
     if (this.state.currentSection === 2) { doneIcon = <Icon type="smile-o" />; };
     return (
       <div>
+        <DashboardLayout page="home">
         <Steps current={this.state.currentSection} className="my-3 px-5">
           <Step title="Enter an url" icon={urlIcon}/>
           <Step title="Crop and enter basic info" icon={cropIcon} />
@@ -314,6 +316,7 @@ class NewSentry extends Component {
         <div className="cropHeight p-6">
           {this.renderSection()}
         </div>
+        </DashboardLayout>
       </div>
     );
   }

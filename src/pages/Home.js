@@ -4,6 +4,10 @@ import './Home.less';
 
 class Home extends React.Component {
 
+  componentDidMount() {
+    document.title = "WebSentry"
+  }
+
   render() {
     return (
       <AppLayout page="home">
