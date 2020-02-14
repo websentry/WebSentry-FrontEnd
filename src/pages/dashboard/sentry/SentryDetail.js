@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import DashboardLayout from '../../../layouts/DashboardLayout';
-import { Collapse, Descriptions, Divider, List, PageHeader, Tag } from 'antd';
+import { Button, Collapse, Descriptions, Divider, List, PageHeader, Tag } from 'antd';
 import api from '../../../helpers/Api.js';
 import moment from 'moment';
 import { withRouter } from "react-router";
@@ -52,6 +52,7 @@ class SentryDetail extends Component {
       <DashboardLayout page="home">
         <PageHeader
           title={"Sentry Detail"}
+          onBack={() => {this.props.history.push('/dashboard');}}
         />
         <Divider />
         <List loading={this.state.loading}>
@@ -80,9 +81,10 @@ class SentryDetail extends Component {
             </Descriptions.Item>
           </Descriptions>
         </List>
-        <Collapse defaultActiveKey={['1']}>
+        <Collapse defaultActiveKey={['1']} style={{ marginBottom: "16px"}}>
           <Panel header="Screenshot History" key="1">
             <List 
+              loading={this.state.loading}
               itemLayout="vertical"
               dataSource={this.state.imageHistory}
               pagination={{ pageSize: 3 }}

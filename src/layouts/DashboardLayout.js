@@ -66,7 +66,7 @@ class DashboardLayout extends Component {
             </Sider>
             <Layout>
               <Content style={{ margin: "24px 16px 0" }}>
-                <div style={{ padding: 24, background: "#fff", minHeight: 360 }}>
+                <div style={{ padding: 24, background: "#fff", minHeight: "90vh", paddingBottom: "80px" }}>
                   {this.props.children}
                 </div>
               </Content>

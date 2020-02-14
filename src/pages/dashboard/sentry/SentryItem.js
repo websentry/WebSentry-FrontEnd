@@ -48,7 +48,7 @@ class TaskItem extends Component {
                     </tr>
                     <tr>
                       <td>
-                        <Tooltip title="last check">
+                        <Tooltip title="Last check">
                           <Tag>
                             <Icon type="clock-circle" />
                           </Tag>
