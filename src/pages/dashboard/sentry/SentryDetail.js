@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import DashboardLayout from '../../../layouts/DashboardLayout';
-import { Button, Collapse, Descriptions, Divider, List, PageHeader, Tag } from 'antd';
+import { Collapse, Descriptions, Divider, List, PageHeader, Tag } from 'antd';
 import api from '../../../helpers/Api.js';
 import moment from 'moment';
 import { withRouter } from "react-router";
