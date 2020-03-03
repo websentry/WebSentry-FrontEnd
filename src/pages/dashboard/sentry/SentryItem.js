@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Card, Icon, Tooltip, List, Tag, Button } from 'antd';
+import { ClockCircleOutlined, EditOutlined, LinkOutlined, ProjectOutlined } from '@ant-design/icons';
+import { Card, Tooltip, List, Tag, Button } from 'antd';
 import moment from 'moment';
 
 const { Meta } = Card;
@@ -19,12 +20,12 @@ class TaskItem extends Component {
           actions={[
             <Tooltip title="Detail">
               <Button href={"/dashboard/sentry/" + this.item.id} type="link">
-                <Icon type="project" />
+                <ProjectOutlined />
               </Button>
             </Tooltip>,
             <Tooltip title="Edit">
               <Button type="link">
-                <Icon type="edit" />
+                <EditOutlined />
               </Button>
             </Tooltip>
           ]}
@@ -38,7 +39,7 @@ class TaskItem extends Component {
                       <td>
                         <Tooltip title="URL">
                           <Tag>
-                            <Icon type="link" />
+                            <LinkOutlined />
                           </Tag>
                         </Tooltip>
                       </td>
@@ -50,7 +51,7 @@ class TaskItem extends Component {
                       <td>
                         <Tooltip title="Last check">
                           <Tag>
-                            <Icon type="clock-circle" />
+                            <ClockCircleOutlined />
                           </Tag>
                         </Tooltip>
                       </td>

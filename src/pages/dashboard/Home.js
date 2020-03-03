@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { PlusCircleOutlined } from '@ant-design/icons';
 import { PageHeader, Divider, Button, List } from 'antd';
 import DashboardLayout from '../../layouts/DashboardLayout';
 import SentryItem from './sentry/SentryItem';
@@ -58,7 +59,7 @@ class Home extends Component {
           extra={
             <Button
               type="primary"
-              icon="plus-circle"
+              icon={<PlusCircleOutlined />}
               size="default"
               onClick={this.showCreateSentry}>
               Create Sentry

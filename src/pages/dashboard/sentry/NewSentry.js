@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { Card, Form, Icon, Input, Row, Select, Spin, Steps, Typography } from 'antd';
+import { LoadingOutlined, SmileOutlined } from '@ant-design/icons';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Card, Input, Row, Select, Spin, Steps, Typography } from 'antd';
 import ReactCrop from 'react-image-crop';
 import BottomNav from './BottomNav';
 import 'react-image-crop/dist/ReactCrop.css';
@@ -302,9 +305,9 @@ class NewSentry extends Component {
     let urlIcon = null;
     let cropIcon = null;
     let doneIcon = null;
-    if (this.state.isUrlLoading) { urlIcon = <Icon type="loading" />; };
-    if (this.state.isFormLoading) { cropIcon = <Icon type="loading" />; };
-    if (this.state.currentSection === 2) { doneIcon = <Icon type="smile-o" />; };
+    if (this.state.isUrlLoading) { urlIcon = <LoadingOutlined />; };
+    if (this.state.isFormLoading) { cropIcon = <LoadingOutlined />; };
+    if (this.state.currentSection === 2) { doneIcon = <SmileOutlined />; };
     return (
       <div>
         <DashboardLayout page="home">

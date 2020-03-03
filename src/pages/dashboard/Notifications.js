@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import { Button, Divider, Form, Input, List, message, Modal, PageHeader } from 'antd';
+import { PlusCircleOutlined } from '@ant-design/icons';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Button, Divider, Input, List, message, Modal, PageHeader } from 'antd';
 import DashboardLayout from '../../layouts/DashboardLayout';
 import NotificationItem from './NotificationItem';
-import { injectIntl } from 'react-intl'; 
+import { injectIntl } from 'react-intl';
 import api from '../../helpers/Api.js';
 
 class Notifications extends Component {
@@ -123,7 +126,7 @@ class Notifications extends Component {
           extra={
             <Button
               type="primary"
-              icon="plus-circle"
+              icon={<PlusCircleOutlined />}
               size="default"
               style={{ marginLeft: "32px" }}
               onClick={this.showModal}

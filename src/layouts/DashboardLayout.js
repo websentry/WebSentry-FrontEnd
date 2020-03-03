@@ -1,6 +1,7 @@
 import React, { Component} from 'react';
-import { Layout, Menu, Icon, Dropdown } from 'antd';
-import { injectIntl } from 'react-intl'; 
+import { BellOutlined, DatabaseOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import { Layout, Menu, Dropdown } from 'antd';
+import { injectIntl } from 'react-intl';
 import AppFooter from './AppFooter';
 import logo from '../assets/logo.png'
 import './DashboardLayout.less'
@@ -37,19 +38,19 @@ class DashboardLayout extends Component {
               >
                 <Menu.Item key="home">
                   <Link to="/dashboard/">
-                    <Icon type="database" />
+                    <DatabaseOutlined />
                     <span>{intl.formatMessage({ id: "dashboardSidebarHome" })}</span>
                   </Link>
                 </Menu.Item>
                 <Menu.Item key="notifications">
                   <Link to="/dashboard/notifications">
-                    <Icon type="bell" />
+                    <BellOutlined />
                     <span>{intl.formatMessage({ id: "dashboardSidebarNotifications" })}</span>
                   </Link>
                 </Menu.Item>
                 <Menu.Item key="settings">
                   <Link to="/dashboard/settings">
-                    <Icon type="setting" />
+                    <SettingOutlined />
                     <span>{intl.formatMessage({ id: "dashboardSidebarSetting" })}</span>
                   </Link>
                 </Menu.Item>
@@ -59,7 +60,7 @@ class DashboardLayout extends Component {
                                       <Menu.Item key="2" onClick={this.onClick}>Logout</Menu.Item>
                                     </Menu>}>
                   <div style={{ position:"absolute", left:24, bottom:10 }}>
-                    <Icon type="user"/>&nbsp;&nbsp;{userEmail.length > 15 ? userEmail.substring(0, 15) + "..." : userEmail}
+                    <UserOutlined />&nbsp;&nbsp;{userEmail.length > 15 ? userEmail.substring(0, 15) + "..." : userEmail}
                   </div>
                 </Dropdown>
               </Menu>

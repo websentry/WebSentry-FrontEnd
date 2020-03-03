@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import {
-  Alert, Button, Card, Checkbox, Form, Icon, Input,
-} from 'antd';
+import { LockOutlined, MailOutlined } from '@ant-design/icons';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Alert, Button, Card, Checkbox, Input } from 'antd';
 import queryString from 'query-string'
 import AppLayout from '../layouts/AppLayout';
 import { UserContext } from '../UserContext';
@@ -96,10 +97,7 @@ class Login extends Component {
                       })(
                         <Input
                           prefix={(
-                            <Icon
-                              type="mail"
-                              style={{ fontSize: '16px', color: 'rgba(0,0,0,.25)' }}
-                            />
+                            <MailOutlined style={{ fontSize: '16px', color: 'rgba(0,0,0,.25)' }} />
                           )}
                           size="large"
                           placeholder="Email"
@@ -113,10 +111,7 @@ class Login extends Component {
                       })(
                         <Input.Password
                           prefix={(
-                            <Icon
-                              type="lock"
-                              style={{ fontSize: '16px', color: 'rgba(0,0,0,.25)' }}
-                            />
+                            <LockOutlined style={{ fontSize: '16px', color: 'rgba(0,0,0,.25)' }} />
                           )}
                           size="large"
                           type="password"
