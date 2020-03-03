@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ant-design/compatible": "^1.0.0",
     "antd": "^4.0.0",
     "axios": "^0.18.1",
     "babel-plugin-import": "^1.11.0",
