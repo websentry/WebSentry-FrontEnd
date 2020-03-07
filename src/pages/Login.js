@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
+import AppLayout from '../layouts/AppLayout';
+
+import {
+  LockOutlined,
+  MailOutlined
+} from '@ant-design/icons';
+
 import { Link } from "react-router-dom";
-import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
+
 import { Alert, Button, Card, Checkbox, Input } from 'antd';
-import queryString from 'query-string'
-import AppLayout from '../layouts/AppLayout';
+
+import queryString from 'query-string';
 import { UserContext } from '../UserContext';
 import './Login.less';
 import api from '../helpers/Api.js';
@@ -84,8 +91,13 @@ class Login extends Component {
             return (
               <AppLayout page="login">
                 <Card className="login-form-card">
-                  <Form onSubmit={this.handleSubmit} className="login-form">
-                    <Form.Item>
+                  <Form
+                    name="login_form"
+                    className="login-form"
+                    onSubmit={this.handleSubmit}
+                    initialValues={{ remember: true }}
+                  >
+                    <Form.Item style={{ minWidth: '100%' }}>
                       { getFieldDecorator('email', {
                         rules: [{
                           type: 'email',
@@ -96,12 +108,9 @@ class Login extends Component {
                         }],
                       })(
                         <Input
-                          prefix={(
-                            <MailOutlined style={{ fontSize: '16px', color: 'rgba(0,0,0,.25)' }} />
-                          )}
+                          prefix={<MailOutlined className="site-form-item-icon" />}
                           size="large"
                           placeholder="Email"
-                          style={{ marginBottom: '12px' }}
                         />,
                       )}
                     </Form.Item>
@@ -110,9 +119,7 @@ class Login extends Component {
                         rules: [{ required: true, message: 'Please input your Password!' }],
                       })(
                         <Input.Password
-                          prefix={(
-                            <LockOutlined style={{ fontSize: '16px', color: 'rgba(0,0,0,.25)' }} />
-                          )}
+                          prefix={<LockOutlined className="site-form-item-icon" />}
                           size="large"
                           type="password"
                           placeholder="Password"
@@ -142,7 +149,7 @@ class Login extends Component {
                         size="large"
                         htmlType="submit"
                         loading={this.state.loading}
-                        className="login-form-button"
+                        // className="login-form-button"
                         block
                       >
                       Login

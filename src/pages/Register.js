@@ -215,7 +215,7 @@ class Register extends Component {
       },
     };
     return (
-      <Form {...formItemLayout} >
+      <Form {...formItemLayout} className="register-form">
         <Form.Item label="Email" className="register-form-item" >
           { getFieldDecorator('email', {
             rules: [{
@@ -269,10 +269,20 @@ class Register extends Component {
 
   stepOne() {
     const { getFieldDecorator } = this.props.form;
+    const formItemLayout = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 8 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 16 },
+      },
+    };
     return (
-      <Form>
+      <Form {...formItemLayout}>
         <Form.Item className="register-form-item" >
-        <Input placeholder="Email" value={this.state.email} disabled />
+          <Input placeholder="Email" value={this.state.email} disabled />
         </Form.Item>
         <Form.Item
           className="register-form-item"
@@ -351,21 +361,34 @@ class Register extends Component {
             </div>
           }
           </div>
-          <Row gutter={24} >
+          {/* <Row gutter={48} > */}
             <div className="steps-action">  
               { this.state.current === 1 && (
+                <Row gutter={24} >
                 <Col span={12} style={{ textAlign: 'left'}}>
                   <Button onClick={() => this.prev()}>
                     <LeftOutlined />
                     Previous
                   </Button>
                 </Col>
+                <Col span={12} style={{ textAlign: 'right' }}>
+                <Button
+                  type="primary"
+                  className="register-form-button"
+                  loading={this.state.registerLoading}
+                  onClick={this.handleStepOne}
+                >
+                  Submit
+                  <RightOutlined />
+                </Button>
+              </Col>
+              </Row>
               )}
               { this.state.current === 0 && (
-                <Col span={24} style={{ textAlign: 'right'}}>
+                <Col span={24} style={{ textAlign: 'right' }}>
                   <Button
                     type="primary"
-                    className="register-form-button"
+                    // className="register-form-button"
                     loading={this.state.verificationLoading}
                     onClick={this.handleStepZero}>
                     Next
@@ -373,21 +396,8 @@ class Register extends Component {
                   </Button>
                 </Col>
               )}
-              { this.state.current === 1 && (
-                <Col span={12} style={{ textAlign: 'right'}}>
-                  <Button
-                    type="primary"
-                    className="register-form-button"
-                    loading={this.state.registerLoading}
-                    onClick={this.handleStepOne}
-                  >
-                    Submit
-                    <RightOutlined />
-                  </Button>
-                </Col>
-              )}
               { this.state.current === 2 && (
-                <Col span={24} style={{ textAlign: 'right'}}>
+                <Col span={24} style={{ textAlign: 'right' }}>
                   <Button
                     type="primary"
                     className="register-form-button"
@@ -399,7 +409,7 @@ class Register extends Component {
                 </Col>
               )}
             </div>
-          </Row>
+          {/* </Row> */}
         </Card>
       </AppLayout>
     );
