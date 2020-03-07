@@ -18,7 +18,7 @@ const { Step } = Steps;
 const initialState = {
   error: null,
   urlError: null,
-  currentSection: 0,
+  currentSection: 2,
   isFormLoading: false,     // form loading
   isUrlLoading: false,        // url loading
   url: "",
@@ -163,7 +163,7 @@ class NewSentry extends Component {
 
   renderUrlSection() {
     return (
-      <div>
+      <div className="p-6">
         <Row>
           <Title level={3}> Enter an URL to create a new task </Title>
         </Row>
@@ -266,21 +266,23 @@ class NewSentry extends Component {
 
   renderCompleteSection() {
     return (
-      <Row className="mt-8 px-7" >
-        <Row justify={"center"} type={"flex"} align={"middle"}>
-          <Title level={2}>Congradulations! All done!</Title>
+      <div className="p-6">
+        <Row className="mt-8 px-7" >
+          <Row justify={"center"} type={"flex"} align={"middle"}>
+            <Title level={2}>Congradulations! All done!</Title>
+          </Row>
+          <Row className="reponsive-bottom-nav">
+            <BottomNav
+              goBack={this.goDashboard}
+              goNext={this.resetState}
+              goBackClassName={"bottom-nav-left-responsive"}
+              goNextClassName={"bottom-nav-right-responsive"}
+              goBackButtonText={"Close"}
+              goNextButtonText={"Create Another"}
+            />
+          </Row>
         </Row>
-        <Row className="reponsive-bottom-nav">
-          <BottomNav
-            goBack={this.goDashboard}
-            goNext={this.resetState}
-            goBackClassName={"bottom-nav-left-responsive"}
-            goNextClassName={"bottom-nav-right-responsive"}
-            goBackButtonText={"Close"}
-            goNextButtonText={"Create Another"}
-          />
-        </Row>
-      </Row>
+      </div>
     )
   }
 
@@ -316,7 +318,7 @@ class NewSentry extends Component {
           <Step title="Crop and enter basic info" icon={cropIcon} />
           <Step title="Done" icon={doneIcon}/>
         </Steps>
-        <div className="cropHeight p-6">
+        <div className="cropHeight">
           {this.renderSection()}
         </div>
         </DashboardLayout>
