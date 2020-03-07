@@ -18,7 +18,7 @@ const { Step } = Steps;
 const initialState = {
   error: null,
   urlError: null,
-  currentSection: 2,
+  currentSection: 0,
   isFormLoading: false,     // form loading
   isUrlLoading: false,        // url loading
   url: "",
@@ -267,8 +267,8 @@ class NewSentry extends Component {
   renderCompleteSection() {
     return (
       <div className="p-6">
-        <Row className="mt-8 px-7" >
-          <Row justify={"center"} type={"flex"} align={"middle"}>
+        <Row className="mt-8 px-7">
+          <Row justify={"center"} type={"flex"} align={"middle"} style={{ margin: "auto" }}>
             <Title level={2}>Congradulations! All done!</Title>
           </Row>
           <Row className="reponsive-bottom-nav">
@@ -318,7 +318,7 @@ class NewSentry extends Component {
           <Step title="Crop and enter basic info" icon={cropIcon} />
           <Step title="Done" icon={doneIcon}/>
         </Steps>
-        <div className="cropHeight">
+        <div className="cropHeight p-0">
           {this.renderSection()}
         </div>
         </DashboardLayout>

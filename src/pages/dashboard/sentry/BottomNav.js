@@ -8,7 +8,7 @@ class BottomNav extends Component {
     let leftClassName = "bottom-nav-left " + this.props.goBackClassName;
     let rightClassName = "bottom-nav-right " + this.props.goNextClassName;
     return (
-      <Row style={{ marginTop: 30 }} gutter={24} justify={"center"} type = {"flex"} align={"middle"}>
+      <Row gutter={0} justify={"center"} type = {"flex"} align={"middle"} style={{ marginTop: 30, minWidth: "100%" }}>
         <Col span={12} className={leftClassName}>
           <Button
             onClick={this.props.goBack}
