@@ -211,7 +211,7 @@ class NewSentry extends Component {
                     message: 'Please input a name for the new sentry!',
                   },
                 ],
-              })(<Input size="large"/>)}
+              })(<Input size="large" style={{ maxWidth: "55%" }} />)}
             </Form.Item>
             <Form.Item label="Crop">
               <ReactCrop
@@ -221,6 +221,7 @@ class NewSentry extends Component {
                 onComplete={this.onCropComplete}
                 onChange={this.onCropChange}
                 keepSelection={true}
+                style={{ maxWidth: "55%" }}
               />
             </Form.Item>
             <Form.Item label="Notification Method">
@@ -235,7 +236,7 @@ class NewSentry extends Component {
               })(
                 <Select
                   size="large"
-                  style={{ width: '50%' }}
+                  style={{ maxWidth: "55%" }}
                   onSelect={this.notifOnchange}
                 >
                   {notificationList.map( notification => {
@@ -318,7 +319,7 @@ class NewSentry extends Component {
           <Step title="Crop and enter basic info" icon={cropIcon} />
           <Step title="Done" icon={doneIcon}/>
         </Steps>
-        <div className="cropHeight p-0">
+        <div className="cropHeight p-5">
           {this.renderSection()}
         </div>
         </DashboardLayout>
