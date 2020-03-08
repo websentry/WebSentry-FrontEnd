@@ -1,19 +1,19 @@
 import React, { Component } from 'react'
 import AppLayout from '../layouts/AppLayout'
+
 import {
-  Alert,
-  Button,
-  Card,
-  Col,
-  Form,
-  Icon,
-  Input,
-  Result,
-  Row,
-  Steps,
-  Tooltip,
-  message
-} from 'antd'
+  LeftOutlined,
+  QuestionCircleOutlined,
+  RightOutlined,
+  SmileOutlined,
+  SolutionOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
+
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+
+import { Alert, Button, Card, Col, Input, Result, Row, Steps, Tooltip, message } from 'antd';
 import './Register.less'
 import api from '../helpers/Api.js'
 
@@ -215,7 +215,7 @@ class Register extends Component {
       },
     };
     return (
-      <Form {...formItemLayout} >
+      <Form {...formItemLayout} className="register-form">
         <Form.Item label="Email" className="register-form-item" >
           { getFieldDecorator('email', {
             rules: [{
@@ -234,7 +234,7 @@ class Register extends Component {
             <span>
               Password&nbsp;
               <Tooltip title="Password requires 8~64 characters.">
-                <Icon type="question-circle-o" />
+                <QuestionCircleOutlined />
               </Tooltip>
             </span>
           }
@@ -269,10 +269,20 @@ class Register extends Component {
 
   stepOne() {
     const { getFieldDecorator } = this.props.form;
+    const formItemLayout = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 8 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 16 },
+      },
+    };
     return (
-      <Form>
+      <Form {...formItemLayout}>
         <Form.Item className="register-form-item" >
-        <Input placeholder="Email" value={this.state.email} disabled />
+          <Input placeholder="Email" value={this.state.email} disabled />
         </Form.Item>
         <Form.Item
           className="register-form-item"
@@ -334,9 +344,9 @@ class Register extends Component {
       <AppLayout page="register">
         <Card className="register-form-card">
           <Steps current={this.state.current}>
-            <Step key={"Register"} title={"Register"} icon={<Icon type="user" />} />
-            <Step key={"Verification"} title={"Verification"} icon={<Icon type="solution" />} />
-            <Step key={"Complete"} title={"Complete"} icon={<Icon type="smile-o" />} />
+            <Step key={"Register"} title={"Register"} icon={<UserOutlined />} />
+            <Step key={"Verification"} title={"Verification"} icon={<SolutionOutlined />} />
+            <Step key={"Complete"} title={"Complete"} icon={<SmileOutlined />} />
           </Steps>
           <div className="steps-content">{
             <div>
@@ -351,58 +361,58 @@ class Register extends Component {
             </div>
           }
           </div>
-          <Row gutter={24} >
+          {/* <Row gutter={48} > */}
             <div className="steps-action">  
               { this.state.current === 1 && (
+                <Row gutter={24} >
                 <Col span={12} style={{ textAlign: 'left'}}>
                   <Button onClick={() => this.prev()}>
-                    <Icon type="left" />
+                    <LeftOutlined />
                     Previous
                   </Button>
                 </Col>
+                <Col span={12} style={{ textAlign: 'right' }}>
+                <Button
+                  type="primary"
+                  className="register-form-button"
+                  loading={this.state.registerLoading}
+                  onClick={this.handleStepOne}
+                >
+                  Submit
+                  <RightOutlined />
+                </Button>
+              </Col>
+              </Row>
               )}
               { this.state.current === 0 && (
-                <Col span={24} style={{ textAlign: 'right'}}>
+                <Col span={24} style={{ textAlign: 'right' }}>
                   <Button
                     type="primary"
-                    className="register-form-button"
+                    // className="register-form-button"
                     loading={this.state.verificationLoading}
                     onClick={this.handleStepZero}>
                     Next
-                    <Icon type="right" />
-                  </Button>
-                </Col>
-              )}
-              { this.state.current === 1 && (
-                <Col span={12} style={{ textAlign: 'right'}}>
-                  <Button
-                    type="primary"
-                    className="register-form-button"
-                    loading={this.state.registerLoading}
-                    onClick={this.handleStepOne}
-                  >
-                    Submit
-                    <Icon type="right" />
+                    <RightOutlined />
                   </Button>
                 </Col>
               )}
               { this.state.current === 2 && (
-                <Col span={24} style={{ textAlign: 'right'}}>
+                <Col span={24} style={{ textAlign: 'right' }}>
                   <Button
                     type="primary"
                     className="register-form-button"
                     href="/login"
                   >
                     Login
-                    <Icon type="right" />
+                    <RightOutlined />
                   </Button>
                 </Col>
               )}
             </div>
-          </Row>
+          {/* </Row> */}
         </Card>
       </AppLayout>
-    )
+    );
   }
 }
 

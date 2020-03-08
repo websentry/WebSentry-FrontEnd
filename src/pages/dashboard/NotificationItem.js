@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Icon, List, Tag, Tooltip } from 'antd';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { List, Tag, Tooltip } from 'antd';
 
 class TaskItem extends Component {
   constructor(props){
@@ -13,10 +14,10 @@ class TaskItem extends Component {
       <List.Item
         actions={[
           <Tooltip title="Delete">
-            <Icon type="delete" style={{ fontSize: "18px", color: "#f5222d" }} />
+            <DeleteOutlined style={{ fontSize: "18px", color: "#f5222d" }} />
           </Tooltip>,
           <Tooltip title="Edit">
-            <Icon type="edit" style={{ fontSize: "18px", color: "#1890ff" }} />
+            <EditOutlined style={{ fontSize: "18px", color: "#1890ff" }} />
           </Tooltip>
         ]}
       >

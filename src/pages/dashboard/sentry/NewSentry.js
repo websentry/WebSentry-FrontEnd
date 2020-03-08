@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { Card, Form, Icon, Input, Row, Select, Spin, Steps, Typography } from 'antd';
+import { LoadingOutlined, SmileOutlined } from '@ant-design/icons';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Card, Input, Row, Select, Spin, Steps, Typography } from 'antd';
 import ReactCrop from 'react-image-crop';
 import BottomNav from './BottomNav';
 import 'react-image-crop/dist/ReactCrop.css';
@@ -160,7 +163,7 @@ class NewSentry extends Component {
 
   renderUrlSection() {
     return (
-      <div>
+      <div className="p-6">
         <Row>
           <Title level={3}> Enter an URL to create a new task </Title>
         </Row>
@@ -208,7 +211,7 @@ class NewSentry extends Component {
                     message: 'Please input a name for the new sentry!',
                   },
                 ],
-              })(<Input size="large"/>)}
+              })(<Input size="large" style={{ maxWidth: "55%" }} />)}
             </Form.Item>
             <Form.Item label="Crop">
               <ReactCrop
@@ -218,6 +221,7 @@ class NewSentry extends Component {
                 onComplete={this.onCropComplete}
                 onChange={this.onCropChange}
                 keepSelection={true}
+                style={{ maxWidth: "55%" }}
               />
             </Form.Item>
             <Form.Item label="Notification Method">
@@ -232,7 +236,7 @@ class NewSentry extends Component {
               })(
                 <Select
                   size="large"
-                  style={{ width: '50%' }}
+                  style={{ maxWidth: "55%" }}
                   onSelect={this.notifOnchange}
                 >
                   {notificationList.map( notification => {
@@ -263,21 +267,23 @@ class NewSentry extends Component {
 
   renderCompleteSection() {
     return (
-      <Row className="mt-8 px-7" >
-        <Row justify={"center"} type={"flex"} align={"middle"}>
-          <Title level={2}>Congradulations! All done!</Title>
+      <div className="p-6">
+        <Row className="mt-8 px-7">
+          <Row justify={"center"} type={"flex"} align={"middle"} style={{ margin: "auto" }}>
+            <Title level={2}>Congradulations! All done!</Title>
+          </Row>
+          <Row className="reponsive-bottom-nav">
+            <BottomNav
+              goBack={this.goDashboard}
+              goNext={this.resetState}
+              goBackClassName={"bottom-nav-left-responsive"}
+              goNextClassName={"bottom-nav-right-responsive"}
+              goBackButtonText={"Close"}
+              goNextButtonText={"Create Another"}
+            />
+          </Row>
         </Row>
-        <Row className="reponsive-bottom-nav">
-          <BottomNav
-            goBack={this.goDashboard}
-            goNext={this.resetState}
-            goBackClassName={"bottom-nav-left-responsive"}
-            goNextClassName={"bottom-nav-right-responsive"}
-            goBackButtonText={"Close"}
-            goNextButtonText={"Create Another"}
-          />
-        </Row>
-      </Row>
+      </div>
     )
   }
 
@@ -302,9 +308,9 @@ class NewSentry extends Component {
     let urlIcon = null;
     let cropIcon = null;
     let doneIcon = null;
-    if (this.state.isUrlLoading) { urlIcon = <Icon type="loading" />; };
-    if (this.state.isFormLoading) { cropIcon = <Icon type="loading" />; };
-    if (this.state.currentSection === 2) { doneIcon = <Icon type="smile-o" />; };
+    if (this.state.isUrlLoading) { urlIcon = <LoadingOutlined />; };
+    if (this.state.isFormLoading) { cropIcon = <LoadingOutlined />; };
+    if (this.state.currentSection === 2) { doneIcon = <SmileOutlined />; };
     return (
       <div>
         <DashboardLayout page="home">
@@ -313,7 +319,7 @@ class NewSentry extends Component {
           <Step title="Crop and enter basic info" icon={cropIcon} />
           <Step title="Done" icon={doneIcon}/>
         </Steps>
-        <div className="cropHeight p-6">
+        <div className="cropHeight p-5">
           {this.renderSection()}
         </div>
         </DashboardLayout>

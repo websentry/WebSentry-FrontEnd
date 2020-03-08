@@ -1,5 +1,6 @@
 import React from 'react';
-import { Icon, Layout, Menu } from 'antd';
+import { GlobalOutlined } from '@ant-design/icons';
+import { Layout, Menu } from 'antd';
 import { FormattedMessage } from 'react-intl';
 import { UserContext } from '../UserContext';
 import { Link } from "react-router-dom";
@@ -41,7 +42,7 @@ class AppHeader extends React.Component {
                       key="language"
                       title={
                         <span>
-                          <Icon type="global" style={{ fontSize: "16px" }} />
+                          <GlobalOutlined style={{ fontSize: "16px" }} />
                         </span>
                       }
                       style={{ float: "right" }}
@@ -85,7 +86,7 @@ class AppHeader extends React.Component {
                       key="language"
                       title={
                         <span>
-                          <Icon type="global" style={{ fontSize: "16px" }} />
+                          <GlobalOutlined style={{ fontSize: "16px" }} />
                         </span>
                       }
                       style={{ float: "right" }}
