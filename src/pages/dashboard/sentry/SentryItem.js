@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { ClockCircleOutlined, EditOutlined, LinkOutlined, ProjectOutlined } from '@ant-design/icons';
-import { Card, Tooltip, List, Tag, Button } from 'antd';
+import { ClockCircleOutlined, DeleteOutlined, LinkOutlined, ProjectOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { Button, Card, List, Modal, Tag, Tooltip, message } from 'antd';
+import api from '../../../helpers/Api.js';
+import { injectIntl } from 'react-intl';
 import moment from 'moment';
 
 const { Meta } = Card;
@@ -8,7 +10,50 @@ const { Meta } = Card;
 class TaskItem extends Component {
   constructor(props){
     super(props);
+    this.state = {
+      visible: false,
+      loading: false,
+      alertMsg: "",
+    }
     this.item = this.props.item;
+    this.confirm = this.confirm.bind(this);
+  }
+
+  showModal = () => {
+    this.setState({
+      visible: true,
+      loading: false
+    });
+  };
+
+  hideModal = e => {
+    this.setState({
+      visible: false,
+      loading: false
+    });
+  };
+
+  async confirm() {
+    const { intl } = this.props;
+    Modal.confirm({
+      title: "Sentry: " + this.item.name,
+      icon: <ExclamationCircleOutlined style={{ color: "#f5222d" }}/>,
+      content: intl.formatMessage({ id: "sentryRemoveText" }),
+      okText: intl.formatMessage({ id: "yes" }),
+      okType: 'danger',
+      cancelText: intl.formatMessage({ id: "no" }),
+      onOk: async () => {
+        const res = await api.removeSentry(this.item.id);
+        if (res.code === api.code.ok) {
+          window.location.reload();
+        } else {
+          message.error(res.detail);
+        }
+      },
+      onCancel: () => {
+        this.hideModal();
+      },
+    });
   }
 
   render() {
@@ -20,12 +65,12 @@ class TaskItem extends Component {
           actions={[
             <Tooltip title="Detail">
               <Button href={"/dashboard/sentry/" + this.item.id} type="link">
-                <ProjectOutlined />
+                <ProjectOutlined style={{ fontSize: "16px"}} />
               </Button>
             </Tooltip>,
-            <Tooltip title="Edit">
-              <Button type="link">
-                <EditOutlined />
+            <Tooltip title="Delete">
+              <Button type="link" onClick={this.confirm}>
+                <DeleteOutlined style={{ fontSize: "16px", color: "#f5222d" }} />
               </Button>
             </Tooltip>
           ]}
@@ -56,7 +101,7 @@ class TaskItem extends Component {
                         </Tooltip>
                       </td>
                       <td>
-                        <span>{moment(this.item.lastCheckTime).fromNow()}</span>
+                        <span>{ moment(this.item.lastCheckTime).fromNow() }</span>
                       </td>
                     </tr>
                   </tbody>
@@ -70,4 +115,4 @@ class TaskItem extends Component {
   }
 }
 
-export default TaskItem;
+export default injectIntl(TaskItem);

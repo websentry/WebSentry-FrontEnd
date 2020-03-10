@@ -49,6 +49,7 @@ class Notifications extends Component {
     });
 
     e.preventDefault();
+    
     const { intl } = this.props;
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
@@ -120,77 +121,77 @@ class Notifications extends Component {
     };
     return (
       <DashboardLayout page="notifications">
-      <div page="dashboardNotifications">
-        <PageHeader 
-          title="Notification Methods"
-          extra={
-            <Button
-              type="primary"
-              icon={<PlusCircleOutlined />}
-              size="default"
-              style={{ marginLeft: "32px" }}
-              onClick={this.showModal}
-            >
-              Create Notification Method
-            </Button>
-          }
-        />
-        <Divider />
-        <List 
-          itemLayout="horizontal"
-          loading={this.state.isLoading}
-          dataSource={this.state.notificationList}
-          renderItem={this.NotificationCard}
-        />
-        <Modal
-          title="Create Notification Method"
-          visible={this.state.visible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-          footer={[
-            <Button
-              key="submit"
-              type="primary"
-              loading={this.state.addLoading}
-              onClick={this.handleServerChanSubmit}
-            >
-              Submit
-            </Button>,
-          ]}
-        >
-          <h3>ServerChan</h3>
-          <Form {...formItemLayout} onSubmit={this.handleServerChanSubmit}>
-            <Form.Item label="Name">
-              {getFieldDecorator('name', {
-                rules: [
-                  {
-                    type: 'string',
-                    message: intl.formatMessage({ id: "notificationInvalidString" }),
-                  },
-                  {
-                    required: true,
-                    message: intl.formatMessage({ id: "notificationServerChanName" }),
-                  },
-                ],
-              })(<Input />)}
-            </Form.Item>
-            <Form.Item label="SCKEY">
-              {getFieldDecorator('sckey', {
-                rules: [
-                  {
-                    type: 'string',
-                    message: intl.formatMessage({ id: "notificationInvalidString" }),
-                  },
-                  {
-                    required: true,
-                    message: intl.formatMessage({ id: "notificationServerChanSCKEY" }),
-                  },
-                ],
-              })(<Input />)}
-            </Form.Item>
-          </Form>
-        </Modal>
-      </div>
+        <div page="dashboardNotifications">
+          <PageHeader 
+            title="Notification Methods"
+            extra={
+              <Button
+                type="primary"
+                icon={<PlusCircleOutlined />}
+                size="default"
+                style={{ marginLeft: "32px" }}
+                onClick={this.showModal}
+              >
+                Create Notification Method
+              </Button>
+            }
+          />
+          <Divider />
+          <List 
+            itemLayout="horizontal"
+            loading={this.state.isLoading}
+            dataSource={this.state.notificationList}
+            renderItem={this.NotificationCard}
+          />
+          <Modal
+            title="Create Notification Method"
+            visible={this.state.visible}
+            onOk={this.handleOk}
+            onCancel={this.handleCancel}
+            footer={[
+              <Button
+                key="submit"
+                type="primary"
+                loading={this.state.addLoading}
+                onClick={this.handleServerChanSubmit}
+              >
+                Submit
+              </Button>,
+            ]}
+          >
+            <h3>ServerChan</h3>
+            <Form {...formItemLayout} onSubmit={this.handleServerChanSubmit}>
+              <Form.Item label="Name">
+                {getFieldDecorator('name', {
+                  rules: [
+                    {
+                      type: 'string',
+                      message: intl.formatMessage({ id: "notificationInvalidString" }),
+                    },
+                    {
+                      required: true,
+                      message: intl.formatMessage({ id: "notificationServerChanName" }),
+                    },
+                  ],
+                })(<Input />)}
+              </Form.Item>
+              <Form.Item label="SCKEY">
+                {getFieldDecorator('sckey', {
+                  rules: [
+                    {
+                      type: 'string',
+                      message: intl.formatMessage({ id: "notificationInvalidString" }),
+                    },
+                    {
+                      required: true,
+                      message: intl.formatMessage({ id: "notificationServerChanSCKEY" }),
+                    },
+                  ],
+                })(<Input />)}
+              </Form.Item>
+            </Form>
+          </Modal>
+        </div>
       </DashboardLayout>
     );
   }

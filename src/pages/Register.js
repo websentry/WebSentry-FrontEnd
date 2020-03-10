@@ -41,9 +41,9 @@ class Register extends Component {
       this.onLoginValueChange('email', e.target.value);
     }
 
-    this.handleStepZero = this.handleStepZero.bind(this)
-    this.handleStepOne = this.handleStepOne.bind(this)
-    this.handleVerification = this.handleVerification.bind(this)
+    this.handleStepZero = this.handleStepZero.bind(this);
+    this.handleStepOne = this.handleStepOne.bind(this);
+    this.handleVerification = this.handleVerification.bind(this);
   }
 
   next() {

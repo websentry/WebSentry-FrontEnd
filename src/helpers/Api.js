@@ -64,10 +64,9 @@ api.code = {
     frontendRequestFailed: 100,
 }
 
-
+// --- user ---
 api.getUserInfo = async () => {
-    let response = await requestApi('user/info', {}, null, true);
-    return response;
+    return await requestApi('user/info', {}, null, true);
 }
 
 api.login = async (email, password, remember = true) => {
@@ -90,10 +89,10 @@ api.login = async (email, password, remember = true) => {
 }
 
 api.verification = async (email) => {
-    const params = { email: email };
-
-    let response = await requestApi('get_verification', params, null, false);
-    return response;
+    const params = {
+        email: email
+    };
+    return await requestApi('get_verification', params, null, false);
 }
 
 api.register = async (email, password, verification) => {
@@ -104,10 +103,15 @@ api.register = async (email, password, verification) => {
     var formData = new FormData();
     formData.set("password", password);
     
-    let response = await requestApi('create_user', params, formData, false);
-    return response
+    return await requestApi('create_user', params, formData, false);
 }
 
+api.logout = async () => {
+    localStorage.removeItem('ws-token');
+    sessionStorage.removeItem('ws-token');
+}
+
+// --- sentry ---
 api.getAllSentries = async () => {
     return await requestApi('sentry/list', {}, null, true);
 }
@@ -125,7 +129,9 @@ api.requestFullScreenshot = async (url) => {
 }
 
 api.waitFullScreenshot = async (taskId) => {
-    const params = {taskId: taskId};
+    const params = {
+        taskId: taskId
+    };
     let response = null;
     do {
         console.log("requesting...");
@@ -154,6 +160,18 @@ api.createSentry = async (name, url, x, y, width, height, notification) => {
     return await requestApi('sentry/create', params, null, true);
 }
 
+api.removeSentry = async (id) => {
+    const params = {
+        id: id
+    };
+    return await requestApi('sentry/remove', params, null, true);
+}
+
+api.getHistoryImage = (filename) => {
+    return process.env.REACT_APP_BACKEND_URL + 'common/get_history_image?filename=' + filename
+}
+
+// --- notification ---
 api.getAllNotifications = async () => {
     return await requestApi('notification/list', {}, null, true);
 }
@@ -164,15 +182,6 @@ api.addServerChan = async (name, sckey) => {
         sckey: sckey
     };
     return await requestApi('notification/add_serverchan', params, null, true);
-}
-
-api.logout = async () => {
-    localStorage.removeItem('ws-token');
-    sessionStorage.removeItem('ws-token');
-}
-
-api.getHistoryImage = (filename) => {
-    return process.env.REACT_APP_BACKEND_URL + 'common/get_history_image?filename=' + filename
 }
 
 export default api;
