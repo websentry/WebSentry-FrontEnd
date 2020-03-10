@@ -15,6 +15,8 @@ const zh_CN = {
 
   dashboardSidebarHome: 'Sentries',
   dashboardSidebarNotifications: '通知方式',
-  dashboardSidebarSetting: '设置'
+  dashboardSidebarSetting: '设置',
+
+  sentryRemoveText: '你想要移除这条嘛？'
 }
 export default zh_CN;

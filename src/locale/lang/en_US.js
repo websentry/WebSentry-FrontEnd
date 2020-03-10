@@ -18,6 +18,8 @@ const en_US = {
 
   dashboardSidebarHome: 'Sentries',
   dashboardSidebarNotifications: 'Notifications',
-  dashboardSidebarSetting: 'Settings'
+  dashboardSidebarSetting: 'Settings',
+
+  sentryRemoveText: 'Do you want to remove this sentry?'
 }
 export default en_US;
