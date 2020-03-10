@@ -3,6 +3,9 @@ const en_US = {
   // TODO: the 'lang' here is a bit weird
   lang: '简体中文',
 
+  yes: 'Yes',
+  no: 'No',
+
   home: 'Home',
   dashboard: 'Dashboard',
   signIn: 'Sign in',
@@ -11,6 +14,7 @@ const en_US = {
   defaultEmail: 'Default Email',
   notification: 'Notifications',
   setting: 'Setting',
+
   notificationSuccessAdd: 'Successfully added!',
   notificationInvalidString: 'The input is not valid string!',
   notificationServerChanName: 'Please input your ServerChan name!',

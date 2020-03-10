@@ -16,7 +16,6 @@ class TaskItem extends Component {
       alertMsg: "",
     }
     this.item = this.props.item;
-
     this.confirm = this.confirm.bind(this);
   }
 
@@ -38,13 +37,12 @@ class TaskItem extends Component {
     const { intl } = this.props;
     Modal.confirm({
       title: "Sentry: " + this.item.name,
-      icon: <ExclamationCircleOutlined />,
+      icon: <ExclamationCircleOutlined style={{ color: "#f5222d" }}/>,
       content: intl.formatMessage({ id: "sentryRemoveText" }),
-      okText: 'Yes',
+      okText: intl.formatMessage({ id: "yes" }),
       okType: 'danger',
-      cancelText: 'No',
+      cancelText: intl.formatMessage({ id: "no" }),
       onOk: async () => {
-        console.log(this.item);
         const res = await api.removeSentry(this.item.id);
         if (res.code === api.code.ok) {
           window.location.reload();
@@ -103,7 +101,7 @@ class TaskItem extends Component {
                         </Tooltip>
                       </td>
                       <td>
-                        <span>{moment(this.item.lastCheckTime).fromNow()}</span>
+                        <span>{ moment(this.item.lastCheckTime).fromNow() }</span>
                       </td>
                     </tr>
                   </tbody>
