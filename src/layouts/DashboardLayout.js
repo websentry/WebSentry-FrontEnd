@@ -2,20 +2,26 @@ import React, { Component} from 'react';
 import { BellOutlined, DatabaseOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { Layout, Menu, Dropdown } from 'antd';
 import { injectIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
 import AppFooter from './AppFooter';
 import logo from '../assets/logo.png'
 import './DashboardLayout.less'
 import { UserContext } from '../UserContext';
 import api from '../helpers/Api';
-import { Link } from "react-router-dom";
 
 const { Content, Sider } = Layout;
 
 class DashboardLayout extends Component {  
-  onClick = () => {
+  constructor() {
+    super();
+    this.state = {siderCollapsed: false};
+  }
+
+  onClickLogout = () => {
     api.logout();
     this.props.userContext.toggleRefresh();
   };
+
   render() {
     const { intl } = this.props;
     return (
@@ -29,7 +35,7 @@ class DashboardLayout extends Component {
                 console.log(broken);
               }}
               onCollapse={(collapsed, type) => {
-                console.log(collapsed, type);
+                this.setState({siderCollapsed: collapsed});
               }}
             >
               <img className="dashboard-logo" src={logo} alt="" />
@@ -54,15 +60,17 @@ class DashboardLayout extends Component {
                     <span>{intl.formatMessage({ id: "dashboardSidebarSetting" })}</span>
                   </Link>
                 </Menu.Item>
-                <Dropdown overlay={ <Menu>
-                                      <Menu.Item key="1" style={{ "color": "black", "cursor": "default" }} disabled>{userEmail}</Menu.Item>
-                                      <Menu.Divider />
-                                      <Menu.Item key="2" onClick={this.onClick}>Logout</Menu.Item>
-                                    </Menu>}>
-                  <div style={{ position:"absolute", left:24, bottom:10 }}>
-                    <UserOutlined />&nbsp;&nbsp;{userEmail.length > 15 ? userEmail.substring(0, 15) + "..." : userEmail}
-                  </div>
-                </Dropdown>
+                { !this.state.siderCollapsed &&
+                  <Dropdown overlay={ <Menu>
+                                        <Menu.Item key="1" style={{ "color": "black", "cursor": "default" }} disabled>{userEmail}</Menu.Item>
+                                        <Menu.Divider />
+                                        <Menu.Item key="2" onClick={this.onClickLogout}>Logout</Menu.Item>
+                                      </Menu>}>
+                    <div style={{ position:"fixed", left:24, bottom:15 }}>
+                      <UserOutlined />&nbsp;&nbsp;{userEmail.length > 15 ? userEmail.substring(0, 15) + "..." : userEmail}
+                    </div>
+                  </Dropdown>
+                }
               </Menu>
             </Sider>
             <Layout>
