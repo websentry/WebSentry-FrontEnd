@@ -319,7 +319,7 @@ class NewSentry extends Component {
           <Step title="Crop and enter basic info" icon={cropIcon} />
           <Step title="Done" icon={doneIcon}/>
         </Steps>
-        <div className="cropHeight p-5">
+        <div className="p-5">
           {this.renderSection()}
         </div>
         </DashboardLayout>
