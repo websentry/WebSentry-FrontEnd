@@ -12,7 +12,6 @@ import '@ant-design/compatible/assets/index.css';
 
 import { Alert, Button, Card, Checkbox, Input } from 'antd';
 
-import queryString from 'query-string';
 import { UserContext } from '../UserContext';
 import './Login.less';
 import api from '../helpers/Api.js';
@@ -78,93 +77,78 @@ class Login extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <UserContext.Consumer>
-        {({ isLoggedIn }) => {
-          if (isLoggedIn) {
-            const values = queryString.parse(this.props.location.search);
-            if (values.path) {
-              this.props.history.push('/' + values.path);
-            } else {
-              this.props.history.push('/dashboard');
+      <AppLayout page="login">
+        <Card className="login-form-card">
+          <Form
+            name="login_form"
+            className="login-form"
+            onSubmit={this.handleSubmit}
+            initialValues={{ remember: true }}
+          >
+            <Form.Item style={{ minWidth: '100%' }}>
+              {getFieldDecorator('email', {
+                rules: [{
+                  type: 'email',
+                  message: 'The input is not valid Email!',
+                }, {
+                  required: true,
+                  message: 'Please input your Email!',
+                }],
+              })(
+                <Input
+                  prefix={<MailOutlined className="site-form-item-icon" />}
+                  size="large"
+                  placeholder="Email"
+                />,
+              )}
+            </Form.Item>
+            <Form.Item>
+              {getFieldDecorator('password', {
+                rules: [{ required: true, message: 'Please input your Password!' }],
+              })(
+                <Input.Password
+                  prefix={<LockOutlined className="site-form-item-icon" />}
+                  size="large"
+                  type="password"
+                  placeholder="Password"
+                />,
+              )}
+            </Form.Item>
+            {this.state.error ?
+              <div className="red-6">{
+                <Alert
+                  message={this.state.error}
+                  type="error"
+                  closable="true"
+                  showIcon />}
+              </div> : null
             }
-          } else {
-            return (
-              <AppLayout page="login">
-                <Card className="login-form-card">
-                  <Form
-                    name="login_form"
-                    className="login-form"
-                    onSubmit={this.handleSubmit}
-                    initialValues={{ remember: true }}
-                  >
-                    <Form.Item style={{ minWidth: '100%' }}>
-                      { getFieldDecorator('email', {
-                        rules: [{
-                          type: 'email',
-                          message: 'The input is not valid Email!',
-                        }, {
-                          required: true,
-                          message: 'Please input your Email!',
-                        }],
-                      })(
-                        <Input
-                          prefix={<MailOutlined className="site-form-item-icon" />}
-                          size="large"
-                          placeholder="Email"
-                        />,
-                      )}
-                    </Form.Item>
-                    <Form.Item>
-                      { getFieldDecorator('password', {
-                        rules: [{ required: true, message: 'Please input your Password!' }],
-                      })(
-                        <Input.Password
-                          prefix={<LockOutlined className="site-form-item-icon" />}
-                          size="large"
-                          type="password"
-                          placeholder="Password"
-                        />,
-                      )}
-                    </Form.Item>
-                    { this.state.error ? 
-                      <div className="red-6">{
-                        <Alert
-                          message={this.state.error}
-                          type="error"
-                          closable="true"
-                          showIcon />}
-                      </div> : null
-                    }
-                    <Form.Item style={{ marginBottom: '0px' }}>
-                      { getFieldDecorator('remember', {
-                        valuePropName: 'checked',
-                        initialValue: true,
-                      })(
-                      <Checkbox>Remember me</Checkbox>
-                      )}
-                      {/* TODO forgot password
+            <Form.Item style={{ marginBottom: '0px' }}>
+              {getFieldDecorator('remember', {
+                valuePropName: 'checked',
+                initialValue: true,
+              })(
+                <Checkbox>Remember me</Checkbox>
+              )}
+              {/* TODO forgot password
                       <a href="/" className="login-form-forgot">Forgot password</a> */}
-                      <Button
-                        type="primary"
-                        size="large"
-                        htmlType="submit"
-                        loading={this.state.loading}
-                        // className="login-form-button"
-                        block
-                      >
-                      Login
+              <Button
+                type="primary"
+                size="large"
+                htmlType="submit"
+                loading={this.state.loading}
+                // className="login-form-button"
+                block
+              >
+                Login
                       </Button>
                       Or
                       {' '}
-                      <Link to="/register/">register now!</Link>
-                    </Form.Item>
-                  </Form>
-                </Card>
-              </AppLayout>
-            );
-          }
-        }}
-      </UserContext.Consumer>
+              <Link to="/register/">register now!</Link>
+            </Form.Item>
+          </Form>
+        </Card>
+      </AppLayout>
     );
   }
 }
