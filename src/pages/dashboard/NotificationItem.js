@@ -12,6 +12,7 @@ class TaskItem extends Component {
   render() {
     return (
       <List.Item
+        style={{paddingLeft: "24px", paddingRight: "24px"}}
         actions={[
           <Tooltip title="Delete">
             <DeleteOutlined style={{ fontSize: "18px", color: "#f5222d" }} />
@@ -29,7 +30,7 @@ class TaskItem extends Component {
                 <Tag color="#4b90de" style={{ marginLeft: "8px" }}>ServerChan</Tag>
               </div>
             }
-            description={this.item.setting.sckey}
+            description={this.item.detail}
           />
         :
           <List.Item.Meta
@@ -42,7 +43,7 @@ class TaskItem extends Component {
                 <Tag color="#87d068" style={{ marginLeft: "8px" }}>Email</Tag>
               </div>
             }
-            description={this.item.setting.email}
+            description={this.item.detail}
           />
         }
       </List.Item>
