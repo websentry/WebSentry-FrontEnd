@@ -35,7 +35,7 @@ class SentryDetail extends Component {
         data: response.data,
         notification: response.data.notification,
         image: response.data.image,
-        imageHistory: response.data.imageHistory.images.reverse()
+        imageHistory: response.data.imageHistory.reverse()
       });
     } else {
       // TODO error handling
