@@ -12,7 +12,7 @@ class TaskItem extends Component {
   render() {
     return (
       <List.Item
-        style={{paddingLeft: "24px", paddingRight: "24px"}}
+        style={{ paddingLeft: "24px", paddingRight: "24px" }}
         actions={[
           <Tooltip title="Delete">
             <DeleteOutlined style={{ fontSize: "18px", color: "#f5222d" }} />
