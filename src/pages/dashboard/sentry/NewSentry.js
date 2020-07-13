@@ -258,7 +258,7 @@ class NewSentry extends Component {
             goNext={this.handleSentrySubmit}
             loading={this.state.isFormLoading}
             goBackButtonText={"Back"}
-            goNextButtonText={"Sumbit"}
+            goNextButtonText={"Submit"}
           />
         </Form>
       </div>

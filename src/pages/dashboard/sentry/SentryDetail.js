@@ -35,7 +35,7 @@ class SentryDetail extends Component {
         data: response.data,
         notification: response.data.notification,
         image: response.data.image,
-        imageHistory: response.data.imageHistory.images.reverse()
+        imageHistory: response.data.imageHistory
       });
     } else {
       // TODO error handling
@@ -99,8 +99,8 @@ class SentryDetail extends Component {
                   }
                 >
                   <List.Item.Meta
-                    title={moment(item.time).format('MMMM Do YYYY, h:mm A')}
-                    description={moment(item.time).fromNow()}
+                    title={moment(item.createdAt).format('MMMM Do YYYY, h:mm A')}
+                    description={moment(item.createdAt).fromNow()}
                   />
                 </List.Item>
               )}
