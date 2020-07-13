@@ -136,7 +136,7 @@ class Notifications extends Component {
               </Button>
             }
           />
-          <Divider style={{ marginBottom: "0px"}} />
+          <Divider style={{ marginBottom: "0px" }} />
           <List 
             itemLayout="horizontal"
             loading={this.state.isLoading}
