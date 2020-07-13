@@ -101,7 +101,7 @@ class TaskItem extends Component {
                         </Tooltip>
                       </td>
                       <td>
-                        <span>{ moment(this.item.lastCheckTime).fromNow() }</span>
+                        <span>{ this.item.lastCheckTime ? moment(this.item.lastCheckTime).fromNow() : "Initializing..." }</span>
                       </td>
                     </tr>
                   </tbody>
