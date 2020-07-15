@@ -8,6 +8,7 @@ import './Dashboard.less';
 class Dashboard extends Component {
 
   renderMain(isLoading, isLoggedIn) {
+    const {pathname} = this.props.location;
     if (isLoading) {
       return (
       <div className="loading-spin-center">
@@ -17,8 +18,10 @@ class Dashboard extends Component {
       if (isLoggedIn) {
         return (<Container />)
       } else {
-        // TODO: pass the current url so it can jump back to this precise page after logged in
-        return (<Redirect to='/login' />)
+        return (<Redirect to={{
+          pathname: "/login",
+          state: { referrer: pathname }
+        }} />)
       }
     }
   }

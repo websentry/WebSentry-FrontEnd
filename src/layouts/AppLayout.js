@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout, Spin } from 'antd';
-import { Redirect } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 import AppHeader from './AppHeader'
 import AppFooter from './AppFooter';
 import { UserContext } from '../UserContext';
@@ -25,6 +25,11 @@ class AppLayout extends React.Component {
               );
             } else {
               if (isLoggedIn) {
+                if (this.props.location.state) {
+                  if (this.props.location.state.referrer) {
+                    return (<Redirect to={this.props.location.state.referrer}/>);
+                  }
+                }
                 return (<Redirect to={'/dashboard'} />);
               }
             }
@@ -46,4 +51,4 @@ class AppLayout extends React.Component {
   }
 }
 
-export default AppLayout;
+export default withRouter(AppLayout);

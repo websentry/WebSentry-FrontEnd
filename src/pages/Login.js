@@ -63,14 +63,13 @@ class Login extends Component {
         }
       }
 
-      this.setState({ loading: false });
-
       if (success) {
-        // async function, no need to wait
         // once finished, this will cause the whole page rerender
         // then the isLoggedIn check below will handle the redirection
-        this.props.userContext.toggleRefresh();
+        await this.props.userContext.toggleRefresh();
       }
+
+      this.setState({ loading: false });
     });
   };
 
