@@ -22,6 +22,8 @@ const MIN_PASSWORD_LENGTH = 8;
 const MAX_PASSWORD_LENGTH = 64;
 
 class Register extends Component {
+  formRef = React.createRef();
+
   constructor(props) {
     super(props);
     this.state = {
@@ -64,23 +66,21 @@ class Register extends Component {
   handleStepZero(e) {
     e.preventDefault();
 
-    this.props.form.validateFields(async (err, values) => {
-      if (!err) {
-        console.log('Received register values of form: ', values);
+    this.formRef.current.validateFields().then(values => {
+      console.log('Received register values of form: ', values);
 
-        this.setState({
-          email: values['email'],
-          password: values['password'],
-          success: false
-        })
+      this.setState({
+        email: values['email'],
+        password: values['password'],
+        success: false
+      })
 
-        this.next();
-      }
-    })
+      this.next();
+    });
   }
 
   // step 1: create account
-  async handleStepOne(e) {
+  handleStepOne(e) {
     e.preventDefault();
 
     this.setState({
@@ -88,38 +88,36 @@ class Register extends Component {
       registerError: null
     })
 
-    this.props.form.validateFields(async (err, values) => {
-      if (!err) {
-        const res = await api.register(
-          this.state.email,
-          this.state.password,
-          values['code']
-        )
+    this.formRef.current.validateFields().then(async values => {
+      const res = await api.register(
+        this.state.email,
+        this.state.password,
+        values['code']
+      )
 
-        if (res.code !== api.code.ok) {
-          let msg;
-          switch (res.code) {
-            case -1:
-              msg = "Wrong verification code"
-              break
-            case -2:
-              msg = "Wrong parameter"
-              break
-            case -6:
-              msg = "Account already exists"
-              break
-            default:
-              msg = "Unknown error";
-              break
-          }
-          this.setState({
-            registerError: msg,
-            success: false
-          })
-          message.info(msg)
-        } else {
-          this.next()
+      if (res.code !== api.code.ok) {
+        let msg;
+        switch (res.code) {
+          case -1:
+            msg = "Wrong verification code"
+            break
+          case -2:
+            msg = "Wrong parameter"
+            break
+          case -6:
+            msg = "Account already exists"
+            break
+          default:
+            msg = "Unknown error";
+            break
         }
+        this.setState({
+          registerError: msg,
+          success: false
+        })
+        message.info(msg)
+      } else {
+        this.next()
       }
     })
     this.setState({ registerLoading: false })
@@ -172,7 +170,7 @@ class Register extends Component {
     }
     this.setState({ verificationLoading: false })
   }
-  
+
   stepZero() {
     const formItemLayout = {
       labelCol: {
@@ -185,7 +183,7 @@ class Register extends Component {
       },
     };
     return (
-      <Form {...formItemLayout} className="register-form">
+      <Form {...formItemLayout} className="register-form" ref={this.formRef}>
         <Form.Item
           label="Email"
           className="register-form-item"
@@ -270,7 +268,7 @@ class Register extends Component {
       },
     };
     return (
-      <Form {...formItemLayout}>
+      <Form {...formItemLayout} ref={this.formRef}>
         <Form.Item className="register-form-item" >
           <Input placeholder="Email" value={this.state.email} disabled />
         </Form.Item>
