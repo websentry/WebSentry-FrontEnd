@@ -39,7 +39,7 @@ class Login extends Component {
       let success = false;
       if (!err) {
         console.log('Received values of form: ', values);
-        
+
         const res = await api.login(values['email'],
                                     values['password'],
                                     values['remember']);
@@ -82,7 +82,7 @@ class Login extends Component {
             name="login_form"
             className="login-form"
             onSubmit={this.handleSubmit}
-            initialValues={{ remember: true }}
+            initialvalues={{ remember: true }}
           >
             <Form.Item style={{ minWidth: '100%' }}>
               {getFieldDecorator('email', {
