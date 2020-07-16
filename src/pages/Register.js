@@ -10,7 +10,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 
-import { Form } from '@ant-design/compatible';
+import { Form } from 'antd';
 import '@ant-design/compatible/assets/index.css';
 
 import { Alert, Button, Card, Col, Input, Result, Row, Steps, Tooltip, message } from 'antd';
@@ -172,38 +172,8 @@ class Register extends Component {
     }
     this.setState({ verificationLoading: false })
   }
-
-  handleConfirmBlur = e => {
-    const { value } = e.target;
-    this.setState({ confirmDirty: this.state.confirmDirty || !!value });
-  }
-
-  compareToFirstPassword = (rule, value, callback) => {
-    const { form } = this.props;
-    if (value && value !== form.getFieldValue('password')) {
-      callback('Two passwords that you enter is inconsistent!');
-    } else {
-      callback();
-    }
-  }
-
-  validateToNextPassword = (rule, value, callback) => {
-    const { form } = this.props;
-
-    if (value && this.state.confirmDirty && 
-        value.length >= MIN_PASSWORD_LENGTH &&
-        value.length <= MAX_PASSWORD_LENGTH ) {
-        form.validateFields(['confirm'], { force: true });
-    } else if (value && value.length < MIN_PASSWORD_LENGTH) {
-      callback('Password length is too short!')
-    } else if (value && value.length > MAX_PASSWORD_LENGTH) {
-      callback('Password length is too long!')
-    }
-    callback();
-  }
-
+  
   stepZero() {
-    const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -216,16 +186,19 @@ class Register extends Component {
     };
     return (
       <Form {...formItemLayout} className="register-form">
-        <Form.Item label="Email" className="register-form-item" >
-          { getFieldDecorator('email', {
-            rules: [{
-              type: 'email',
-              message: 'The input is not valid Email!',
-            }, {
-              required: true,
-              message: 'Please input your Email!',
-            },],
-          }) (<Input onChange={this.emailOnChange} />)}
+        <Form.Item
+          label="Email"
+          className="register-form-item"
+          name="email"
+          rules={[{
+            type: 'email',
+            message: 'The input is not valid Email!',
+          }, {
+            required: true,
+            message: 'Please input your Email!',
+          }]}
+        >
+          <Input onChange={this.emailOnChange} />
         </Form.Item>
         <Form.Item
           className="register-form-item"
@@ -238,37 +211,54 @@ class Register extends Component {
               </Tooltip>
             </span>
           }
-        >
-          { getFieldDecorator('password', {
-            rules: [{
+          name="password"
+          rules={[
+            {
               required: true,
               message: 'Please input your password!',
-            }, {
-              validator: this.validateToNextPassword,
-            },],
-          }) (<Input.Password />)}
+            },
+            () => ({
+              validator(rule,value) {
+                if (value && value.length < MIN_PASSWORD_LENGTH) {
+                  return Promise.reject('Password length is too short!')
+                } else if (value && value.length > MAX_PASSWORD_LENGTH) {
+                  return Promise.reject('Password length is too long!')
+                }
+                return Promise.resolve();
+              }
+            })
+          ]}
+        >
+          <Input.Password />
         </Form.Item>
         <Form.Item
           className="register-form-item"
           hasFeedback
           label="Confirm Password"
-        >
-          { getFieldDecorator('confirm', {
-            rules: [{
+          name="confirm"
+          dependencies={['password']}
+          rules={[
+            {
               required: true,
               message: 'Please confirm your password!',
-            }, {
-              validator: this.compareToFirstPassword,
-            },],
-          }) (<Input.Password onBlur={this.handleConfirmBlur}
-            />)}
+            },
+            ({ getFieldValue }) => ({
+              validator(rule, value) {
+                if (!value || getFieldValue('password') === value) {
+                  return Promise.resolve();
+                }
+
+                return Promise.reject('The two passwords that you entered do not match!');
+            }})
+          ]}
+        >
+          <Input.Password/>
         </Form.Item>
       </Form>
     );
   }
 
   stepOne() {
-    const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -287,15 +277,15 @@ class Register extends Component {
         <Form.Item
           className="register-form-item"
           extra="We must make sure that your email is valid."
+          name="code"
+          rules={[{
+            required: true,
+            message: 'Please input the verification code!'
+          }]}
         >
           <Row gutter={8} >
           <Col span={12} >
-            { getFieldDecorator('code', {
-              rules: [{
-                required: true,
-                message: 'Please input the verification code!'
-              }],
-            })(<Input placeholder="Verification Code" />)}
+            <Input placeholder="Verification Code" />
           </Col>
           <Col span={12}>
             <Button
@@ -362,7 +352,7 @@ class Register extends Component {
           }
           </div>
           {/* <Row gutter={48} > */}
-            <div className="steps-action">  
+            <div className="steps-action">
               { this.state.current === 1 && (
                 <Row gutter={24} >
                 <Col span={12} style={{ textAlign: 'left'}}>
@@ -416,4 +406,4 @@ class Register extends Component {
   }
 }
 
-export default Form.create()(Register)
+export default Register
