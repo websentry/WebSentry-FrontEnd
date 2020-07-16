@@ -143,7 +143,13 @@ class SentryDetail extends Component {
                 </div>
               }
             </Descriptions.Item>
-            <Descriptions.Item label='Interval'>{this.state.data.interval}</Descriptions.Item>
+            <Descriptions.Item label='Interval'>
+              {this.state.data.interval >= 60 ? 
+              <div>{ this.state.data.interval === 60 ?
+                <div>{this.state.data.interval / 60 + ' hour'}</div> : 
+                <div>{this.state.data.interval / 60 + ' hours'}</div>}</div> : 
+              <div>{this.state.data.interval + ' minutes'}</div> }
+              </Descriptions.Item>
             <Descriptions.Item label='Checked Count'>{this.state.data.checkCount}</Descriptions.Item>
             <Descriptions.Item label='Notified Count'>{this.state.data.notifyCount}</Descriptions.Item>
           </Descriptions>

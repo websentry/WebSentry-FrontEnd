@@ -11,7 +11,7 @@ import DashboardLayout from '../../../layouts/DashboardLayout';
 
 const { Title } = Typography;
 const { Search } = Input;
-const { Option } = Select;
+const { Option, OptGroup } = Select;
 const { Step } = Steps;
 
 const initialState = {
@@ -57,7 +57,9 @@ class NewSentry extends Component {
 
     if (response.code === api.code.ok) {
       this.setState({
-        notificationList: response.data.notifications
+        // update default email name value
+        notificationList: response.data.notifications.map(n => 
+          (n.name === '--default--' ? {...n, name: 'Default Email'} : n))
       });
     } else {
       console.log('---- Error ----');
@@ -119,7 +121,7 @@ class NewSentry extends Component {
     console.log('Received values of form: ', values);
 
     let notificationDic = {};
-    this.state.notificationList.map( notification =>
+    this.state.notificationList.map(notification =>
       notificationDic[notification.name] = notification.id
     );
 
@@ -139,7 +141,7 @@ class NewSentry extends Component {
                           width, height, notificationDic[notificationMethod]);
     let res = await api.createSentry(sentryName, url, x, y,
                           width, height, notificationDic[notificationMethod]);
-    console.log(res);
+    console.log("X",res);
     if (res.code === api.code.ok) {
       this.setState({ isFormLoading: false, currentSection: 2 });
     } else {
@@ -231,15 +233,28 @@ class NewSentry extends Component {
                 style={{ maxWidth: '55%' }}
                 onSelect={this.notifyMethodOnChange}
               >
-                {notificationList.map(notification => {
-                  return (
-                    <Option
-                      value={notification.name}
-                      key={notification.id}
-                    >
-                      {notification.name}
-                    </Option>)
-                })}
+                <OptGroup label="Email">
+                  {notificationList.filter(n => n.type === 'email').map(n => {
+                    return (
+                      <Option
+                        value={n.name}
+                        key={n.id}
+                      >
+                        {n.name}
+                      </Option>)
+                  })}
+                </OptGroup>
+                <OptGroup label="ServerChan">
+                  {notificationList.filter(n => n.type === 'serverchan').map(n => {
+                    return (
+                      <Option
+                        value={n.name}
+                        key={n.id}
+                      >
+                        {n.name}
+                      </Option>)
+                  })}
+                </OptGroup>
               </Select>
             </Form.Item>
           </Card>
@@ -249,7 +264,7 @@ class NewSentry extends Component {
             </div> : null }
           <BottomNav
             goBack={this.goUrlSection}
-            goNext={this.handleSentrySubmit}
+            // goNext={this.handleSentrySubmit}
             loading={this.state.isFormLoading}
             goBackButtonText={'Back'}
             goNextButtonText={'Submit'}
