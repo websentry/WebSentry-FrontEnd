@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import DashboardLayout from '../../../layouts/DashboardLayout';
-import { Collapse, Descriptions, Divider, List, PageHeader, Tag } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
+import { Button, Collapse, Descriptions, Divider, List, Modal, PageHeader, Tag, message } from 'antd';
 import api from '../../../helpers/Api.js';
 import moment from 'moment';
-import { withRouter } from "react-router";
+import { withRouter } from 'react-router';
+import { injectIntl } from 'react-intl';
 
 const { Panel } = Collapse;
 
@@ -13,6 +15,8 @@ class SentryDetail extends Component {
     super(props);
     this.state = {
       loading: true,
+      visible: false,
+      deleteLoading: false,
       id: this.props.match.params.sentryID,
       data: [],
       notification: [],
@@ -20,6 +24,7 @@ class SentryDetail extends Component {
       imageHistory: []
     }
     this.loadData();
+    this.deleteSentry = this.deleteSentry.bind(this);
   }
 
   async loadData() {
@@ -39,30 +44,93 @@ class SentryDetail extends Component {
       });
     } else {
       // TODO error handling
-      console.log("ERROR");
+      console.log('ERROR');
     }
+  }
+
+  async deleteSentry() {
+    this.setState({
+      deleteLoading: true
+    })
+
+    const res = await api.removeSentry(this.state.id);
+    console.log(res)
+    if (res.code === api.code.ok) {
+      this.props.history.push('/dashboard')
+    } else {
+      // wrong sentry ID
+      message.error(res.detail);
+    }
+
+    this.setState({
+      deleteLoading: false
+    })
   }
 
   getHistoryImageURL(filename) {
     return api.getHistoryImage(filename);
   }
 
+  showModal = () => {
+    this.setState({
+      visible: true,
+      deleteLoading: false
+    })
+  }
+
+  handleCancel = () => {
+    this.setState({
+      visible: false
+    })
+  }
+
   render() {
+    const { intl } = this.props;
     return (
-      <DashboardLayout page="home">
+      <DashboardLayout page='home'>
         <PageHeader
-          title={"Sentry Detail: " + this.state.data.name}
+          title={'Sentry Detail: ' + this.state.data.name}
           onBack={() => {this.props.history.push('/dashboard');}}
+          extra={
+            <Button
+              type='primary'
+              icon={<DeleteOutlined />}
+              size='default'
+              onClick={this.showModal}
+              danger
+            >
+              Delete Sentry
+            </Button>
+          }
         />
+        <Modal
+          title='Delete Sentry'
+          visible={this.state.visible}
+          onOk={this.deleteSentry}
+          onCancel={this.handleCancel}
+          footer={[
+            <Button
+              key='submit'
+              type='primary'
+              loading={this.state.deleteLoading}
+              onClick={this.deleteSentry}
+              danger
+            >
+              {intl.formatMessage({ id: 'yes' })}
+            </Button>
+          ]}
+        >
+          {intl.formatMessage({ id: 'sentryRemoveText' })}
+        </Modal>
         <Divider />
         <List loading={this.state.loading}>
-          <Descriptions column={2} style={{paddingBottom: "24px"}} bordered>
-            <Descriptions.Item label="Create Time">{moment(this.state.data.createTime).format('MMMM Do YYYY, h:mm A')}</Descriptions.Item>
-            <Descriptions.Item label="Last Check Time">{moment(this.state.data.lastCheckTime).fromNow()}</Descriptions.Item>
-            <Descriptions.Item label="Notification Method">
-              { this.state.notification.type === "email" ?
+          <Descriptions column={2} style={{ paddingBottom: '24px' }} bordered>
+            <Descriptions.Item label='Create Time'>{moment(this.state.data.createTime).format('MMMM Do YYYY, h:mm A')}</Descriptions.Item>
+            <Descriptions.Item label='Last Check Time'>{moment(this.state.data.lastCheckTime).fromNow()}</Descriptions.Item>
+            <Descriptions.Item label='Notification Method'>
+              { this.state.notification.type === 'email' ?
                 <div>
-                  <Tag color="#87d068">Email</Tag>
+                  <Tag color='#87d068'>Email</Tag>
                   <FormattedMessage
                     id='defaultEmail'
                     defaultMessage='Default Email'
@@ -70,21 +138,21 @@ class SentryDetail extends Component {
                 </div>
                 :
                 <div>
-                  <Tag color="#4b90de">ServerChan</Tag>
+                  <Tag color='#4b90de'>ServerChan</Tag>
                   { this.state.notification.name }
                 </div>
               }
             </Descriptions.Item>
-            <Descriptions.Item label="Interval">{this.state.data.interval}</Descriptions.Item>
-            <Descriptions.Item label="Checked Count">{this.state.data.checkCount}</Descriptions.Item>
-            <Descriptions.Item label="Notified Count">{this.state.data.notifyCount}</Descriptions.Item>
+            <Descriptions.Item label='Interval'>{this.state.data.interval}</Descriptions.Item>
+            <Descriptions.Item label='Checked Count'>{this.state.data.checkCount}</Descriptions.Item>
+            <Descriptions.Item label='Notified Count'>{this.state.data.notifyCount}</Descriptions.Item>
           </Descriptions>
         </List>
-        <Collapse defaultActiveKey={['1']} style={{ marginBottom: "16px"}}>
-          <Panel header="Screenshot History" key="1" showArrow={false}>
+        <Collapse defaultActiveKey={['1']} style={{ marginBottom: '16px' }}>
+          <Panel header='Screenshot History' key='1' showArrow={false}>
             <List 
               loading={this.state.loading}
-              itemLayout="vertical"
+              itemLayout='vertical'
               dataSource={this.state.imageHistory}
               pagination={{ pageSize: 3 }}
               renderItem={item => (
@@ -92,7 +160,7 @@ class SentryDetail extends Component {
                   extra={
                     <img
                       width={272}
-                      alt="screenshot"
+                      alt='screenshot'
                       src={this.getHistoryImageURL(item.file)}
                     />
                   }
@@ -111,4 +179,4 @@ class SentryDetail extends Component {
   }
 }
 
-export default withRouter(SentryDetail);
+export default injectIntl(withRouter(SentryDetail));
