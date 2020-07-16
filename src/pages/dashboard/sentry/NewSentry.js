@@ -95,11 +95,9 @@ class NewSentry extends Component {
     if (url) {
       this.setState({ isUrlLoading: true , urlError: null });
       let res = await api.requestFullScreenshot(this.state.url);
-      console.log(res);
       if (res.code === api.code.ok) {
           let sentryId = res.data.taskId;
           res = await api.waitFullScreenshot(sentryId);
-          console.log(res);
           if (res.code === api.code.ok) {
             this.setState({
                 isUrlLoading: false,
@@ -137,11 +135,9 @@ class NewSentry extends Component {
     height = Math.round(height * this.state.screenshotScaleY);
 
     this.setState({ isFormLoading: true, error: null });
-    console.log(sentryName, url, x, y,
-                          width, height, notificationDic[notificationMethod]);
+
     let res = await api.createSentry(sentryName, url, x, y,
                           width, height, notificationDic[notificationMethod]);
-    console.log("X",res);
     if (res.code === api.code.ok) {
       this.setState({ isFormLoading: false, currentSection: 2 });
     } else {
