@@ -105,14 +105,11 @@ class NewSentry extends Component {
           res = await api.waitFullScreenshot(sentryId);
           console.log(res);
           if (res.code === api.code.ok) {
-            this.setState(
-              {
+            this.setState({
                 isUrlLoading: false,
-                screenshotLink:
-                  api.getFullScreenshotLink(sentryId, res.data.imageToken),
+                screenshotLink: api.getFullScreenshotLink(sentryId, res.data.imageToken),
                 currentSection: 1
-              }
-            );
+            });
           } else {
             this.setState({ isUrlLoading: false, urlError: res.msg  });
           }

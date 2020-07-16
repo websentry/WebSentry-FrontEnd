@@ -51,18 +51,14 @@ class SentryDetail extends Component {
     return (
       <DashboardLayout page="home">
         <PageHeader
-          title={"Sentry Detail"}
+          title={"Sentry Detail: " + this.state.data.name}
           onBack={() => {this.props.history.push('/dashboard');}}
         />
         <Divider />
         <List loading={this.state.loading}>
           <Descriptions column={2} style={{paddingBottom: "24px"}} bordered>
-            <Descriptions.Item label="Name">{this.state.data.name}</Descriptions.Item>
             <Descriptions.Item label="Create Time">{moment(this.state.data.createTime).format('MMMM Do YYYY, h:mm A')}</Descriptions.Item>
             <Descriptions.Item label="Last Check Time">{moment(this.state.data.lastCheckTime).fromNow()}</Descriptions.Item>
-            <Descriptions.Item label="Interval">{this.state.data.interval}</Descriptions.Item>
-            <Descriptions.Item label="Checked Count">{this.state.data.checkCount}</Descriptions.Item>
-            <Descriptions.Item label="Notified Count">{this.state.data.notifyCount}</Descriptions.Item>
             <Descriptions.Item label="Notification Method">
               { this.state.notification.type === "email" ?
                 <div>
@@ -79,10 +75,13 @@ class SentryDetail extends Component {
                 </div>
               }
             </Descriptions.Item>
+            <Descriptions.Item label="Interval">{this.state.data.interval}</Descriptions.Item>
+            <Descriptions.Item label="Checked Count">{this.state.data.checkCount}</Descriptions.Item>
+            <Descriptions.Item label="Notified Count">{this.state.data.notifyCount}</Descriptions.Item>
           </Descriptions>
         </List>
         <Collapse defaultActiveKey={['1']} style={{ marginBottom: "16px"}}>
-          <Panel header="Screenshot History" key="1">
+          <Panel header="Screenshot History" key="1" showArrow={false}>
             <List 
               loading={this.state.loading}
               itemLayout="vertical"
