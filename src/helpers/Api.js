@@ -1,10 +1,12 @@
 import axios from 'axios';
 
+const version = "v1";
+
 // --- helper ---
 async function requestApi(method, params, formData, requireToken) {
     try {
         let options = {
-            url: process.env.REACT_APP_BACKEND_URL + method,
+            url: process.env.REACT_APP_BACKEND_URL + version + '/' + method,
             method: 'post',
             params: params,
             headers: {},
