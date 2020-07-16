@@ -7,14 +7,15 @@ import Login from './Login';
 import Register from './Register';
 import {UserContext} from '../UserContext';
 import Api from '../helpers/Api';
-
-import {IntlProvider, addLocaleData} from 'react-intl';
-import en from 'react-intl/locale-data/en';
-import zh from 'react-intl/locale-data/zh';
+import { IntlProvider } from 'react-intl';
 import zh_CN from '../locale/lang/zh_CN.js';
 import en_US from '../locale/lang/en_US.js';
 
-addLocaleData([...en, ...zh]);
+if (!Intl.PluralRules) {
+  require('@formatjs/intl-pluralrules/polyfill');
+  require('@formatjs/intl-pluralrules/locale-data/en');
+  require('@formatjs/intl-pluralrules/locale-data/zh');
+}
 
 class App extends Component {
   constructor(props) {

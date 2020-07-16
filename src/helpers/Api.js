@@ -1,10 +1,12 @@
 import axios from 'axios';
 
+const VERSION = "v1";
+const BASEURL = process.env.REACT_APP_BACKEND_URL + VERSION + '/';
 // --- helper ---
 async function requestApi(method, params, formData, requireToken) {
     try {
         let options = {
-            url: process.env.REACT_APP_BACKEND_URL + method,
+            url: BASEURL + method,
             method: 'post',
             params: params,
             headers: {},
@@ -102,7 +104,7 @@ api.register = async (email, password, verification) => {
     };
     var formData = new FormData();
     formData.set("password", password);
-    
+
     return await requestApi('create_user', params, formData, false);
 }
 
@@ -142,7 +144,7 @@ api.waitFullScreenshot = async (taskId) => {
 }
 
 api.getFullScreenshotLink = (taskId, imageToken) => {
-    return process.env.REACT_APP_BACKEND_URL +
+    return BASEURL +
            'common/get_full_screenshot_image?taskId=' + taskId +
            '&imageToken=' + imageToken;
 }
@@ -168,7 +170,7 @@ api.removeSentry = async (id) => {
 }
 
 api.getHistoryImage = (filename) => {
-    return process.env.REACT_APP_BACKEND_URL + 'common/get_history_image?filename=' + filename
+    return BASEURL + 'common/get_history_image?filename=' + filename
 }
 
 // --- notification ---

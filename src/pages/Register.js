@@ -10,7 +10,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 
-import { Form } from '@ant-design/compatible';
+import { Form } from 'antd';
 import '@ant-design/compatible/assets/index.css';
 
 import { Alert, Button, Card, Col, Input, Result, Row, Steps, Tooltip, message } from 'antd';
@@ -22,6 +22,8 @@ const MIN_PASSWORD_LENGTH = 8;
 const MAX_PASSWORD_LENGTH = 64;
 
 class Register extends Component {
+  formRef = React.createRef();
+
   constructor(props) {
     super(props);
     this.state = {
@@ -64,23 +66,21 @@ class Register extends Component {
   handleStepZero(e) {
     e.preventDefault();
 
-    this.props.form.validateFields(async (err, values) => {
-      if (!err) {
-        console.log('Received register values of form: ', values);
+    this.formRef.current.validateFields().then(values => {
+      console.log('Received register values of form: ', values);
 
-        this.setState({
-          email: values['email'],
-          password: values['password'],
-          success: false
-        })
+      this.setState({
+        email: values['email'],
+        password: values['password'],
+        success: false
+      })
 
-        this.next();
-      }
-    })
+      this.next();
+    });
   }
 
   // step 1: create account
-  async handleStepOne(e) {
+  handleStepOne(e) {
     e.preventDefault();
 
     this.setState({
@@ -88,38 +88,36 @@ class Register extends Component {
       registerError: null
     })
 
-    this.props.form.validateFields(async (err, values) => {
-      if (!err) {
-        const res = await api.register(
-          this.state.email,
-          this.state.password,
-          values['code']
-        )
+    this.formRef.current.validateFields().then(async values => {
+      const res = await api.register(
+        this.state.email,
+        this.state.password,
+        values['code']
+      )
 
-        if (res.code !== api.code.ok) {
-          let msg;
-          switch (res.code) {
-            case -1:
-              msg = "Wrong verification code"
-              break
-            case -2:
-              msg = "Wrong parameter"
-              break
-            case -6:
-              msg = "Account already exists"
-              break
-            default:
-              msg = "Unknown error";
-              break
-          }
-          this.setState({
-            registerError: msg,
-            success: false
-          })
-          message.info(msg)
-        } else {
-          this.next()
+      if (res.code !== api.code.ok) {
+        let msg;
+        switch (res.code) {
+          case -1:
+            msg = "Wrong verification code"
+            break
+          case -2:
+            msg = "Wrong parameter"
+            break
+          case -6:
+            msg = "Account already exists"
+            break
+          default:
+            msg = "Unknown error";
+            break
         }
+        this.setState({
+          registerError: msg,
+          success: false
+        })
+        message.info(msg)
+      } else {
+        this.next()
       }
     })
     this.setState({ registerLoading: false })
@@ -173,37 +171,7 @@ class Register extends Component {
     this.setState({ verificationLoading: false })
   }
 
-  handleConfirmBlur = e => {
-    const { value } = e.target;
-    this.setState({ confirmDirty: this.state.confirmDirty || !!value });
-  }
-
-  compareToFirstPassword = (rule, value, callback) => {
-    const { form } = this.props;
-    if (value && value !== form.getFieldValue('password')) {
-      callback('Two passwords that you enter is inconsistent!');
-    } else {
-      callback();
-    }
-  }
-
-  validateToNextPassword = (rule, value, callback) => {
-    const { form } = this.props;
-
-    if (value && this.state.confirmDirty && 
-        value.length >= MIN_PASSWORD_LENGTH &&
-        value.length <= MAX_PASSWORD_LENGTH ) {
-        form.validateFields(['confirm'], { force: true });
-    } else if (value && value.length < MIN_PASSWORD_LENGTH) {
-      callback('Password length is too short!')
-    } else if (value && value.length > MAX_PASSWORD_LENGTH) {
-      callback('Password length is too long!')
-    }
-    callback();
-  }
-
   stepZero() {
-    const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -215,17 +183,20 @@ class Register extends Component {
       },
     };
     return (
-      <Form {...formItemLayout} className="register-form">
-        <Form.Item label="Email" className="register-form-item" >
-          { getFieldDecorator('email', {
-            rules: [{
-              type: 'email',
-              message: 'The input is not valid Email!',
-            }, {
-              required: true,
-              message: 'Please input your Email!',
-            },],
-          }) (<Input onChange={this.emailOnChange} />)}
+      <Form {...formItemLayout} className="register-form" ref={this.formRef}>
+        <Form.Item
+          label="Email"
+          className="register-form-item"
+          name="email"
+          rules={[{
+            type: 'email',
+            message: 'The input is not valid Email!',
+          }, {
+            required: true,
+            message: 'Please input your Email!',
+          }]}
+        >
+          <Input onChange={this.emailOnChange} />
         </Form.Item>
         <Form.Item
           className="register-form-item"
@@ -238,37 +209,54 @@ class Register extends Component {
               </Tooltip>
             </span>
           }
-        >
-          { getFieldDecorator('password', {
-            rules: [{
+          name="password"
+          rules={[
+            {
               required: true,
               message: 'Please input your password!',
-            }, {
-              validator: this.validateToNextPassword,
-            },],
-          }) (<Input.Password />)}
+            },
+            () => ({
+              validator(rule,value) {
+                if (value && value.length < MIN_PASSWORD_LENGTH) {
+                  return Promise.reject('Password length is too short!')
+                } else if (value && value.length > MAX_PASSWORD_LENGTH) {
+                  return Promise.reject('Password length is too long!')
+                }
+                return Promise.resolve();
+              }
+            })
+          ]}
+        >
+          <Input.Password />
         </Form.Item>
         <Form.Item
           className="register-form-item"
           hasFeedback
           label="Confirm Password"
-        >
-          { getFieldDecorator('confirm', {
-            rules: [{
+          name="confirm"
+          dependencies={['password']}
+          rules={[
+            {
               required: true,
               message: 'Please confirm your password!',
-            }, {
-              validator: this.compareToFirstPassword,
-            },],
-          }) (<Input.Password onBlur={this.handleConfirmBlur}
-            />)}
+            },
+            ({ getFieldValue }) => ({
+              validator(rule, value) {
+                if (!value || getFieldValue('password') === value) {
+                  return Promise.resolve();
+                }
+
+                return Promise.reject('The two passwords that you entered do not match!');
+            }})
+          ]}
+        >
+          <Input.Password/>
         </Form.Item>
       </Form>
     );
   }
 
   stepOne() {
-    const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -280,22 +268,22 @@ class Register extends Component {
       },
     };
     return (
-      <Form {...formItemLayout}>
+      <Form {...formItemLayout} ref={this.formRef}>
         <Form.Item className="register-form-item" >
           <Input placeholder="Email" value={this.state.email} disabled />
         </Form.Item>
         <Form.Item
           className="register-form-item"
           extra="We must make sure that your email is valid."
+          name="code"
+          rules={[{
+            required: true,
+            message: 'Please input the verification code!'
+          }]}
         >
           <Row gutter={8} >
           <Col span={12} >
-            { getFieldDecorator('code', {
-              rules: [{
-                required: true,
-                message: 'Please input the verification code!'
-              }],
-            })(<Input placeholder="Verification Code" />)}
+            <Input placeholder="Verification Code" />
           </Col>
           <Col span={12}>
             <Button
@@ -362,7 +350,7 @@ class Register extends Component {
           }
           </div>
           {/* <Row gutter={48} > */}
-            <div className="steps-action">  
+            <div className="steps-action">
               { this.state.current === 1 && (
                 <Row gutter={24} >
                 <Col span={12} style={{ textAlign: 'left'}}>
@@ -416,4 +404,4 @@ class Register extends Component {
   }
 }
 
-export default Form.create()(Register)
+export default Register
