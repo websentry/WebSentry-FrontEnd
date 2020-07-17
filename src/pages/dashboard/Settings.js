@@ -40,12 +40,11 @@ class Settings extends Component {
   }
 
   onLanguageChange = value => {
-    this.updateSetting(value, this.state.timezone);
+    this.updateSetting(value, null);
   };
 
   onTimezoneChange = value => {
-    // this.setState({ timezone: e });
-    this.updateSetting(this.state.language, value);
+    this.updateSetting(null, value);
   };
 
   async updateSetting(lang, tz) {
