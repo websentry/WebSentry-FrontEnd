@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { LoadingOutlined, SmileOutlined } from '@ant-design/icons';
-import { Form } from '@ant-design/compatible';
 import '@ant-design/compatible/assets/index.css';
-import { Card, Input, Row, Select, Spin, Steps, Typography } from 'antd';
+import { Card, Input, Form, Row, Select, Spin, Steps, Typography } from 'antd';
 import ReactCrop from 'react-image-crop';
 import BottomNav from './BottomNav';
 import 'react-image-crop/dist/ReactCrop.css';
@@ -12,7 +11,7 @@ import DashboardLayout from '../../../layouts/DashboardLayout';
 
 const { Title } = Typography;
 const { Search } = Input;
-const { Option } = Select;
+const { Option, OptGroup } = Select;
 const { Step } = Steps;
 
 const initialState = {
@@ -21,9 +20,9 @@ const initialState = {
   currentSection: 0,
   isFormLoading: false,     // form loading
   isUrlLoading: false,        // url loading
-  url: "",
-  name: "",
-  screenshotLink: "",
+  url: '',
+  name: '',
+  screenshotLink: '',
   crop: {
     unit: '%',
     x: 25,
@@ -41,7 +40,7 @@ class NewSentry extends Component {
     super(props);
     this.state = initialState;
     this.loadData();
-    this.urlOnchange = e => { this.onSentryValueChange("url", e.target.value); };
+    this.urlOnChange = e => { this.onSentryValueChange('url', e.target.value); };
     this.goUrlSection = () => { this.setState({ currentSection: 0 }); };
     this.goCropSection = () => { this.setState({ currentSection: 1 }); };
     this.goInfoSection = () => { this.setState({ currentSection: 2 }); };
@@ -56,13 +55,14 @@ class NewSentry extends Component {
   async loadData() {
     const response = await api.getAllNotifications();
 
-    console.log(response);
     if (response.code === api.code.ok) {
       this.setState({
-        notificationList: response.data.notifications
+        // update default email name value
+        notificationList: response.data.notifications.map(n => 
+          (n.name === '--default--' ? {...n, name: 'Default Email'} : n))
       });
     } else {
-      console.log("---- Error ----");
+      console.log('---- Error ----');
       console.log(response);
     }
   }
@@ -76,7 +76,6 @@ class NewSentry extends Component {
   }
 
   onSentryValueChange = (key, val) => {
-    console.log(key, val);
     this.setState({[key]: val });
   }
 
@@ -85,60 +84,53 @@ class NewSentry extends Component {
   }
 
   onImageLoaded = image => {
-    console.log('onImageLoaded', image);
-    console.log('onImageLoaded', image.naturalWidth);
-    console.log('onImageLoaded', image.naturalHeight);
     this.setState({
       screenshotScaleX: image.naturalWidth / 100,
       screenshotScaleY: image.naturalHeight / 100
     });
   }
 
-  async handleUrlSubmit(url,event) {
+  async handleUrlSubmit(url, event) {
     event.preventDefault();
     if (url) {
       this.setState({ isUrlLoading: true , urlError: null });
       let res = await api.requestFullScreenshot(this.state.url);
-      console.log(res);
       if (res.code === api.code.ok) {
           let sentryId = res.data.taskId;
           res = await api.waitFullScreenshot(sentryId);
-          console.log(res);
           if (res.code === api.code.ok) {
-            this.setState(
-              {
+            // check feedback code
+            if (res.data.feedbackCode === api.code.ok) {
+              this.setState({
                 isUrlLoading: false,
-                screenshotLink:
-                  api.getFullScreenshotLink(sentryId, res.data.imageToken),
+                screenshotLink: api.getFullScreenshotLink(sentryId, res.data.imageToken),
                 currentSection: 1
-              }
-            );
+              });
+            } else {
+              this.setState({ isUrlLoading: false, urlError: res.data.feedbackMsg})
+            }
           } else {
-            this.setState({ isUrlLoading: false, urlError: res.msg  });
+            this.setState({ isUrlLoading: false, urlError: res.msg });
           }
       } else {
-        this.setState({ isUrlLoading: false, urlError: res.msg  });
+        this.setState({ isUrlLoading: false, urlError: res.msg });
       }
     } else {
-      this.setState({ urlError: "Please enter url"  });
+      this.setState({ urlError: 'Please enter url' });
     }
   }
 
-  async handleSentrySubmit() {
-    const { form } = this.props;
-
-    form.validateFields((err, values) => {
-      console.log('Received values of form: ', values);
-      if (err) {
-        return;
-      }
-    });
+  async handleSentrySubmit(values) {
+    console.log('Received values of form: ', values);
 
     let notificationDic = {};
-    this.state.notificationList.map( notification =>
+    this.state.notificationList.map(notification =>
       notificationDic[notification.name] = notification.id
     );
-    const { sentryName, notificationMethod } = form.getFieldsValue();
+
+    let sentryName = values['sentryName']
+    let notificationMethod = values['notificationMethod']
+
     const { url } = this.state;
     let { x, y, width, height } = this.state.crop;
 
@@ -148,36 +140,34 @@ class NewSentry extends Component {
     height = Math.round(height * this.state.screenshotScaleY);
 
     this.setState({ isFormLoading: true, error: null });
-    console.log(sentryName, url, x, y,
-                          width, height, notificationDic[notificationMethod]);
+
     let res = await api.createSentry(sentryName, url, x, y,
                           width, height, notificationDic[notificationMethod]);
-    console.log(res);
     if (res.code === api.code.ok) {
       this.setState({ isFormLoading: false, currentSection: 2 });
     } else {
       this.setState({ isFormLoading: false });
-      this.setState({ error: "Failed to create a new sentry!" });
+      this.setState({ error: 'Failed to create a new sentry: ' + res.msg });
     }
   }
 
   renderUrlSection() {
     return (
-      <div className="p-6">
+      <div className='p-6'>
         <Row>
           <Title level={3}> Enter an URL to create a new task </Title>
         </Row>
         <Search
-          className="mt-3"
-          placeholder="Enter website: https://www.google.com"
-          enterButton="Go"
-          size="large"
-          onChange={this.urlOnchange}
+          className='mt-3'
+          placeholder='Enter website: https://www.google.com'
+          enterButton='Go'
+          size='large'
+          onChange={this.urlOnChange}
           value={this.state.url}
           onSearch={this.handleUrlSubmit}
         />
         { this.state.urlError ?
-          <div className="red mt-1">
+          <div className='red mt-1'>
             {this.state.urlError}
           </div> : null}
       </div>
@@ -186,7 +176,6 @@ class NewSentry extends Component {
 
   renderCropSection() {
     const { crop, screenshotLink, notificationList } = this.state;
-    const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
         lg: { span: 6 },
@@ -201,19 +190,27 @@ class NewSentry extends Component {
     };
     return (
       <div>
-        <Form {...formItemLayout} onSubmit={this.handleSubmit}>
-          <Card title="Sentry Basic Info" style={{ borderRadius: 10 }} >
-            <Form.Item label="Sentry Name">
-              {getFieldDecorator('sentryName', {
-                rules: [
-                  {
-                    required: true,
-                    message: 'Please input a name for the new sentry!',
-                  },
-                ],
-              })(<Input size="large" style={{ maxWidth: "55%" }} />)}
+        <Form {...formItemLayout} onFinish={this.handleSentrySubmit}>
+          <Card
+            title='Sentry Basic Info'
+            style={{ borderRadius: 10 }}
+          >
+            <Form.Item
+              label='Sentry Name'
+              name='sentryName'
+              rules={[{
+                required: true,
+                message: 'Please input a name for the new sentry!'
+              }]}
+            >
+              <Input
+                size='large'
+                style={{ maxWidth: '80%' }}
+              />
             </Form.Item>
-            <Form.Item label="Crop">
+            <Form.Item
+              label='Crop'
+            >
               <ReactCrop
                 src={screenshotLink}
                 crop={crop}
@@ -221,44 +218,57 @@ class NewSentry extends Component {
                 onComplete={this.onCropComplete}
                 onChange={this.onCropChange}
                 keepSelection={true}
-                style={{ maxWidth: "55%" }}
+                style={{ maxWidth: '80%' }}
               />
             </Form.Item>
-            <Form.Item label="Notification Method">
-              {getFieldDecorator('notificationMethod', {
-                initialValue:notificationList[0].name,
-                rules: [
-                  {
-                    required: true,
-                    message: 'Please input a notification method',
-                  },
-                ],
-              })(
-                <Select
-                  size="large"
-                  style={{ maxWidth: "55%" }}
-                  onSelect={this.notifOnchange}
-                >
-                  {notificationList.map( notification => {
+            <Form.Item
+              label='Notification Method'
+              name='notificationMethod'
+              rules={[{
+                required: true,
+                message: 'Please input a notification method'
+              }]}
+            >
+              <Select
+                size='large'
+                style={{ maxWidth: '80%' }}
+                onSelect={this.notifyMethodOnChange}
+              >
+                <OptGroup label="Email">
+                  {notificationList.filter(n => n.type === 'email').map(n => {
                     return (
-                      <Option value={notification.name} key={notification.id}>
-                        {notification.name}
+                      <Option
+                        value={n.name}
+                        key={n.id}
+                      >
+                        {n.name}
                       </Option>)
                   })}
-                </Select>
-              )}
+                </OptGroup>
+                <OptGroup label="ServerChan">
+                  {notificationList.filter(n => n.type === 'serverchan').map(n => {
+                    return (
+                      <Option
+                        value={n.name}
+                        key={n.id}
+                      >
+                        {n.name}
+                      </Option>)
+                  })}
+                </OptGroup>
+              </Select>
             </Form.Item>
           </Card>
           { this.state.error ?
-            <div className="red mt-1">
+            <div className='red mt-1'>
               { this.state.error }
             </div> : null }
           <BottomNav
             goBack={this.goUrlSection}
-            goNext={this.handleSentrySubmit}
+            // goNext={this.handleSentrySubmit}
             loading={this.state.isFormLoading}
-            goBackButtonText={"Back"}
-            goNextButtonText={"Submit"}
+            goBackButtonText={'Back'}
+            goNextButtonText={'Submit'}
           />
         </Form>
       </div>
@@ -267,19 +277,24 @@ class NewSentry extends Component {
 
   renderCompleteSection() {
     return (
-      <div className="p-6">
-        <Row className="mt-8 px-7">
-          <Row justify={"center"} type={"flex"} align={"middle"} style={{ margin: "auto" }}>
+      <div className='p-6'>
+        <Row className='mt-8 px-7'>
+          <Row
+            justify={'center'}
+            type={'flex'}
+            align={'middle'}
+            style={{ margin: 'auto' }}
+          >
             <Title level={2}>Congradulations! All done!</Title>
           </Row>
-          <Row className="reponsive-bottom-nav">
+          <Row className='reponsive-bottom-nav'>
             <BottomNav
               goBack={this.goDashboard}
               goNext={this.resetState}
-              goBackClassName={"bottom-nav-left-responsive"}
-              goNextClassName={"bottom-nav-right-responsive"}
-              goBackButtonText={"Close"}
-              goNextButtonText={"Create Another"}
+              goBackClassName={'bottom-nav-left-responsive'}
+              goNextClassName={'bottom-nav-right-responsive'}
+              goBackButtonText={'Close'}
+              goNextButtonText={'Create Another'}
             />
           </Row>
         </Row>
@@ -291,8 +306,13 @@ class NewSentry extends Component {
     const { isUrlLoading, currentSection } = this.state;
     if (isUrlLoading) {
       return (
-        <Row className="mt-8" justify={"center"} type={"flex"} align={"middle"}>
-          <Spin size="large"/>
+        <Row
+          className='mt-8'
+          justify={'center'}
+          type={'flex'}
+          align={'middle'}
+        >
+          <Spin size='large'/>
         </Row>
       )
     }
@@ -313,13 +333,13 @@ class NewSentry extends Component {
     if (this.state.currentSection === 2) { doneIcon = <SmileOutlined />; };
     return (
       <div>
-        <DashboardLayout page="home">
-        <Steps current={this.state.currentSection} className="my-3 px-5">
-          <Step title="Enter an url" icon={urlIcon}/>
-          <Step title="Crop and enter basic info" icon={cropIcon} />
-          <Step title="Done" icon={doneIcon}/>
+        <DashboardLayout page='home'>
+        <Steps current={this.state.currentSection} className='my-3 px-5'>
+          <Step title='Enter an url' icon={urlIcon}/>
+          <Step title='Crop and enter basic info' icon={cropIcon} />
+          <Step title='Done' icon={doneIcon}/>
         </Steps>
-        <div className="p-5">
+        <div className='p-5'>
           {this.renderSection()}
         </div>
         </DashboardLayout>
@@ -328,4 +348,4 @@ class NewSentry extends Component {
   }
 }
 
-export default Form.create()(NewSentry);
+export default NewSentry;
