@@ -125,7 +125,7 @@ class SentryDetail extends Component {
         <Divider />
         <List loading={this.state.loading}>
           <Descriptions column={2} style={{ paddingBottom: '24px' }} bordered>
-            <Descriptions.Item label='Create Time'>{moment(this.state.data.createTime).format('MMMM Do YYYY, h:mm A')}</Descriptions.Item>
+            <Descriptions.Item label='Create Time'>{moment(this.state.data.createdAt).format('MMMM Do YYYY, h:mm A')}</Descriptions.Item>
             <Descriptions.Item label='Last Check Time'>{moment(this.state.data.lastCheckTime).fromNow()}</Descriptions.Item>
             <Descriptions.Item label='Notification Method'>
               { this.state.notification.type === 'email' ?

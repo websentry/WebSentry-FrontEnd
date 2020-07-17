@@ -99,11 +99,16 @@ class NewSentry extends Component {
           let sentryId = res.data.taskId;
           res = await api.waitFullScreenshot(sentryId);
           if (res.code === api.code.ok) {
-            this.setState({
+            // check feedback code
+            if (res.data.feedbackCode === api.code.ok) {
+              this.setState({
                 isUrlLoading: false,
                 screenshotLink: api.getFullScreenshotLink(sentryId, res.data.imageToken),
                 currentSection: 1
-            });
+              });
+            } else {
+              this.setState({ isUrlLoading: false, urlError: res.data.feedbackMsg})
+            }
           } else {
             this.setState({ isUrlLoading: false, urlError: res.msg });
           }
@@ -142,7 +147,7 @@ class NewSentry extends Component {
       this.setState({ isFormLoading: false, currentSection: 2 });
     } else {
       this.setState({ isFormLoading: false });
-      this.setState({ error: 'Failed to create a new sentry!' });
+      this.setState({ error: 'Failed to create a new sentry: ' + res.msg });
     }
   }
 
@@ -200,7 +205,7 @@ class NewSentry extends Component {
             >
               <Input
                 size='large'
-                style={{ maxWidth: '55%' }}
+                style={{ maxWidth: '80%' }}
               />
             </Form.Item>
             <Form.Item
@@ -213,7 +218,7 @@ class NewSentry extends Component {
                 onComplete={this.onCropComplete}
                 onChange={this.onCropChange}
                 keepSelection={true}
-                style={{ maxWidth: '55%' }}
+                style={{ maxWidth: '80%' }}
               />
             </Form.Item>
             <Form.Item
@@ -226,7 +231,7 @@ class NewSentry extends Component {
             >
               <Select
                 size='large'
-                style={{ maxWidth: '55%' }}
+                style={{ maxWidth: '80%' }}
                 onSelect={this.notifyMethodOnChange}
               >
                 <OptGroup label="Email">
