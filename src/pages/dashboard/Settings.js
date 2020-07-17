@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import DashboardLayout from '../../layouts/DashboardLayout';
-import { Card, Col, Row, TreeSelect, Button, PageHeader, Divider } from 'antd';
-import { CheckCircleOutlined } from '@ant-design/icons';
+import { Card, Col, Divider, PageHeader, Row, TreeSelect } from 'antd';
 import api from '../../helpers/Api.js';
 
 const Language = [
@@ -21,7 +20,6 @@ class Settings extends Component {
     this.state = {
       language: '',
       timezone: '',
-      loading: false
     }
     this.loadData();
     this.updateSetting = this.updateSetting.bind(this);
@@ -41,24 +39,18 @@ class Settings extends Component {
     }
   }
 
-  onLanguageChange = e => {
-    this.setState({ language: e });
+  onLanguageChange = value => {
+    this.updateSetting(value, this.state.timezone);
   };
 
-  onTimezoneChange = e => {
-    this.setState({ timezone: e });
+  onTimezoneChange = value => {
+    // this.setState({ timezone: e });
+    this.updateSetting(this.state.language, value);
   };
 
-  async updateSetting(e) {
-    this.setState({
-      loading: true
-    });
-
-    const response = await api.updateSetting(this.state.language, this.state.timezone);
+  async updateSetting(lang, tz) {
+    const response = await api.updateSetting(lang, tz);
     if (response.code === api.code.ok) {
-      this.setState({
-        loading: false
-      });
       window.location.reload();
     } else {
       console.log('---- Error ----');
@@ -85,18 +77,6 @@ class Settings extends Component {
         <div>
           <PageHeader 
             title='Setting'
-            extra={
-              <Button
-                key='submit'
-                type='primary'
-                size='default'
-                icon={<CheckCircleOutlined />}
-                loading={this.state.loading}
-                onClick={this.updateSetting}
-              >
-                Save
-              </Button>
-            }
           />
           <Divider style={{ marginBottom: '0px' }} />
           <Card bordered={false}>
