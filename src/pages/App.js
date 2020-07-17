@@ -6,7 +6,7 @@ import NoMatch from './NoMatch';
 import Login from './Login';
 import Register from './Register';
 import {UserContext} from '../UserContext';
-import Api from '../helpers/Api';
+import api from '../helpers/Api';
 import { IntlProvider } from 'react-intl';
 import zh_CN from '../locale/lang/zh_CN.js';
 import en_US from '../locale/lang/en_US.js';
@@ -28,9 +28,9 @@ class App extends Component {
         this.setState({isLoading: true});
       }
 
-      const response = await Api.getUserInfo();
+      const response = await api.getUserInfo();
       console.log(response);
-      if (response.code === Api.code.ok) {
+      if (response.code === api.code.ok) {
         this.setState({
           isLoading: false,
           isLoggedIn: true,
