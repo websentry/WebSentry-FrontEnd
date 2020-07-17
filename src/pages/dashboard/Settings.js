@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import DashboardLayout from '../../layouts/DashboardLayout';
 import { Card, Col, Row, TreeSelect, Button, PageHeader, Divider } from 'antd';
 import { CheckCircleOutlined } from '@ant-design/icons';
+import api from '../../helpers/Api.js';
 
 const Language = [
   {
     title: 'English',
-    value: 'us',
+    value: 'en-US',
   },
   {
     title: '简体中文',
-    value: 'cn',
+    value: 'zh-Hans',
   },
 ];
 
@@ -20,6 +21,23 @@ class Settings extends Component {
     this.state = {
       language: '',
       timezone: '',
+      loading: false
+    }
+    this.loadData();
+    this.updateSetting = this.updateSetting.bind(this);
+  }
+
+  async loadData() {
+    const response = await api.getUserInfo();
+
+    if (response.code === api.code.ok) {
+      this.setState({
+        language: response.data.language,
+        timezone: response.data.timeZone,
+      })
+    } else {
+      console.log('---- Error ----');
+      console.log(response);
     }
   }
 
@@ -30,6 +48,23 @@ class Settings extends Component {
   onTimezoneChange = e => {
     this.setState({ timezone: e });
   };
+
+  async updateSetting(e) {
+    this.setState({
+      loading: true
+    });
+
+    const response = await api.updateSetting(this.state.language, this.state.timezone);
+    if (response.code === api.code.ok) {
+      this.setState({
+        loading: false
+      });
+      window.location.reload();
+    } else {
+      console.log('---- Error ----');
+      console.log(response);
+    }
+  }
 
   render() {
     var moment = require('moment-timezone');
@@ -45,15 +80,19 @@ class Settings extends Component {
     }
 
     return (
-      <DashboardLayout page='setting'>
+      <DashboardLayout page='settings'>
         <div>
           <PageHeader 
             title='Setting'
             extra={
-              <Button 
+              <Button
+                key='submit'
                 type='primary'
+                size='default'
                 icon={<CheckCircleOutlined />}
-                size='default'>
+                loading={this.state.loading}
+                onClick={this.updateSetting}
+              >
                 Save
               </Button>
             }
@@ -88,7 +127,7 @@ class Settings extends Component {
                   placeholder='Please select'
                   treeDefaultExpandAll
                   onChange={ this.onTimezoneChange }
-                  defaultValue={ '(GMT' + moment.tz(local_timezone).format('Z') + ') ' + local_timezone }
+                  defaultValue={ '(GMT' + moment.tz(this.state.timezone).format('Z') + ') ' + this.state.timezone }
                 />
               </Col>
             </Row>

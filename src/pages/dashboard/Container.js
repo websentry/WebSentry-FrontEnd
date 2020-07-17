@@ -5,6 +5,7 @@ import Notifications from './Notifications.js'
 import Home from './Home';
 import SentryDetail from './sentry/SentryDetail';
 import Settings from './Settings';
+import NoMatch from '../NoMatch';
 
 class Container extends Component {
   render() {
@@ -15,6 +16,7 @@ class Container extends Component {
           <Route path='/dashboard/notifications' component={Notifications} />
           <Route path='/dashboard/settings' component={Settings} />
           <Route path='/dashboard/sentry/:sentryID' component={SentryDetail} />
+          <Route component={NoMatch} />
         </Switch>
     );
   }

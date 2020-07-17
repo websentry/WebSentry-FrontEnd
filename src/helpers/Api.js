@@ -71,7 +71,7 @@ api.getUserInfo = async () => {
     return await requestApi('user/info', {}, null, true);
 }
 
-api.updateSetting = async (tz, lang) => {
+api.updateSetting = async (lang, tz) => {
     const params = {
         tz: tz,
         lang: lang
