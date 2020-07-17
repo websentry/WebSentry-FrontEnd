@@ -68,7 +68,8 @@ class Settings extends Component {
 
   render() {
     var moment = require('moment-timezone');
-    var local_timezone = moment.tz.guess();
+    // can be used for guessing the timezone
+    // var local_timezone = moment.tz.guess();
     var timezones = moment.tz.names();
     var timezone_dict = [];
     for (var i in timezones) {
