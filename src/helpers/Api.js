@@ -71,6 +71,14 @@ api.getUserInfo = async () => {
     return await requestApi('user/info', {}, null, true);
 }
 
+api.updateSetting = async (tz, lang) => {
+    const params = {
+        tz: tz,
+        lang: lang
+    }
+    return await requestApi('user/update', params, null, true);
+}
+
 api.login = async (email, password, remember = true) => {
     localStorage.removeItem('ws-token');
     sessionStorage.removeItem('ws-token');
