@@ -35,6 +35,7 @@ class App extends Component {
           isLoading: false,
           isLoggedIn: true,
           userEmail: response.data.email,
+          lang: response.data.language,
         });
       } else {
         this.setState({
