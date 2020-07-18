@@ -189,8 +189,8 @@ class Notifications extends Component {
                 style={{ marginBottom: '0px' }}
               >
                 <Button
-                  type="primary"
-                  htmlType="submit"
+                  type='primary'
+                  htmlType='submit'
                   loading={this.state.addLoading}
                 >
                   Submit

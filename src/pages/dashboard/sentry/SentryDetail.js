@@ -72,7 +72,7 @@ class SentryDetail extends Component {
     })
 
     const res = await api.removeSentry(this.state.id);
-    console.log(res)
+
     if (res.code === api.code.ok) {
       this.props.history.push('/dashboard')
     } else {
