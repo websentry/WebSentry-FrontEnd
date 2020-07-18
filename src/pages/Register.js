@@ -88,10 +88,25 @@ class Register extends Component {
       registerError: null
     })
 
+    let language = 'en-US';
+    switch(navigator.language.split('-')[0]){
+        case 'zh-Hans':
+            language = 'zh-Hans';
+            break;
+        default:
+    }
+
+    let moment = require('moment-timezone');
+    let userInfo = {
+      lang: language,
+      tz: moment.tz.guess(),
+    }
+
     this.formRef.current.validateFields().then(async values => {
       const res = await api.register(
         this.state.email,
         this.state.password,
+        userInfo,
         values['code']
       )
 
@@ -156,17 +171,10 @@ class Register extends Component {
       message.info(msg);
     } else {
       this.setState({ success: true })
-
-      if (res.data['generated']) {
-        message.info('Verification code has been sent!');
-        this.setState({
-          alertMsg: "Please check your email inbox for verification code."
-        })
-      } else {
-        this.setState({
-          alertMsg: "Please use the verification code from previous email."
-        })
-      }
+      message.info('Verification code has been sent!');
+      this.setState({
+        alertMsg: "Please check your email inbox for verification code."
+      })
     }
     this.setState({ verificationLoading: false })
   }
