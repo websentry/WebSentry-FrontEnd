@@ -11,8 +11,7 @@ class Home extends Component {
     super(props);
     this.state = {
       isLoading: true,
-      data: [],
-      notificationList:[]
+      data: []
     };
     this.loadData();
     this.showCreateSentry = () => {
@@ -22,26 +21,22 @@ class Home extends Component {
 
   async loadData() {
     if (!this.state.isLoading) {
-      this.setState({isLoading: true});
+      this.setState({
+        isLoading: true
+      });
     }
 
     const response = await api.getAllSentries();
-    const response2 = await api.getAllNotifications();
 
-    console.log(response);
-    console.log(response2);
-    if (response.code === api.code.ok && response2.code === api.code.ok) {
+    if (response.code === api.code.ok) {
       this.setState({
         isLoading: false,
-        data: response.data.sentries,
-        notificationList: response2.data.notifications
+        data: response.data.sentries
       });
     } else {
-      console.log("---- Error ----");
+      console.log('---- Error ----');
       console.log(response);
-      console.log(response2);
     }
-
   }
 
   SentryCard(item) {
@@ -52,30 +47,31 @@ class Home extends Component {
 
   render() {
     return (
-      <DashboardLayout page="home">
-      <div>
-        <PageHeader
-          title="Active Sentrys"
-          extra={
-            <Button
-              type="primary"
-              icon={<PlusCircleOutlined />}
-              size="default"
-              onClick={this.showCreateSentry}>
-              Create Sentry
-            </Button>
-          }
-        />
-        <Divider />
-        <List
-          loading={this.state.isLoading}
-          grid={{
-            gutter: 4, xs: 1, sm: 1, md: 2, xl: 3, xxl: 4,
-          }}
-          dataSource={this.state.data}
-          renderItem={this.SentryCard}
-        />
-      </div>
+      <DashboardLayout page='home'>
+        <div>
+          <PageHeader
+            title='Active Sentries'
+            extra={
+              <Button
+                type='primary'
+                icon={<PlusCircleOutlined />}
+                size='default'
+                onClick={this.showCreateSentry}
+              >
+                Create Sentry
+              </Button>
+            }
+          />
+          <Divider />
+          <List
+            loading={this.state.isLoading}
+            grid={{
+              gutter: 4, xs: 1, sm: 1, md: 2, xl: 3, xxl: 4,
+            }}
+            dataSource={this.state.data}
+            renderItem={this.SentryCard}
+          />
+        </div>
       </DashboardLayout>
     );
   }

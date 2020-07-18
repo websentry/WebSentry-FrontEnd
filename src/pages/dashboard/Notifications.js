@@ -16,7 +16,7 @@ class Notifications extends Component {
       notificationList: [],
       visible: false,
       addLoading: false,
-      alertMsg: ""
+      alertMsg: ''
     };
     this.handleServerChanSubmit = this.handleServerChanSubmit.bind(this);
   }
@@ -38,7 +38,7 @@ class Notifications extends Component {
         notificationList: response.data.notifications
       });
     } else {
-      console.log("---- Error ----");
+      console.log('---- Error ----');
       console.log(response);
     }
   }
@@ -60,7 +60,7 @@ class Notifications extends Component {
         if (res.code === api.code.ok) {
           this.setState({
             addLoading: false,
-            alertMsg: intl.formatMessage({ id: "notificationSuccessAdd" })
+            alertMsg: intl.formatMessage({ id: 'notificationSuccessAdd' })
           });
           this.loadData();
           this.handleCancel();
@@ -120,38 +120,38 @@ class Notifications extends Component {
       },
     };
     return (
-      <DashboardLayout page="notifications">
-        <div page="dashboardNotifications">
+      <DashboardLayout page='notifications'>
+        <div page='dashboardNotifications'>
           <PageHeader 
-            title="Notification Methods"
+            title='Notification Methods'
             extra={
               <Button
-                type="primary"
+                type='primary'
                 icon={<PlusCircleOutlined />}
-                size="default"
-                style={{ marginLeft: "32px" }}
+                size='default'
+                style={{ marginLeft: '32px' }}
                 onClick={this.showModal}
               >
                 Create Notification Method
               </Button>
             }
           />
-          <Divider style={{ marginBottom: "0px" }} />
+          <Divider style={{ marginBottom: '0px' }} />
           <List 
-            itemLayout="horizontal"
+            itemLayout='horizontal'
             loading={this.state.isLoading}
             dataSource={this.state.notificationList}
             renderItem={this.NotificationCard}
           />
           <Modal
-            title="Create Notification Method"
+            title='Create Notification Method'
             visible={this.state.visible}
             onOk={this.handleOk}
             onCancel={this.handleCancel}
             footer={[
               <Button
-                key="submit"
-                type="primary"
+                key='submit'
+                type='primary'
                 loading={this.state.addLoading}
                 onClick={this.handleServerChanSubmit}
               >
@@ -161,30 +161,30 @@ class Notifications extends Component {
           >
             <h3>ServerChan</h3>
             <Form {...formItemLayout} onSubmit={this.handleServerChanSubmit}>
-              <Form.Item label="Name">
+              <Form.Item label='Name'>
                 {getFieldDecorator('name', {
                   rules: [
                     {
                       type: 'string',
-                      message: intl.formatMessage({ id: "notificationInvalidString" }),
+                      message: intl.formatMessage({ id: 'notificationInvalidString' }),
                     },
                     {
                       required: true,
-                      message: intl.formatMessage({ id: "notificationServerChanName" }),
+                      message: intl.formatMessage({ id: 'notificationServerChanName' }),
                     },
                   ],
                 })(<Input />)}
               </Form.Item>
-              <Form.Item label="SCKEY">
+              <Form.Item label='SCKEY'>
                 {getFieldDecorator('sckey', {
                   rules: [
                     {
                       type: 'string',
-                      message: intl.formatMessage({ id: "notificationInvalidString" }),
+                      message: intl.formatMessage({ id: 'notificationInvalidString' }),
                     },
                     {
                       required: true,
-                      message: intl.formatMessage({ id: "notificationServerChanSCKEY" }),
+                      message: intl.formatMessage({ id: 'notificationServerChanSCKEY' }),
                     },
                   ],
                 })(<Input />)}
