@@ -3,7 +3,7 @@ import { GlobalOutlined, LoadingOutlined } from '@ant-design/icons';
 import { Layout, Menu, Spin } from 'antd';
 import { FormattedMessage } from 'react-intl';
 import { UserContext } from '../UserContext';
-import { Link, Redirect, withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import logo from '../assets/logo.png';
 import './AppHeader.less';
 
@@ -94,11 +94,11 @@ class AppHeader extends React.Component {
                   }
                   style={{ float: "right" }}
                   onTitleClick={
-                    isLoggedIn && (
+                    isLoggedIn ? (
                       () => {
                         this.props.history.push("/dashboard/settings")
                       }
-                    )
+                    ): null
                   }
                 >
                   {!isLoggedIn && (
