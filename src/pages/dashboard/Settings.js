@@ -44,6 +44,7 @@ class Settings extends Component {
   };
 
   onTimezoneChange = value => {
+    window.localStorage.setItem("disableTimeZoneDiffNotice", '');
     this.updateSetting(null, value);
   };
 
@@ -74,7 +75,7 @@ class Settings extends Component {
     return (
       <DashboardLayout page='settings'>
         <div>
-          <PageHeader 
+          <PageHeader
             title='Setting'
           />
           <Divider style={{ marginBottom: '0px' }} />

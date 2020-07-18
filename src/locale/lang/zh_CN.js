@@ -22,6 +22,9 @@ const zh_CN = {
   dashboardSidebarNotifications: '通知方式',
   dashboardSidebarSetting: '设置',
 
-  sentryRemoveText: '你想要移除这条嘛？'
+  sentryRemoveText: '你想要移除这条嘛？',
+
+  timeZoneDiffNotice: '浏览器时区与当前用户设置不符!'
+
 }
 export default zh_CN;

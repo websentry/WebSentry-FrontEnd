@@ -36,13 +36,17 @@ class App extends Component {
           isLoggedIn: true,
           userEmail: response.data.email,
           lang: response.data.language,
+          tz: response.data.timeZone
         });
       } else {
         this.setState({
           isLoading: false,
           isLoggedIn: false,
           userEmail: "",
+          lang: navigator.language,
+          tz: "",
         });
+        window.localStorage.clear();
       }
     };
 
@@ -70,7 +74,7 @@ class App extends Component {
     }
 
     this.state = {
-      lang:navigator.language,
+      lang: navigator.language,
       isLoading: true,
       isLoggedIn: false,
       userEmail: "",
