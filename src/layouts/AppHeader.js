@@ -85,22 +85,25 @@ class AppHeader extends React.Component {
                     />
                   </Link>
                 </Menu.Item>
-                <SubMenu
-                  key="language"
-                  title={
-                    <span>
-                      <GlobalOutlined style={{ fontSize: "16px" }} />
-                    </span>
-                  }
-                  style={{ float: "right" }}
-                >
-                  <Menu.Item key="switchLang" onClick={switchLang}>
-                    <FormattedMessage
-                      id='lang'
-                      defaultMessage='Language:English'
-                    />
-                  </Menu.Item>
-                </SubMenu>
+                {
+                  !isLoggedIn && 
+                  <SubMenu
+                    key="language"
+                    title={
+                      <span>
+                        <GlobalOutlined style={{ fontSize: "16px" }} />
+                      </span>
+                    }
+                    style={{ float: "right" }}
+                  >
+                    <Menu.Item key="switchLang" onClick={switchLang}>
+                      <FormattedMessage
+                        id='lang'
+                        defaultMessage='Language:English'
+                      />
+                    </Menu.Item>
+                  </SubMenu>
+                }
                 {userMenu}
               </Menu>
             </Header>
