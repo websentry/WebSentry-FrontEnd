@@ -68,6 +68,7 @@ class Settings extends Component {
       window.location.reload();
     } else {
       // error code: wrongParam
+      const { intl } = this.props;
       let errorMsg;
       switch(res.code) {
         case api.code.wrongParam:
