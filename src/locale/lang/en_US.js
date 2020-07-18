@@ -16,6 +16,7 @@ const en_US = {
   setting: 'Setting',
 
   notificationSuccessAdd: 'Successfully added!',
+  notificationFailAdd: 'Failed to add notification!',
   notificationInvalidString: 'The input is not valid string!',
   notificationServerChanName: 'Please input your ServerChan name!',
   notificationServerChanSCKEY: 'Please input your SCKEY!',
