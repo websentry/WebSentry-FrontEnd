@@ -3,7 +3,7 @@ import { GlobalOutlined, LoadingOutlined } from '@ant-design/icons';
 import { Layout, Menu, Spin } from 'antd';
 import { FormattedMessage } from 'react-intl';
 import { UserContext } from '../UserContext';
-import { Link } from "react-router-dom";
+import { Link, Redirect, withRouter } from "react-router-dom";
 import logo from '../assets/logo.png';
 import './AppHeader.less';
 
@@ -85,25 +85,34 @@ class AppHeader extends React.Component {
                     />
                   </Link>
                 </Menu.Item>
-                {
-                  !isLoggedIn && 
-                  <SubMenu
-                    key="language"
-                    title={
-                      <span>
-                        <GlobalOutlined style={{ fontSize: "16px" }} />
-                      </span>
-                    }
-                    style={{ float: "right" }}
-                  >
-                    <Menu.Item key="switchLang" onClick={switchLang}>
+                <SubMenu
+                  key="language"
+                  title={
+                    <span>
+                      <GlobalOutlined style={{ fontSize: "16px" }} />
+                    </span>
+                  }
+                  style={{ float: "right" }}
+                  onTitleClick={
+                    isLoggedIn && (
+                      () => {
+                        this.props.history.push("/dashboard/settings")
+                      }
+                    )
+                  }
+                >
+                  {!isLoggedIn && (
+                    <Menu.Item
+                      key="switchLang"
+                      onClick={switchLang}
+                    >
                       <FormattedMessage
                         id='lang'
                         defaultMessage='Language:English'
                       />
                     </Menu.Item>
-                  </SubMenu>
-                }
+                  )}
+                </SubMenu>
                 {userMenu}
               </Menu>
             </Header>
@@ -114,4 +123,4 @@ class AppHeader extends React.Component {
   }
 }
 
-export default AppHeader;
+export default withRouter(AppHeader);
