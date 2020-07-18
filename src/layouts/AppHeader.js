@@ -93,25 +93,22 @@ class AppHeader extends React.Component {
                     </span>
                   }
                   style={{ float: "right" }}
-                  onTitleClick={
-                    isLoggedIn ? (
-                      () => {
-                        this.props.history.push("/dashboard/settings")
-                      }
-                    ): null
-                  }
                 >
-                  {!isLoggedIn && (
-                    <Menu.Item
-                      key="switchLang"
-                      onClick={switchLang}
-                    >
-                      <FormattedMessage
-                        id='lang'
-                        defaultMessage='Language:English'
-                      />
-                    </Menu.Item>
-                  )}
+                  <Menu.Item
+                    key="switchLang"
+                    onClick={
+                      isLoggedIn ? (
+                        () => {
+                          this.props.history.push("/dashboard/settings")
+                        }
+                      ) : switchLang
+                    }
+                  >
+                    <FormattedMessage
+                      id='lang'
+                      defaultMessage='Language:English'
+                    />
+                  </Menu.Item>
                 </SubMenu>
                 {userMenu}
               </Menu>
