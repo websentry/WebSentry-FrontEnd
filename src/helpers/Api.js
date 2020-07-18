@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const VERSION = "v1";
+const VERSION = 'v1';
 const BASEURL = process.env.REACT_APP_BACKEND_URL + VERSION + '/';
 // --- helper ---
 async function requestApi(method, params, formData, requireToken) {
@@ -25,8 +25,8 @@ async function requestApi(method, params, formData, requireToken) {
             if (!token) {
                 return {
                     code: api.code.authError,
-                    msg: "Not logged in.",
-                    detail: ""
+                    msg: 'Not logged in.',
+                    detail: ''
                 };
             }
             options.headers['WS-User-Token'] = token;
@@ -43,7 +43,7 @@ async function requestApi(method, params, formData, requireToken) {
     } catch (error) {
         return {
             code: api.code.frontendRequestFailed,
-            msg: "Failed to send request.",
+            msg: 'Failed to send request.',
             detail: error
         };
     }
@@ -88,17 +88,17 @@ api.login = async (email, password, remember = true) => {
 
     const params = {email: email};
     var formData = new FormData();
-    formData.set("password", password);
+    formData.set('password', password);
 
-    let response = await requestApi('login', params, formData, false);
-    if (response.code === api.code.ok) {
+    let res = await requestApi('login', params, formData, false);
+    if (res.code === api.code.ok) {
         if (remember) {
-            localStorage.setItem('ws-token', response.data.token);
+            localStorage.setItem('ws-token', res.data.token);
         } else {
-            sessionStorage.setItem('ws-token', response.data.token);
+            sessionStorage.setItem('ws-token', res.data.token);
         }
     }
-    return response;
+    return res;
 }
 
 api.verification = async (email) => {
@@ -114,7 +114,7 @@ api.register = async (email, password, verification) => {
         verification: verification
     };
     var formData = new FormData();
-    formData.set("password", password);
+    formData.set('password', password);
 
     return await requestApi('create_user', params, formData, false);
 }
@@ -145,13 +145,13 @@ api.waitFullScreenshot = async (taskId) => {
     const params = {
         taskId: taskId
     };
-    let response = null;
+    let res = null;
     do {
-        console.log("requesting...");
-        response = await requestApi('sentry/wait_full_screenshot', params, null, true);
-    } while (response.code === api.code.ok && response.data.complete === false);
+        console.log('requesting...');
+        res = await requestApi('sentry/wait_full_screenshot', params, null, true);
+    } while (res.code === api.code.ok && res.data.complete === false);
 
-    return response;
+    return res;
 }
 
 api.getFullScreenshotLink = (taskId, imageToken) => {

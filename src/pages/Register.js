@@ -98,13 +98,13 @@ class Register extends Component {
       if (res.code !== api.code.ok) {
         let msg;
         switch (res.code) {
-          case -1:
+          case api.code.authError:
             msg = "Wrong verification code"
             break
-          case -2:
+          case api.code.wrongParam:
             msg = "Wrong parameter"
             break
-          case -6:
+          case api.code.alreadyExist:
             msg = "Account already exists"
             break
           default:
@@ -139,10 +139,10 @@ class Register extends Component {
     if (res.code !== api.code.ok) {
       let msg;
       switch (res.code) {
-        case -2:
+        case api.code.wrongParam:
           msg = "Wrong parameter";
           break;
-        case -6:
+        case api.code.alreadyExist:
           msg = "Account already exists";
           break;
         default:

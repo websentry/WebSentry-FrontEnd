@@ -28,19 +28,19 @@ class App extends Component {
         this.setState({isLoading: true});
       }
 
-      const response = await api.getUserInfo();
-      console.log(response);
-      if (response.code === api.code.ok) {
+      const res = await api.getUserInfo();
+      if (res.code === api.code.ok) {
         this.setState({
           isLoading: false,
           isLoggedIn: true,
-          userEmail: response.data.email,
+          userEmail: res.data.email,
         });
       } else {
+        // error code: notExist
         this.setState({
           isLoading: false,
           isLoggedIn: false,
-          userEmail: "",
+          userEmail: '',
         });
       }
     };
@@ -72,7 +72,7 @@ class App extends Component {
       lang:navigator.language,
       isLoading: true,
       isLoggedIn: false,
-      userEmail: "",
+      userEmail: '',
       toggleRefresh: this.userContextToggleRefresh,
       switchLang: this.switchLang,
       onLoading: this.onLoading,
@@ -95,16 +95,16 @@ class App extends Component {
   }
 
   render() {
-    console.log("loading app");
+    console.log('loading app');
     return (
       <UserContext.Provider value={this.state}>
         <IntlProvider locale={this.state.lang}  messages={this.chooseLocale()}>
           <Router>
               <Switch>
-                <Route exact path="/" component={Home} />
-                <Route path="/dashboard" component={Dashboard} />
-                <Route path="/login" component={Login} />
-                <Route path="/register" component={Register} />
+                <Route exact path='/' component={Home} />
+                <Route path='/dashboard' component={Dashboard} />
+                <Route path='/login' component={Login} />
+                <Route path='/register' component={Register} />
                 <Route component={NoMatch} />
               </Switch>
           </Router>
