@@ -61,7 +61,7 @@ class SentryDetail extends Component {
       }
       Modal.error({
         title: errorMsg,
-        onOk: () => { window.location.reload(); }
+        onOk: () => { this.props.history.push('/dashboard') }
       });
     }
   }
