@@ -15,8 +15,15 @@ const en_US = {
   notification: 'Notifications',
   setting: 'Setting',
 
+  unknownError: 'Unknown error!',
+
+  userInfoNotExist: 'User information is not existed!',
+
+  sentryFailGet: 'Failed to get sentries',
+
   notificationSuccessAdd: 'Successfully added!',
   notificationFailAdd: 'Failed to add notification!',
+  notificationFailGet: 'Failed to get notifications!',
   notificationInvalidString: 'The input is not valid string!',
   notificationServerChanName: 'Please input your ServerChan name!',
   notificationServerChanSCKEY: 'Please input your SCKEY!',

@@ -17,7 +17,7 @@ class Notifications extends Component {
       notificationList: [],
       visible: false,
       addLoading: false,
-      alertMsg: ''
+      alertMsg: '',
     };
     this.handleServerChanSubmit = this.handleServerChanSubmit.bind(this);
   }
@@ -31,16 +31,24 @@ class Notifications extends Component {
       this.setState({isLoading: true});
     }
     // TODO: Handle loading state
-    const response = await api.getAllNotifications();
+    const res = await api.getAllNotifications();
 
-    if (response.code === api.code.ok) {
+    if (res.code === api.code.ok) {
       this.setState({
         isLoading: false,
-        notificationList: response.data.notifications
+        notificationList: res.data.notifications
       });
     } else {
-      console.log('---- Error ----');
-      console.log(response);
+      // no error code
+      this.setState({
+        isLoading: false,
+      });
+
+      const { intl } = this.props;
+      Modal.error({
+        title: intl.formatMessage({ id: 'notificationFailGet' }),
+        onOk: () => { window.location.reload(); }
+      });
     }
   }
 

@@ -32,19 +32,37 @@ class SentryDetail extends Component {
       this.setState({ loading: true });
     }
     // load data
-    const response = await api.getSentryInfo(this.state.id);
+    const res = await api.getSentryInfo(this.state.id);
 
-    if (response.code === api.code.ok) {
+    if (res.code === api.code.ok) {
       this.setState({
         loading: false,
-        data: response.data,
-        notification: response.data.notification,
-        image: response.data.image,
-        imageHistory: response.data.imageHistory
+        data: res.data,
+        notification: res.data.notification,
+        image: res.data.image,
+        imageHistory: res.data.imageHistory
       });
     } else {
-      // TODO error handling
-      console.log('ERROR');
+      this.setState({
+        loading: false
+      });
+      // error code: wrongParam, notExist
+      let errorMsg;
+      switch(res.code) {
+        case api.code.wrongParam:
+          errorMsg = 'Wrong sentry ID';
+          break
+        case api.code.notExist:
+          errorMsg = 'Sentry is not existed'
+          break
+        default:
+          errorMsg = 'Unknown error';
+          break
+      }
+      Modal.error({
+        title: errorMsg,
+        onOk: () => { window.location.reload(); }
+      });
     }
   }
 

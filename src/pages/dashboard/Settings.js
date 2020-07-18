@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import DashboardLayout from '../../layouts/DashboardLayout';
-import { Card, Col, Divider, PageHeader, Row, TreeSelect } from 'antd';
+import { Card, Col, Divider, Modal, PageHeader, Row, TreeSelect } from 'antd';
+import { injectIntl } from 'react-intl';
 import api from '../../helpers/Api.js';
 
 const Language = [
@@ -26,16 +27,30 @@ class Settings extends Component {
   }
 
   async loadData() {
-    const response = await api.getUserInfo();
+    const res = await api.getUserInfo();
 
-    if (response.code === api.code.ok) {
+    if (res.code === api.code.ok) {
       this.setState({
-        language: response.data.language,
-        timezone: response.data.timeZone,
+        language: res.data.language,
+        timezone: res.data.timeZone,
       })
     } else {
-      console.log('---- Error ----');
-      console.log(response);
+      // error code: notExist
+      const { intl } = this.props;
+      let errorMsg;
+      switch(res.code) {
+        case api.code.notExist:
+          errorMsg = intl.formatMessage({ id: 'userInfoNotExist' })
+          break
+        default:
+          errorMsg = intl.formatMessage({ id: 'unknownError' })
+          break
+      }
+
+      Modal.error({
+        title: errorMsg,
+        onOk: () => { window.location.reload(); }
+      });
     }
   }
 
@@ -48,12 +63,24 @@ class Settings extends Component {
   };
 
   async updateSetting(lang, tz) {
-    const response = await api.updateSetting(lang, tz);
-    if (response.code === api.code.ok) {
+    const res = await api.updateSetting(lang, tz);
+    if (res.code === api.code.ok) {
       window.location.reload();
     } else {
-      console.log('---- Error ----');
-      console.log(response);
+      // error code: wrongParam
+      let errorMsg;
+      switch(res.code) {
+        case api.code.wrongParam:
+          errorMsg = res.detail
+          break
+        default:
+          errorMsg = intl.formatMessage({ id: 'unknownError' })
+          break
+      }
+      Modal.error({
+        title: errorMsg,
+        onOk: () => { window.location.reload(); }
+      });
     }
   }
 
@@ -118,4 +145,4 @@ class Settings extends Component {
   }
 }
 
-export default Settings;
+export default injectIntl(Settings);
