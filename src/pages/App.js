@@ -18,7 +18,7 @@ if (!Intl.PluralRules) {
   require('@formatjs/intl-pluralrules/locale-data/zh');
 }
 
-const getUserLanguage = () => {
+const guessUserLanguage = () => {
   const translatedLocales = [ 'zh-CN', 'zh-Hans', 'en-US' ];
   let preferredLang = preferredLocale(
       translatedLocales,
@@ -39,6 +39,13 @@ const getUserLanguage = () => {
 class App extends Component {
   constructor(props) {
     super(props);
+    let preferredLang = guessUserLanguage();
+    let localStorageLang = window.localStorage.getItem("lang");
+    if(localStorageLang) {
+      preferredLang = localStorageLang;
+    } else {
+      window.localStorage.setItem("lang", preferredLang);
+    }
 
     // user context
     this.userContextToggleRefresh = async () => {
@@ -62,16 +69,6 @@ class App extends Component {
       } else {
         window.localStorage.setItem("disableTimeZoneDiffNotice", '');
 
-        let preferredLang = getUserLanguage();
-        let localStorageLang = window.localStorage.getItem("lang");
-        if(localStorageLang) {
-          preferredLang = localStorageLang;
-        } else {
-          window.localStorage.setItem("lang", preferredLang);
-        }
-
-        console.log(preferredLang);
-
         this.setState({
           isLoading: false,
           isLoggedIn: false,
@@ -94,8 +91,8 @@ class App extends Component {
           window.localStorage.setItem("lang", 'en-US');
           break;
         default:
-          this.setState({ lang:getUserLanguage() });
-          window.localStorage.setItem("lang", getUserLanguage());
+          this.setState({ lang:guessUserLanguage() });
+          window.localStorage.setItem("lang", guessUserLanguage());
           break;
       }
     }
@@ -109,7 +106,7 @@ class App extends Component {
     }
 
     this.state = {
-      lang: getUserLanguage(),
+      lang: guessUserLanguage(),
       isLoading: true,
       isLoggedIn: false,
       userEmail: "",

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import AppLayout from '../layouts/AppLayout'
+import AppLayout from '../layouts/AppLayout';
+import { UserContext } from '../UserContext';
 
 import {
   LeftOutlined,
@@ -80,7 +81,7 @@ class Register extends Component {
   }
 
   // step 1: create account
-  handleStepOne(e) {
+  handleStepOne(e, lang) {
     e.preventDefault();
 
     this.setState({
@@ -93,7 +94,7 @@ class Register extends Component {
       const res = await api.register(
         this.state.email,
         this.state.password,
-        window.localStorage.getItem('lang'),
+        lang,
         moment.tz.guess(),
         values['code']
       )
@@ -348,25 +349,29 @@ class Register extends Component {
           {/* <Row gutter={48} > */}
             <div className="steps-action">
               { this.state.current === 1 && (
-                <Row gutter={24} >
-                <Col span={12} style={{ textAlign: 'left'}}>
-                  <Button onClick={() => this.prev()}>
-                    <LeftOutlined />
-                    Previous
-                  </Button>
-                </Col>
-                <Col span={12} style={{ textAlign: 'right' }}>
-                <Button
-                  type="primary"
-                  className="register-form-button"
-                  loading={this.state.registerLoading}
-                  onClick={this.handleStepOne}
-                >
-                  Submit
-                  <RightOutlined />
-                </Button>
-              </Col>
-              </Row>
+                <UserContext.Consumer>
+                  {({ lang }) => (
+                    <Row gutter={24} >
+                    <Col span={12} style={{ textAlign: 'left'}}>
+                      <Button onClick={() => this.prev()}>
+                        <LeftOutlined />
+                        Previous
+                      </Button>
+                    </Col>
+                    <Col span={12} style={{ textAlign: 'right' }}>
+                    <Button
+                      type="primary"
+                      className="register-form-button"
+                      loading={this.state.registerLoading}
+                      onClick={e => this.handleStepOne(e, lang)}
+                    >
+                      Submit
+                      <RightOutlined />
+                    </Button>
+                    </Col>
+                    </Row>
+                  )}
+                </UserContext.Consumer>
               )}
               { this.state.current === 0 && (
                 <Col span={24} style={{ textAlign: 'right' }}>
