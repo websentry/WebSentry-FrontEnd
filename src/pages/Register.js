@@ -88,25 +88,13 @@ class Register extends Component {
       registerError: null
     })
 
-    let language = 'en-US';
-    switch(navigator.language.split('-')[0]){
-        case 'zh-Hans':
-            language = 'zh-Hans';
-            break;
-        default:
-    }
-
     let moment = require('moment-timezone');
-    let userInfo = {
-      lang: language,
-      tz: moment.tz.guess(),
-    }
-
     this.formRef.current.validateFields().then(async values => {
       const res = await api.register(
         this.state.email,
         this.state.password,
-        userInfo,
+        window.localStorage.getItem('lang'),
+        moment.tz.guess(),
         values['code']
       )
 

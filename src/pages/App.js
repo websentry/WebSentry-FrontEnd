@@ -10,11 +10,30 @@ import api from '../helpers/Api';
 import { IntlProvider } from 'react-intl';
 import zh_CN from '../locale/lang/zh_CN.js';
 import en_US from '../locale/lang/en_US.js';
+import preferredLocale from 'preferred-locale';
 
 if (!Intl.PluralRules) {
   require('@formatjs/intl-pluralrules/polyfill');
   require('@formatjs/intl-pluralrules/locale-data/en');
   require('@formatjs/intl-pluralrules/locale-data/zh');
+}
+
+const getUserLanguage = () => {
+  const translatedLocales = [ 'zh-CN', 'zh-Hans', 'en-US' ];
+  let preferredLang = preferredLocale(
+      translatedLocales,
+      'en-US',
+      { lowerCaseRegion: false }
+  );
+
+  switch (preferredLang) {
+    case 'zh-CN':
+      return 'zh-Hans';
+    case 'zh-Hans':
+      return 'zh-Hans';
+    default:
+      return 'en-US';
+  }
 }
 
 class App extends Component {
@@ -31,6 +50,8 @@ class App extends Component {
       const response = await api.getUserInfo();
       console.log(response);
       if (response.code === api.code.ok) {
+        window.localStorage.setItem("lang", response.data.language);
+
         this.setState({
           isLoading: false,
           isLoggedIn: true,
@@ -39,30 +60,44 @@ class App extends Component {
           tz: response.data.timeZone
         });
       } else {
+        window.localStorage.setItem("disableTimeZoneDiffNotice", '');
+
+        let preferredLang = getUserLanguage();
+        let localStorageLang = window.localStorage.getItem("lang");
+        if(localStorageLang) {
+          preferredLang = localStorageLang;
+        } else {
+          window.localStorage.setItem("lang", preferredLang);
+        }
+
+        console.log(preferredLang);
+
         this.setState({
           isLoading: false,
           isLoggedIn: false,
           userEmail: "",
-          lang: navigator.language,
+          lang: preferredLang,
           tz: "",
         });
-        window.localStorage.clear();
+
       }
     };
 
     this.switchLang = () => {
       switch (this.state.lang.split('-')[0]) {
         case 'en':
-          this.setState({ lang:'zh-CN' });
+          this.setState({ lang:'zh-Hans' });
+          window.localStorage.setItem("lang", 'zh-Hans');
           break;
         case 'zh':
           this.setState({ lang:'en-US' });
+          window.localStorage.setItem("lang", 'en-US');
           break;
         default:
-          this.setState({ lang:navigator.language });
+          this.setState({ lang:getUserLanguage() });
+          window.localStorage.setItem("lang", getUserLanguage());
           break;
       }
-      console.log(this.state);
     }
 
     this.onLoading = () => {
@@ -74,7 +109,7 @@ class App extends Component {
     }
 
     this.state = {
-      lang: navigator.language,
+      lang: getUserLanguage(),
       isLoading: true,
       isLoggedIn: false,
       userEmail: "",
