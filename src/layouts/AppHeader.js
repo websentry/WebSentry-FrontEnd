@@ -94,21 +94,21 @@ class AppHeader extends React.Component {
                   }
                   style={{ float: "right" }}
                 >
-                  <Menu.Item
-                    key="switchLang"
-                    onClick={
-                      isLoggedIn ? (
-                        () => {
-                          this.props.history.push("/dashboard/settings")
+                  {[{id: "zh-Hans", name: "简体中文"},
+                    {id: "en-US", name: "English"}].map( language => (
+                      <Menu.Item
+                        key={language.id}
+                        onClick={
+                          isLoggedIn ? (
+                            () => {
+                              this.props.history.push("/dashboard/settings")
+                            }
+                          ) : () => switchLang(language.id)
                         }
-                      ) : switchLang
-                    }
-                  >
-                    <FormattedMessage
-                      id='lang'
-                      defaultMessage='Language:English'
-                    />
-                  </Menu.Item>
+                      >
+                        {language.name}
+                      </Menu.Item>
+                  ))}
                 </SubMenu>
                 {userMenu}
               </Menu>

@@ -22,6 +22,8 @@ const { Step } = Steps;
 const MIN_PASSWORD_LENGTH = 8;
 const MAX_PASSWORD_LENGTH = 64;
 
+let moment = require('moment-timezone');
+
 class Register extends Component {
   formRef = React.createRef();
 
@@ -89,7 +91,6 @@ class Register extends Component {
       registerError: null
     })
 
-    let moment = require('moment-timezone');
     this.formRef.current.validateFields().then(async values => {
       const res = await api.register(
         this.state.email,

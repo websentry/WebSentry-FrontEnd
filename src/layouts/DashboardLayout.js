@@ -10,6 +10,7 @@ import { UserContext } from '../UserContext';
 import api from '../helpers/Api';
 
 const { Content, Sider } = Layout;
+let moment = require('moment-timezone');
 
 class DashboardLayout extends Component {
   constructor() {
@@ -24,7 +25,6 @@ class DashboardLayout extends Component {
 
   render() {
     const { intl } = this.props;
-    let moment = require('moment-timezone');
     return (
       <UserContext.Consumer>
         {({userEmail, tz}) => (

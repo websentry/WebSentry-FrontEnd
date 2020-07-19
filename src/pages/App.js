@@ -18,6 +18,8 @@ if (!Intl.PluralRules) {
   require('@formatjs/intl-pluralrules/locale-data/zh');
 }
 
+let moment = require('moment-timezone');
+
 const guessUserLanguage = () => {
   const translatedLocales = [ 'zh-CN', 'zh-Hans', 'en-US' ];
   let preferredLang = preferredLocale(
@@ -39,11 +41,9 @@ const guessUserLanguage = () => {
 class App extends Component {
   constructor(props) {
     super(props);
-    let preferredLang = guessUserLanguage();
-    let localStorageLang = window.localStorage.getItem("lang");
-    if(localStorageLang) {
-      preferredLang = localStorageLang;
-    } else {
+    let preferredLang = window.localStorage.getItem("lang");
+    if (!preferredLang) {
+      preferredLang = guessUserLanguage();
       window.localStorage.setItem("lang", preferredLang);
     }
 
@@ -73,28 +73,15 @@ class App extends Component {
           isLoading: false,
           isLoggedIn: false,
           userEmail: "",
-          lang: preferredLang,
-          tz: "",
+          tz: moment.tz.guess(),
         });
 
       }
     };
 
-    this.switchLang = () => {
-      switch (this.state.lang.split('-')[0]) {
-        case 'en':
-          this.setState({ lang:'zh-Hans' });
-          window.localStorage.setItem("lang", 'zh-Hans');
-          break;
-        case 'zh':
-          this.setState({ lang:'en-US' });
-          window.localStorage.setItem("lang", 'en-US');
-          break;
-        default:
-          this.setState({ lang:guessUserLanguage() });
-          window.localStorage.setItem("lang", guessUserLanguage());
-          break;
-      }
+    this.switchLang = lang => {
+      this.setState({ lang });
+      window.localStorage.setItem("lang", lang);
     }
 
     this.onLoading = () => {
@@ -106,7 +93,8 @@ class App extends Component {
     }
 
     this.state = {
-      lang: guessUserLanguage(),
+      lang: preferredLang,
+      tz: moment.tz.guess(),
       isLoading: true,
       isLoggedIn: false,
       userEmail: "",
@@ -121,13 +109,10 @@ class App extends Component {
   }
 
   chooseLocale() {
-    switch(this.state.lang.split('-')[0]){
-        case 'en':
-            return en_US;
-        case 'zh':
-            return zh_CN;
-        default:
-            return en_US;
+    if(this.state.lang === 'zh-Hans') {
+      return zh_CN;
+    } else {
+      return en_US;
     }
   }
 
