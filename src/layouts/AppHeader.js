@@ -16,28 +16,6 @@ class AppHeader extends React.Component {
       <UserContext.Consumer>
         {({ switchLang, isLoggedIn, isLoading }) => {
           let userMenu;
-          let swithcLangButton = langSubMenuOnClick => (
-            <SubMenu
-              key="language"
-              title={
-                <span>
-                  <GlobalOutlined style={{ fontSize: "16px" }} />
-                </span>
-              }
-              style={{ float: "right" }}
-              onTitleClick = { ()=> console.log("onTitleClick")}
-            >
-              {[{id: "zh-Hans", name: "简体中文"},
-                {id: "en-US", name: "English"}].map( language => (
-                  <Menu.Item
-                    key={language.id}
-                    onClick={() => langSubMenuOnClick(language.id)}
-                  >
-                    {language.name}
-                  </Menu.Item>
-              ))}
-            </SubMenu>
-          )
           if (isLoading) {
             const spinIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
             userMenu = (
