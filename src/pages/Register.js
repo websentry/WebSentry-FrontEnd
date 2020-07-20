@@ -159,24 +159,10 @@ class Register extends Component {
       message.info(msg);
     } else {
       this.setState({ success: true })
-<<<<<<< HEAD
-
-      if (res.data['generated']) {
-        message.info('Verification code has been sent!');
-        this.setState({
-          alertMsg: 'Please check your email inbox for verification code.'
-        })
-      } else {
-        this.setState({
-          alertMsg: 'Please use the verification code from previous email.'
-        })
-      }
-=======
       message.info('Verification code has been sent!');
       this.setState({
         alertMsg: 'Please check your email inbox for verification code.'
       })
->>>>>>> 5e8f8ad52e3729b4dae69684346ead9b51f9a24f
     }
     this.setState({ verificationLoading: false })
   }
