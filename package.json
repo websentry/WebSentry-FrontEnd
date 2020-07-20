@@ -13,6 +13,7 @@
     "less-loader": "4.1.0",
     "moment": "^2.27.0",
     "moment-timezone": "^0.5.31",
+    "preferred-locale": "^1.0.5",
     "react": "^16.13.1",
     "react-app-rewired": "^2.1.6",
     "react-dom": "^16.13.1",

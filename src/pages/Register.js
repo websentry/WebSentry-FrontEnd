@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import AppLayout from '../layouts/AppLayout'
+import AppLayout from '../layouts/AppLayout';
+import { UserContext } from '../UserContext';
 
 import {
   LeftOutlined,
@@ -20,6 +21,8 @@ import api from '../helpers/Api.js'
 const { Step } = Steps;
 const MIN_PASSWORD_LENGTH = 8;
 const MAX_PASSWORD_LENGTH = 64;
+
+let moment = require('moment-timezone');
 
 class Register extends Component {
   formRef = React.createRef();
@@ -80,7 +83,7 @@ class Register extends Component {
   }
 
   // step 1: create account
-  handleStepOne(e) {
+  handleStepOne(e, lang) {
     e.preventDefault();
 
     this.setState({
@@ -92,6 +95,8 @@ class Register extends Component {
       const res = await api.register(
         this.state.email,
         this.state.password,
+        lang,
+        moment.tz.guess(),
         values['code']
       )
 
@@ -156,17 +161,10 @@ class Register extends Component {
       message.info(msg);
     } else {
       this.setState({ success: true })
-
-      if (res.data['generated']) {
-        message.info('Verification code has been sent!');
-        this.setState({
-          alertMsg: "Please check your email inbox for verification code."
-        })
-      } else {
-        this.setState({
-          alertMsg: "Please use the verification code from previous email."
-        })
-      }
+      message.info('Verification code has been sent!');
+      this.setState({
+        alertMsg: "Please check your email inbox for verification code."
+      })
     }
     this.setState({ verificationLoading: false })
   }
@@ -352,25 +350,29 @@ class Register extends Component {
           {/* <Row gutter={48} > */}
             <div className="steps-action">
               { this.state.current === 1 && (
-                <Row gutter={24} >
-                <Col span={12} style={{ textAlign: 'left'}}>
-                  <Button onClick={() => this.prev()}>
-                    <LeftOutlined />
-                    Previous
-                  </Button>
-                </Col>
-                <Col span={12} style={{ textAlign: 'right' }}>
-                <Button
-                  type="primary"
-                  className="register-form-button"
-                  loading={this.state.registerLoading}
-                  onClick={this.handleStepOne}
-                >
-                  Submit
-                  <RightOutlined />
-                </Button>
-              </Col>
-              </Row>
+                <UserContext.Consumer>
+                  {({ lang }) => (
+                    <Row gutter={24} >
+                    <Col span={12} style={{ textAlign: 'left'}}>
+                      <Button onClick={() => this.prev()}>
+                        <LeftOutlined />
+                        Previous
+                      </Button>
+                    </Col>
+                    <Col span={12} style={{ textAlign: 'right' }}>
+                    <Button
+                      type="primary"
+                      className="register-form-button"
+                      loading={this.state.registerLoading}
+                      onClick={e => this.handleStepOne(e, lang)}
+                    >
+                      Submit
+                      <RightOutlined />
+                    </Button>
+                    </Col>
+                    </Row>
+                  )}
+                </UserContext.Consumer>
               )}
               { this.state.current === 0 && (
                 <Col span={24} style={{ textAlign: 'right' }}>

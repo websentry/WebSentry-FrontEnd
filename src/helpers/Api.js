@@ -108,10 +108,18 @@ api.verification = async (email) => {
     return await requestApi('get_verification', params, null, false);
 }
 
-api.register = async (email, password, verification) => {
+api.register = async (
+  email,
+  password,
+  lang,
+  tz,
+  verification
+) => {
     const params = {
         email: email,
-        verification: verification
+        verification: verification,
+        lang: lang,
+        tz: tz
     };
     var formData = new FormData();
     formData.set("password", password);
