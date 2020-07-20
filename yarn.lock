@@ -8791,6 +8791,11 @@ postcss@^7, postcss@^7.0.0, postcss@^7.0.1, postcss@^7.0.14, postcss@^7.0.16, po
     source-map "^0.6.1"
     supports-color "^6.1.0"
 
+preferred-locale@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/preferred-locale/-/preferred-locale-1.0.5.tgz#26c95bdfe72b0dec3346f04c4478216a88f9500e"
+  integrity sha512-J119nJi52uTJM5b6GH48dwYdvEuYhi3T71P1N8mrjB4FfGvO4OWcvyZOxiH4OXdXrX2FXow/c2RRibt+5ybHNQ==
+
 prelude-ls@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.1.2.tgz#21932a549f5e52ffd9a827f570e04be62a97da54"

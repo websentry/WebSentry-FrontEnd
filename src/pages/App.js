@@ -10,6 +10,7 @@ import api from '../helpers/Api';
 import { IntlProvider } from 'react-intl';
 import zh_CN from '../locale/lang/zh_CN.js';
 import en_US from '../locale/lang/en_US.js';
+import preferredLocale from 'preferred-locale';
 
 if (!Intl.PluralRules) {
   require('@formatjs/intl-pluralrules/polyfill');
@@ -17,9 +18,34 @@ if (!Intl.PluralRules) {
   require('@formatjs/intl-pluralrules/locale-data/zh');
 }
 
+let moment = require('moment-timezone');
+
+const guessUserLanguage = () => {
+  const translatedLocales = [ 'zh-CN', 'zh-Hans', 'en-US' ];
+  let preferredLang = preferredLocale(
+      translatedLocales,
+      'en-US',
+      { lowerCaseRegion: false }
+  );
+
+  switch (preferredLang) {
+    case 'zh-CN':
+      return 'zh-Hans';
+    case 'zh-Hans':
+      return 'zh-Hans';
+    default:
+      return 'en-US';
+  }
+}
+
 class App extends Component {
   constructor(props) {
     super(props);
+    let preferredLang = window.localStorage.getItem('lang');
+    if (!preferredLang) {
+      preferredLang = guessUserLanguage();
+      window.localStorage.setItem('lang', preferredLang);
+    }
 
     // user context
     this.userContextToggleRefresh = async () => {
@@ -28,36 +54,33 @@ class App extends Component {
         this.setState({isLoading: true});
       }
 
-      const res = await api.getUserInfo();
-      if (res.code === api.code.ok) {
+      const response = await api.getUserInfo();
+      console.log(response);
+      if (response.code === api.code.ok) {
+        window.localStorage.setItem('lang', response.data.language);
+
         this.setState({
           isLoading: false,
           isLoggedIn: true,
-          userEmail: res.data.email,
+          userEmail: response.data.email,
+          lang: response.data.language,
+          tz: response.data.timeZone
         });
       } else {
-        // error code: notExist
+        window.localStorage.setItem('disableTimeZoneDiffNotice', '');
+
         this.setState({
           isLoading: false,
           isLoggedIn: false,
           userEmail: '',
+          tz: moment.tz.guess(),
         });
       }
     };
 
-    this.switchLang = () => {
-      switch (this.state.lang.split('-')[0]) {
-        case 'en':
-          this.setState({ lang:'zh-CN' });
-          break;
-        case 'zh':
-          this.setState({ lang:'en-US' });
-          break;
-        default:
-          this.setState({ lang:navigator.language });
-          break;
-      }
-      console.log(this.state);
+    this.switchLang = lang => {
+      this.setState({ lang });
+      window.localStorage.setItem('lang', lang);
     }
 
     this.onLoading = () => {
@@ -69,7 +92,8 @@ class App extends Component {
     }
 
     this.state = {
-      lang:navigator.language,
+      lang: preferredLang,
+      tz: moment.tz.guess(),
       isLoading: true,
       isLoggedIn: false,
       userEmail: '',
@@ -84,13 +108,10 @@ class App extends Component {
   }
 
   chooseLocale() {
-    switch(this.state.lang.split('-')[0]){
-        case 'en':
-            return en_US;
-        case 'zh':
-            return zh_CN;
-        default:
-            return en_US;
+    if(this.state.lang === 'zh-Hans') {
+      return zh_CN;
+    } else {
+      return en_US;
     }
   }
 

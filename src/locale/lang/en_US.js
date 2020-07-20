@@ -32,6 +32,8 @@ const en_US = {
   dashboardSidebarNotifications: 'Notifications',
   dashboardSidebarSetting: 'Settings',
 
-  sentryRemoveText: 'Do you want to remove this sentry?'
+  sentryRemoveText: 'Do you want to remove this sentry?',
+
+  timeZoneDiffNotice: 'The browser time zone is different from current user setting!'
 }
 export default en_US;

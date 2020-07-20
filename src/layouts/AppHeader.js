@@ -3,7 +3,7 @@ import { GlobalOutlined, LoadingOutlined } from '@ant-design/icons';
 import { Layout, Menu, Spin } from 'antd';
 import { FormattedMessage } from 'react-intl';
 import { UserContext } from '../UserContext';
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import logo from '../assets/logo.png';
 import './AppHeader.less';
 
@@ -25,7 +25,20 @@ class AppHeader extends React.Component {
             )
           } else {
             if (isLoggedIn) {
-              userMenu = (
+              userMenu = [
+                <SubMenu
+                  key="language"
+                  title={
+                    <span>
+                      <GlobalOutlined style={{ fontSize: "16px" }} />
+                    </span>
+                  }
+                  style={{ float: "right" }}
+                  onTitleClick = { () =>
+                     this.props.history.push("/dashboard/settings")
+                  }
+                />
+                ,
                 <Menu.Item key="dashboard" style={{ float: "right" }}>
                   <Link to="/dashboard">
                     <FormattedMessage
@@ -34,9 +47,29 @@ class AppHeader extends React.Component {
                     />
                   </Link>
                 </Menu.Item>
-              )
+              ]
             } else {
               userMenu = [
+                <SubMenu
+                  key="language"
+                  title={
+                    <span>
+                      <GlobalOutlined style={{ fontSize: "16px" }} />
+                    </span>
+                  }
+                  style={{ float: "right" }}
+                  onTitleClick = { ()=> console.log("onTitleClick")}
+                >
+                  {[{id: "zh-Hans", name: "简体中文"},
+                    {id: "en-US", name: "English"}].map( language => (
+                      <Menu.Item
+                        key={language.id}
+                        onClick={() => switchLang(language.id)}
+                      >
+                        {language.name}
+                      </Menu.Item>
+                  ))}
+                </SubMenu>,
                 <Menu.Item
                   key="register"
                   style={{ width: "80px", textAlign: "center", float: "right" }}
@@ -85,22 +118,6 @@ class AppHeader extends React.Component {
                     />
                   </Link>
                 </Menu.Item>
-                <SubMenu
-                  key="language"
-                  title={
-                    <span>
-                      <GlobalOutlined style={{ fontSize: "16px" }} />
-                    </span>
-                  }
-                  style={{ float: "right" }}
-                >
-                  <Menu.Item key="switchLang" onClick={switchLang}>
-                    <FormattedMessage
-                      id='lang'
-                      defaultMessage='Language:English'
-                    />
-                  </Menu.Item>
-                </SubMenu>
                 {userMenu}
               </Menu>
             </Header>
@@ -111,4 +128,4 @@ class AppHeader extends React.Component {
   }
 }
 
-export default AppHeader;
+export default withRouter(AppHeader);
