@@ -16,7 +16,9 @@ class AppHeader extends React.Component {
       <UserContext.Consumer>
         {({ switchLang, isLoggedIn, isLoading }) => {
           let userMenu;
+          let langSubMenuOnClick;
           if (isLoading) {
+            langSubMenuOnClick = langId => switchLang(langId);
             const spinIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
             userMenu = (
               <Menu.Item key="dashboard" style={{ float: "right" }}>
@@ -25,6 +27,8 @@ class AppHeader extends React.Component {
             )
           } else {
             if (isLoggedIn) {
+              langSubMenuOnClick = e =>
+                this.props.history.push("/dashboard/settings");
               userMenu = (
                 <Menu.Item key="dashboard" style={{ float: "right" }}>
                   <Link to="/dashboard">
@@ -36,6 +40,7 @@ class AppHeader extends React.Component {
                 </Menu.Item>
               )
             } else {
+              langSubMenuOnClick = langId => switchLang(langId);
               userMenu = [
                 <Menu.Item
                   key="register"
@@ -98,13 +103,7 @@ class AppHeader extends React.Component {
                     {id: "en-US", name: "English"}].map( language => (
                       <Menu.Item
                         key={language.id}
-                        onClick={
-                          isLoggedIn ? (
-                            () => {
-                              this.props.history.push("/dashboard/settings")
-                            }
-                          ) : () => switchLang(language.id)
-                        }
+                        onClick={() => langSubMenuOnClick(language.id)}
                       >
                         {language.name}
                       </Menu.Item>
