@@ -4,6 +4,7 @@ import { Button, Card, List, Modal, Tag, Tooltip, message } from 'antd';
 import api from '../../../helpers/Api.js';
 import { injectIntl } from 'react-intl';
 import moment from 'moment';
+import { UserContext } from '../../../UserContext.js';
 
 const { Meta } = Card;
 
@@ -13,7 +14,7 @@ class TaskItem extends Component {
     this.state = {
       visible: false,
       loading: false,
-      alertMsg: "",
+      alertMsg: '',
     }
     this.item = this.props.item;
     this.confirm = this.confirm.bind(this);
@@ -36,12 +37,12 @@ class TaskItem extends Component {
   async confirm() {
     const { intl } = this.props;
     Modal.confirm({
-      title: "Sentry: " + this.item.name,
-      icon: <ExclamationCircleOutlined style={{ color: "#f5222d" }}/>,
-      content: intl.formatMessage({ id: "sentryRemoveText" }),
-      okText: intl.formatMessage({ id: "yes" }),
+      title: 'Sentry: ' + this.item.name,
+      icon: <ExclamationCircleOutlined style={{ color: '#f5222d' }}/>,
+      content: intl.formatMessage({ id: 'sentryRemoveText' }),
+      okText: intl.formatMessage({ id: 'yes' }),
       okType: 'danger',
-      cancelText: intl.formatMessage({ id: "no" }),
+      cancelText: intl.formatMessage({ id: 'no' }),
       onOk: async () => {
         const res = await api.removeSentry(this.item.id);
         if (res.code === api.code.ok) {
@@ -58,59 +59,63 @@ class TaskItem extends Component {
 
   render() {
     return (
-      <List.Item>
-        <Card
-          title={this.item.name}
-          className="task-card"
-          actions={[
-            <Tooltip title="Detail">
-              <Button href={"/dashboard/sentry/" + this.item.id} type="link">
-                <ProjectOutlined style={{ fontSize: "16px"}} />
-              </Button>
-            </Tooltip>,
-            <Tooltip title="Delete">
-              <Button type="link" onClick={this.confirm}>
-                <DeleteOutlined style={{ fontSize: "16px", color: "#f5222d" }} />
-              </Button>
-            </Tooltip>
-          ]}
-        >
-          <Meta
-            description={
-              <div>
-                <table>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <Tooltip title="URL">
-                          <Tag>
-                            <LinkOutlined />
-                          </Tag>
-                        </Tooltip>
-                      </td>
-                      <td>
-                        <span>{this.item.url}</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <Tooltip title="Last check">
-                          <Tag>
-                            <ClockCircleOutlined />
-                          </Tag>
-                        </Tooltip>
-                      </td>
-                      <td>
-                        <span>{ this.item.lastCheckTime ? moment(this.item.lastCheckTime).fromNow() : "Initializing..." }</span>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            }
-          />
-        </Card>
-      </List.Item>
+      <UserContext.Consumer>
+        {({ tz }) => (
+          <List.Item>
+            <Card
+              title={this.item.name}
+              className='task-card'
+              actions={[
+                <Tooltip title='Detail'>
+                  <Button href={'/dashboard/sentry/' + this.item.id} type='link'>
+                    <ProjectOutlined style={{ fontSize: '16px'}} />
+                  </Button>
+                </Tooltip>,
+                <Tooltip title='Delete'>
+                  <Button type='link' onClick={this.confirm}>
+                    <DeleteOutlined style={{ fontSize: '16px', color: '#f5222d' }} />
+                  </Button>
+                </Tooltip>
+              ]}
+            >
+              <Meta
+                description={
+                  <div>
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <Tooltip title='URL'>
+                              <Tag>
+                                <LinkOutlined />
+                              </Tag>
+                            </Tooltip>
+                          </td>
+                          <td>
+                            <span>{this.item.url}</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <Tooltip title='Last check'>
+                              <Tag>
+                                <ClockCircleOutlined />
+                              </Tag>
+                            </Tooltip>
+                          </td>
+                          <td>
+                            <span>{ this.item.lastCheckTime ? moment.tz(this.item.lastCheckTime, tz).fromNow() : 'Initializing...' }</span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                }
+              />
+            </Card>
+          </List.Item>
+        )}
+      </UserContext.Consumer>
     );
   }
 }

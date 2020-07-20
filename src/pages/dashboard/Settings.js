@@ -96,8 +96,6 @@ class Settings extends Component {
 
   render() {
     var moment = require('moment-timezone');
-    // can be used for guessing the timezone
-    // var local_timezone = moment.tz.guess();
     var timezones = moment.tz.names();
     var timezone_dict = [];
     for (var i in timezones) {
@@ -115,7 +113,7 @@ class Settings extends Component {
             title='Setting'
           />
           <Divider style={{ marginBottom: '0px' }} />
-          <Spin size="large" spinning={this.state.isLoading}>
+          <Spin size='large' spinning={this.state.isLoading}>
             <Card bordered={false}>
               <Row style={{ marginBottom: '24px' }}>
                 <Col span={8}><h3>Language</h3></Col>

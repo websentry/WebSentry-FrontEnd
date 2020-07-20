@@ -32,7 +32,6 @@ class Notifications extends Component {
     }
     // TODO: Handle loading state
     const res = await api.getAllNotifications();
-
     if (res.code === api.code.ok) {
       this.setState({
         isLoading: false,
@@ -43,7 +42,7 @@ class Notifications extends Component {
       this.setState({
         isLoading: false,
       });
-
+      // no error code
       const { intl } = this.props;
       Modal.error({
         title: intl.formatMessage({ id: 'notificationFailGet' }),
