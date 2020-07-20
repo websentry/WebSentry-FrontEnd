@@ -16,9 +16,8 @@ class AppHeader extends React.Component {
       <UserContext.Consumer>
         {({ switchLang, isLoggedIn, isLoading }) => {
           let userMenu;
-          let langSubMenuOnClick;
+          let langSubMenuOnClick = langId => switchLang(langId);
           if (isLoading) {
-            langSubMenuOnClick = langId => switchLang(langId);
             const spinIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
             userMenu = (
               <Menu.Item key="dashboard" style={{ float: "right" }}>
@@ -40,7 +39,6 @@ class AppHeader extends React.Component {
                 </Menu.Item>
               )
             } else {
-              langSubMenuOnClick = langId => switchLang(langId);
               userMenu = [
                 <Menu.Item
                   key="register"
