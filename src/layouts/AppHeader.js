@@ -25,6 +25,7 @@ class AppHeader extends React.Component {
                 </span>
               }
               style={{ float: "right" }}
+              onTitleClick = { ()=> console.log("onTitleClick")}
             >
               {[{id: "zh-Hans", name: "简体中文"},
                 {id: "en-US", name: "English"}].map( language => (
@@ -45,12 +46,21 @@ class AppHeader extends React.Component {
               </Menu.Item>
             )
           } else {
-            let langSubMenuOnClick;
             if (isLoggedIn) {
-              langSubMenuOnClick = e =>
-                this.props.history.push("/dashboard/settings");
               userMenu = [
-                swithcLangButton(langSubMenuOnClick),
+                <SubMenu
+                  key="language"
+                  title={
+                    <span>
+                      <GlobalOutlined style={{ fontSize: "16px" }} />
+                    </span>
+                  }
+                  style={{ float: "right" }}
+                  onTitleClick = { () =>
+                     this.props.history.push("/dashboard/settings")
+                  }
+                />
+                ,
                 <Menu.Item key="dashboard" style={{ float: "right" }}>
                   <Link to="/dashboard">
                     <FormattedMessage
@@ -61,9 +71,27 @@ class AppHeader extends React.Component {
                 </Menu.Item>
               ]
             } else {
-              langSubMenuOnClick = langId => switchLang(langId);
               userMenu = [
-                swithcLangButton(langSubMenuOnClick),
+                <SubMenu
+                  key="language"
+                  title={
+                    <span>
+                      <GlobalOutlined style={{ fontSize: "16px" }} />
+                    </span>
+                  }
+                  style={{ float: "right" }}
+                  onTitleClick = { ()=> console.log("onTitleClick")}
+                >
+                  {[{id: "zh-Hans", name: "简体中文"},
+                    {id: "en-US", name: "English"}].map( language => (
+                      <Menu.Item
+                        key={language.id}
+                        onClick={() => switchLang(language.id)}
+                      >
+                        {language.name}
+                      </Menu.Item>
+                  ))}
+                </SubMenu>,
                 <Menu.Item
                   key="register"
                   style={{ width: "80px", textAlign: "center", float: "right" }}
