@@ -16,7 +16,27 @@ class AppHeader extends React.Component {
       <UserContext.Consumer>
         {({ switchLang, isLoggedIn, isLoading }) => {
           let userMenu;
-          let langSubMenuOnClick = langId => switchLang(langId);
+          let swithcLangButton = langSubMenuOnClick => (
+            <SubMenu
+              key="language"
+              title={
+                <span>
+                  <GlobalOutlined style={{ fontSize: "16px" }} />
+                </span>
+              }
+              style={{ float: "right" }}
+            >
+              {[{id: "zh-Hans", name: "简体中文"},
+                {id: "en-US", name: "English"}].map( language => (
+                  <Menu.Item
+                    key={language.id}
+                    onClick={() => langSubMenuOnClick(language.id)}
+                  >
+                    {language.name}
+                  </Menu.Item>
+              ))}
+            </SubMenu>
+          )
           if (isLoading) {
             const spinIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
             userMenu = (
@@ -25,10 +45,12 @@ class AppHeader extends React.Component {
               </Menu.Item>
             )
           } else {
+            let langSubMenuOnClick;
             if (isLoggedIn) {
               langSubMenuOnClick = e =>
                 this.props.history.push("/dashboard/settings");
-              userMenu = (
+              userMenu = [
+                swithcLangButton(langSubMenuOnClick),
                 <Menu.Item key="dashboard" style={{ float: "right" }}>
                   <Link to="/dashboard">
                     <FormattedMessage
@@ -37,9 +59,11 @@ class AppHeader extends React.Component {
                     />
                   </Link>
                 </Menu.Item>
-              )
+              ]
             } else {
+              langSubMenuOnClick = langId => switchLang(langId);
               userMenu = [
+                swithcLangButton(langSubMenuOnClick),
                 <Menu.Item
                   key="register"
                   style={{ width: "80px", textAlign: "center", float: "right" }}
@@ -88,25 +112,6 @@ class AppHeader extends React.Component {
                     />
                   </Link>
                 </Menu.Item>
-                <SubMenu
-                  key="language"
-                  title={
-                    <span>
-                      <GlobalOutlined style={{ fontSize: "16px" }} />
-                    </span>
-                  }
-                  style={{ float: "right" }}
-                >
-                  {[{id: "zh-Hans", name: "简体中文"},
-                    {id: "en-US", name: "English"}].map( language => (
-                      <Menu.Item
-                        key={language.id}
-                        onClick={() => langSubMenuOnClick(language.id)}
-                      >
-                        {language.name}
-                      </Menu.Item>
-                  ))}
-                </SubMenu>
                 {userMenu}
               </Menu>
             </Header>
