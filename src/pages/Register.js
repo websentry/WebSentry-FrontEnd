@@ -161,7 +161,7 @@ class Register extends Component {
       this.setState({ success: true })
       message.info('Verification code has been sent!');
       this.setState({
-        alertMsg: 'Please check your email inbox for verification code.'
+        alertMsg: 'Please check your email inbox.'
       })
     }
     this.setState({ verificationLoading: false })
@@ -295,16 +295,13 @@ class Register extends Component {
           </Col>
           </Row>
         </Form.Item>
-        <Form.Item>
-          { this.state.success ?
-            <div>
+        <Form.Item className='register-form-item'>
+          { this.state.success &&
               <Alert
                 message={this.state.alertMsg}
                 type='success'
                 banner='true'
-                block
               />
-            </div> : null
           }
         </Form.Item>
       </Form>
