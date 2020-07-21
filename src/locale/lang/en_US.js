@@ -17,7 +17,7 @@ const en_US = {
 
   unknownError: 'Unknown error!',
 
-  userInfoNotExist: 'User information is not existed!',
+  userInfoNotExist: 'User information does not exist!',
 
   sentryFailGet: 'Failed to get sentries',
 
