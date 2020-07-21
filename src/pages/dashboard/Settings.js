@@ -23,8 +23,11 @@ class Settings extends Component {
       language: '',
       timezone: '',
     }
-    this.loadData();
     this.updateSetting = this.updateSetting.bind(this);
+  }
+
+  componentDidMount() {
+    this.loadData();
   }
 
   async loadData() {

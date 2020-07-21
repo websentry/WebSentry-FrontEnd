@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { PlusCircleOutlined } from '@ant-design/icons';
 import { Button, Divider, List, Modal, PageHeader } from 'antd';
+import { injectIntl } from 'react-intl';
 import DashboardLayout from '../../layouts/DashboardLayout';
 import SentryItem from './sentry/SentryItem';
 import api from '../../helpers/Api';
@@ -13,11 +14,14 @@ class Home extends Component {
       isLoading: true,
       data: []
     };
-    this.loadData();
     this.showCreateSentry = () => {
       props.history.push('/dashboard/newSentry');
     };
   };
+
+  componentDidMount() {
+    this.loadData();
+  }
 
   async loadData() {
     if (!this.state.isLoading) {
@@ -85,4 +89,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default injectIntl(Home);

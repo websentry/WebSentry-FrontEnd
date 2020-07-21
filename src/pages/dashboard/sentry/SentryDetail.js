@@ -24,8 +24,11 @@ class SentryDetail extends Component {
       image: [],
       imageHistory: []
     }
-    this.loadData();
     this.deleteSentry = this.deleteSentry.bind(this);
+  }
+
+  componentDidMount() {
+    this.loadData();
   }
 
   async loadData() {
