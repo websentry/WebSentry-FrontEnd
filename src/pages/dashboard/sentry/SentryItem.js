@@ -3,6 +3,7 @@ import { ClockCircleOutlined, DeleteOutlined, LinkOutlined, ProjectOutlined, Exc
 import { Button, Card, List, Modal, Tag, Tooltip, message } from 'antd';
 import api from '../../../helpers/Api.js';
 import { injectIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { UserContext } from '../../../UserContext.js';
 
@@ -67,8 +68,10 @@ class TaskItem extends Component {
               className='task-card'
               actions={[
                 <Tooltip title='Detail'>
-                  <Button href={'/dashboard/sentry/' + this.item.id} type='link'>
-                    <ProjectOutlined style={{ fontSize: '16px'}} />
+                  <Button type='link'>
+                    <Link to={'/dashboard/sentry/' + this.item.id}>
+                      <ProjectOutlined style={{ fontSize: '16px', color: '#1890ff' }} />
+                    </Link>
                   </Button>
                 </Tooltip>,
                 <Tooltip title='Delete'>
