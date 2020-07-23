@@ -13,7 +13,15 @@ const zh_CN = {
   notification: '通知',
   setting: '设置',
 
+  unknownError: '未知错误！',
+
+  userInfoNotExist: '用户信息不存在！',
+
+  sentryFailGet: '读取Sentries失败！',
+
   notificationSuccessAdd: '添加成功！',
+  notificationFailAdd: '添加通知失败！',
+  notificationFailGet: '读取通知失败！',
   notificationInvalidString: 'The input is not valid string!',
   notificationServerChanName: 'Please input your ServerChan name!',
   notificationServerChanSCKEY: 'Please input your SCKEY!',

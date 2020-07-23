@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import DashboardLayout from '../../layouts/DashboardLayout';
-import { Card, Col, Divider, PageHeader, Row, TreeSelect } from 'antd';
+import { Card, Col, Divider, Modal, PageHeader, Row, Spin, TreeSelect } from 'antd';
+import { injectIntl } from 'react-intl';
 import api from '../../helpers/Api.js';
 
 const Language = [
@@ -18,24 +19,49 @@ class Settings extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoading: false,
       language: '',
       timezone: '',
     }
-    this.loadData();
     this.updateSetting = this.updateSetting.bind(this);
   }
 
-  async loadData() {
-    const response = await api.getUserInfo();
+  componentDidMount() {
+    this.loadData();
+  }
 
-    if (response.code === api.code.ok) {
+  async loadData() {
+    if (!this.state.isLoading) {
+      this.setState({ isLoading: true });
+    }
+
+    const res = await api.getUserInfo();
+    if (res.code === api.code.ok) {
       this.setState({
-        language: response.data.language,
-        timezone: response.data.timeZone,
+        isLoading: false,
+        language: res.data.language,
+        timezone: res.data.timeZone,
       })
     } else {
-      console.log('---- Error ----');
-      console.log(response);
+      this.setState({
+        isLoading: false
+      });
+      // error code: notExist
+      const { intl } = this.props;
+      let errorMsg;
+      switch(res.code) {
+        case api.code.notExist:
+          errorMsg = intl.formatMessage({ id: 'userInfoNotExist' })
+          break
+        default:
+          errorMsg = intl.formatMessage({ id: 'unknownError' })
+          break
+      }
+
+      Modal.error({
+        title: errorMsg,
+        onOk: () => { window.location.reload(); }
+      });
     }
   }
 
@@ -44,24 +70,35 @@ class Settings extends Component {
   };
 
   onTimezoneChange = value => {
-    window.localStorage.setItem("disableTimeZoneDiffNotice", '');
+    window.localStorage.setItem('disableTimeZoneDiffNotice', '');
     this.updateSetting(null, value);
   };
 
   async updateSetting(lang, tz) {
-    const response = await api.updateSetting(lang, tz);
-    if (response.code === api.code.ok) {
+    const res = await api.updateSetting(lang, tz);
+    if (res.code === api.code.ok) {
       window.location.reload();
     } else {
-      console.log('---- Error ----');
-      console.log(response);
+      // error code: wrongParam
+      const { intl } = this.props;
+      let errorMsg;
+      switch(res.code) {
+        case api.code.wrongParam:
+          errorMsg = res.detail
+          break
+        default:
+          errorMsg = intl.formatMessage({ id: 'unknownError' })
+          break
+      }
+      Modal.error({
+        title: errorMsg,
+        onOk: () => { window.location.reload(); }
+      });
     }
   }
 
   render() {
     var moment = require('moment-timezone');
-    // can be used for guessing the timezone
-    // var local_timezone = moment.tz.guess();
     var timezones = moment.tz.names();
     var timezone_dict = [];
     for (var i in timezones) {
@@ -79,44 +116,46 @@ class Settings extends Component {
             title='Setting'
           />
           <Divider style={{ marginBottom: '0px' }} />
-          <Card bordered={false}>
-            <Row style={{ marginBottom: '24px' }}>
-              <Col span={8}><h3>Language</h3></Col>
-              <Col span={16}>
-                <TreeSelect
-                  showSearch
-                  style={{ width: '50%', fontSize: '16px' }}
-                  value={ this.state.language }
-                  dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                  treeData={ Language }
-                  placeholder='Please select'
-                  treeDefaultExpandAll
-                  onChange={ this.onLanguageChange }
-                  defaultValue={ this.state.language }
-                />
-              </Col>
-            </Row>
-            <Row style={{marginBottom: '24px'}}>
-              <Col span={8}><h3>Timezone</h3></Col>
-              <Col span={16}>
-                <TreeSelect
-                  showSearch
-                  style={{ width: '50%', fontSize: '16px' }}
-                  value={ this.state.timezone }
-                  dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                  treeData={ timezone_dict }
-                  placeholder='Please select'
-                  treeDefaultExpandAll
-                  onChange={ this.onTimezoneChange }
-                  defaultValue={ '(GMT' + moment.tz(this.state.timezone).format('Z') + ') ' + this.state.timezone }
-                />
-              </Col>
-            </Row>
-          </Card>
+          <Spin size='large' spinning={this.state.isLoading}>
+            <Card bordered={false}>
+              <Row style={{ marginBottom: '24px' }}>
+                <Col span={8}><h3>Language</h3></Col>
+                <Col span={16}>
+                  <TreeSelect
+                    showSearch
+                    style={{ width: '50%', fontSize: '16px' }}
+                    value={ this.state.language }
+                    dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                    treeData={ Language }
+                    placeholder='Please select'
+                    treeDefaultExpandAll
+                    onChange={ this.onLanguageChange }
+                    defaultValue={ this.state.language }
+                  />
+                </Col>
+              </Row>
+              <Row style={{marginBottom: '24px'}}>
+                <Col span={8}><h3>Timezone</h3></Col>
+                <Col span={16}>
+                  <TreeSelect
+                    showSearch
+                    style={{ width: '50%', fontSize: '16px' }}
+                    value={ this.state.timezone }
+                    dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                    treeData={ timezone_dict }
+                    placeholder='Please select'
+                    treeDefaultExpandAll
+                    onChange={ this.onTimezoneChange }
+                    defaultValue={ '(GMT' + moment.tz(this.state.timezone).format('Z') + ') ' + this.state.timezone }
+                  />
+                </Col>
+              </Row>
+            </Card>
+          </Spin>
         </div>
       </DashboardLayout>
     );
   }
 }
 
-export default Settings;
+export default injectIntl(Settings);

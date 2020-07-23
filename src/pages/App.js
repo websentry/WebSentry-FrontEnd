@@ -41,10 +41,10 @@ const guessUserLanguage = () => {
 class App extends Component {
   constructor(props) {
     super(props);
-    let preferredLang = window.localStorage.getItem("lang");
+    let preferredLang = window.localStorage.getItem('lang');
     if (!preferredLang) {
       preferredLang = guessUserLanguage();
-      window.localStorage.setItem("lang", preferredLang);
+      window.localStorage.setItem('lang', preferredLang);
     }
 
     // user context
@@ -57,7 +57,7 @@ class App extends Component {
       const response = await api.getUserInfo();
       console.log(response);
       if (response.code === api.code.ok) {
-        window.localStorage.setItem("lang", response.data.language);
+        window.localStorage.setItem('lang', response.data.language);
 
         this.setState({
           isLoading: false,
@@ -67,21 +67,20 @@ class App extends Component {
           tz: response.data.timeZone
         });
       } else {
-        window.localStorage.setItem("disableTimeZoneDiffNotice", '');
+        window.localStorage.setItem('disableTimeZoneDiffNotice', '');
 
         this.setState({
           isLoading: false,
           isLoggedIn: false,
-          userEmail: "",
+          userEmail: '',
           tz: moment.tz.guess(),
         });
-
       }
     };
 
     this.switchLang = lang => {
       this.setState({ lang });
-      window.localStorage.setItem("lang", lang);
+      window.localStorage.setItem('lang', lang);
     }
 
     this.onLoading = () => {
@@ -97,7 +96,7 @@ class App extends Component {
       tz: moment.tz.guess(),
       isLoading: true,
       isLoggedIn: false,
-      userEmail: "",
+      userEmail: '',
       toggleRefresh: this.userContextToggleRefresh,
       switchLang: this.switchLang,
       onLoading: this.onLoading,
@@ -117,16 +116,16 @@ class App extends Component {
   }
 
   render() {
-    console.log("loading app");
+    console.log('loading app');
     return (
       <UserContext.Provider value={this.state}>
         <IntlProvider locale={this.state.lang}  messages={this.chooseLocale()}>
           <Router>
               <Switch>
-                <Route exact path="/" component={Home} />
-                <Route path="/dashboard" component={Dashboard} />
-                <Route path="/login" component={Login} />
-                <Route path="/register" component={Register} />
+                <Route exact path='/' component={Home} />
+                <Route path='/dashboard' component={Dashboard} />
+                <Route path='/login' component={Login} />
+                <Route path='/register' component={Register} />
                 <Route component={NoMatch} />
               </Switch>
           </Router>

@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { LoadingOutlined, SmileOutlined } from '@ant-design/icons';
 import '@ant-design/compatible/assets/index.css';
-import { Card, Input, Form, Row, Select, Spin, Steps, Typography } from 'antd';
+import { Card, Input, Form, Modal, Row, Select, Spin, Steps, Typography } from 'antd';
 import ReactCrop from 'react-image-crop';
 import BottomNav from './BottomNav';
 import 'react-image-crop/dist/ReactCrop.css';
 import api from '../../../helpers/Api.js';
 import './NewSentry.less';
 import DashboardLayout from '../../../layouts/DashboardLayout';
+import { injectIntl } from 'react-intl';
 
 const { Title } = Typography;
 const { Search } = Input;
@@ -53,17 +54,21 @@ class NewSentry extends Component {
   }
 
   async loadData() {
-    const response = await api.getAllNotifications();
+    const res = await api.getAllNotifications();
 
-    if (response.code === api.code.ok) {
+    if (res.code === api.code.ok) {
       this.setState({
         // update default email name value
-        notificationList: response.data.notifications.map(n => 
+        notificationList: res.data.notifications.map(n => 
           (n.name === '--default--' ? {...n, name: 'Default Email'} : n))
       });
     } else {
-      console.log('---- Error ----');
-      console.log(response);
+      // no error code
+      const { intl } = this.props;
+      Modal.error({
+        title: intl.formatMessage({ id: 'notificationFailGet' }),
+        onOk: () => { window.location.reload(); }
+      });
     }
   }
 
@@ -348,4 +353,4 @@ class NewSentry extends Component {
   }
 }
 
-export default NewSentry;
+export default injectIntl(NewSentry);

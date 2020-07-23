@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { PlusCircleOutlined } from '@ant-design/icons';
-import { PageHeader, Divider, Button, List } from 'antd';
+import { Button, Divider, List, Modal, PageHeader } from 'antd';
+import { injectIntl } from 'react-intl';
 import DashboardLayout from '../../layouts/DashboardLayout';
 import SentryItem from './sentry/SentryItem';
 import api from '../../helpers/Api';
@@ -13,11 +14,14 @@ class Home extends Component {
       isLoading: true,
       data: []
     };
-    this.loadData();
     this.showCreateSentry = () => {
       props.history.push('/dashboard/newSentry');
     };
   };
+
+  componentDidMount() {
+    this.loadData();
+  }
 
   async loadData() {
     if (!this.state.isLoading) {
@@ -26,16 +30,24 @@ class Home extends Component {
       });
     }
 
-    const response = await api.getAllSentries();
+    const res = await api.getAllSentries();
 
-    if (response.code === api.code.ok) {
+    if (res.code === api.code.ok) {
       this.setState({
         isLoading: false,
-        data: response.data.sentries
+        data: res.data.sentries
       });
     } else {
-      console.log('---- Error ----');
-      console.log(response);
+      // no error code
+      this.setState({
+        isLoading: false
+      });
+
+      const { intl } = this.props;
+      Modal.error({
+        title: intl.formatMessage({ id: 'sentryFailGet' }),
+        onOk: () => { window.location.reload(); }
+      });
     }
   }
 
@@ -77,4 +89,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default injectIntl(Home);
