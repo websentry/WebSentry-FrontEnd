@@ -53,9 +53,7 @@ class DashboardLayout extends Component {
               <Sider
                 breakpoint="lg"
                 collapsedWidth="0"
-                onBreakpoint={(broken) => {
-                  console.log(broken);
-                }}
+                onBreakpoint={(broken) => {}}
                 onCollapse={(collapsed, type) => {
                   this.setState({ siderCollapsed: collapsed });
                 }}
