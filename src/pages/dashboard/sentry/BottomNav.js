@@ -3,9 +3,14 @@ import { Row, Col, Button } from 'antd';
 import './BottomNav.less';
 
 class BottomNav extends Component {
+  constructor(props) {
+    super(props);
+    this.prop = props;
+  }
+
   render() {
-    let leftClassName = 'bottom-nav-left ' + this.props.goBackClassName;
-    let rightClassName = 'bottom-nav-right ' + this.props.goNextClassName;
+    let leftClassName = 'bottom-nav-left ' + this.prop.goBackClassName;
+    let rightClassName = 'bottom-nav-right ' + this.prop.goNextClassName;
     return (
       <Row
         gutter={0}
@@ -16,22 +21,22 @@ class BottomNav extends Component {
       >
         <Col span={12} className={leftClassName}>
           <Button
-            onClick={this.props.goBack}
+            onClick={this.prop.goBack}
             size="large"
-            disabled={this.props.loading}
+            disabled={this.prop.loading}
           >
-            {this.props.goBackButtonText}
+            {this.prop.goBackButtonText}
           </Button>
         </Col>
         <Col span={12} className={rightClassName}>
           <Button
             type="primary"
             size="large"
-            onClick={this.props.goNext}
+            onClick={this.prop.goNext}
             htmlType="submit"
-            loading={this.props.loading}
+            loading={this.prop.loading}
           >
-            {this.props.goNextButtonText}
+            {this.prop.goNextButtonText}
           </Button>
         </Col>
       </Row>

@@ -24,11 +24,12 @@ const { Panel } = Collapse;
 class SentryDetail extends Component {
   constructor(props) {
     super(props);
+    this.prop = props;
     this.state = {
       loading: true,
       visible: false,
       deleteLoading: false,
-      id: this.props.match.params.sentryID,
+      id: this.prop.match.params.sentryID,
       data: [],
       notification: [],
       image: [],
@@ -76,7 +77,7 @@ class SentryDetail extends Component {
       Modal.error({
         title: errorMsg,
         onOk: () => {
-          this.props.history.push('/dashboard');
+          this.prop.history.push('/dashboard');
         },
       });
     }
@@ -90,7 +91,7 @@ class SentryDetail extends Component {
     const res = await api.removeSentry(this.state.id);
 
     if (res.code === api.code.ok) {
-      this.props.history.push('/dashboard');
+      this.prop.history.push('/dashboard');
     } else {
       // wrong sentry ID
       message.error(res.detail);
@@ -119,7 +120,7 @@ class SentryDetail extends Component {
   };
 
   render() {
-    const { intl } = this.props;
+    const { intl } = this.prop;
     return (
       <UserContext.Consumer>
         {({ tz }) => (
@@ -127,7 +128,7 @@ class SentryDetail extends Component {
             <PageHeader
               title={'Sentry Detail: ' + this.state.data.name}
               onBack={() => {
-                this.props.history.push('/dashboard');
+                this.prop.history.push('/dashboard');
               }}
               extra={
                 <Button

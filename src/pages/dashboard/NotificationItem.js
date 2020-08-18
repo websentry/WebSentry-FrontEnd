@@ -6,7 +6,7 @@ import { List, Tag, Tooltip } from 'antd';
 class TaskItem extends Component {
   constructor(props) {
     super(props);
-    this.item = this.props.item;
+    this.prop = props;
   }
 
   render() {
@@ -22,17 +22,17 @@ class TaskItem extends Component {
           </Tooltip>,
         ]}
       >
-        {this.item.type.localeCompare('email') ? (
+        {this.prop.item.type.localeCompare('email') ? (
           <List.Item.Meta
             title={
               <div>
-                {this.item.name}
+                {this.prop.item.name}
                 <Tag color="#4b90de" style={{ marginLeft: '8px' }}>
                   ServerChan
                 </Tag>
               </div>
             }
-            description={this.item.detail}
+            description={this.prop.item.detail}
           />
         ) : (
           <List.Item.Meta
@@ -47,7 +47,7 @@ class TaskItem extends Component {
                 </Tag>
               </div>
             }
-            description={this.item.detail}
+            description={this.prop.item.detail}
           />
         )}
       </List.Item>

@@ -18,12 +18,12 @@ const { Meta } = Card;
 class TaskItem extends Component {
   constructor(props) {
     super(props);
+    this.prop = props;
     this.state = {
       visible: false,
       loading: false,
       alertMsg: '',
     };
-    this.item = this.props.item;
     this.confirm = this.confirm.bind(this);
   }
 
@@ -42,16 +42,16 @@ class TaskItem extends Component {
   };
 
   async confirm() {
-    const { intl } = this.props;
+    const { intl } = this.prop;
     Modal.confirm({
-      title: 'Sentry: ' + this.item.name,
+      title: 'Sentry: ' + this.prop.item.name,
       icon: <ExclamationCircleOutlined style={{ color: '#f5222d' }} />,
       content: intl.formatMessage({ id: 'sentryRemoveText' }),
       okText: intl.formatMessage({ id: 'yes' }),
       okType: 'danger',
       cancelText: intl.formatMessage({ id: 'no' }),
       onOk: async () => {
-        const res = await api.removeSentry(this.item.id);
+        const res = await api.removeSentry(this.prop.item.id);
         if (res.code === api.code.ok) {
           window.location.reload();
         } else {
@@ -70,12 +70,12 @@ class TaskItem extends Component {
         {({ tz }) => (
           <List.Item>
             <Card
-              title={this.item.name}
+              title={this.prop.item.name}
               className="task-card"
               actions={[
                 <Tooltip title="Detail" key="detail">
                   <Button type="link">
-                    <Link to={'/dashboard/sentry/' + this.item.id}>
+                    <Link to={'/dashboard/sentry/' + this.prop.item.id}>
                       <ProjectOutlined
                         style={{ fontSize: '16px', color: '#1890ff' }}
                       />
@@ -105,7 +105,7 @@ class TaskItem extends Component {
                             </Tooltip>
                           </td>
                           <td>
-                            <span>{this.item.url}</span>
+                            <span>{this.prop.item.url}</span>
                           </td>
                         </tr>
                         <tr>
@@ -118,9 +118,9 @@ class TaskItem extends Component {
                           </td>
                           <td>
                             <span>
-                              {this.item.lastCheckTime
+                              {this.prop.item.lastCheckTime
                                 ? moment
-                                    .tz(this.item.lastCheckTime, tz)
+                                    .tz(this.prop.item.lastCheckTime, tz)
                                     .fromNow()
                                 : 'Initializing...'}
                             </span>

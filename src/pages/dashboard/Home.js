@@ -10,12 +10,13 @@ import './Home.less';
 class Home extends Component {
   constructor(props) {
     super(props);
+    this.prop = props;
     this.state = {
       isLoading: true,
       data: [],
     };
     this.showCreateSentry = () => {
-      props.history.push('/dashboard/newSentry');
+      this.prop.history.push('/dashboard/newSentry');
     };
   }
 
@@ -43,7 +44,7 @@ class Home extends Component {
         isLoading: false,
       });
 
-      const { intl } = this.props;
+      const { intl } = this.prop;
       Modal.error({
         title: intl.formatMessage({ id: 'sentryFailGet' }),
         onOk: () => {

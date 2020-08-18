@@ -18,18 +18,21 @@ const { Content, Sider } = Layout;
 let moment = require('moment-timezone');
 
 class DashboardLayout extends Component {
-  constructor() {
-    super();
-    this.state = { siderCollapsed: false };
+  constructor(props) {
+    super(props);
+    this.prop = props;
+    this.state = {
+      siderCollapsed: false,
+    };
   }
 
   onClickLogout = () => {
     api.logout();
-    this.props.userContext.toggleRefresh();
+    this.prop.userContext.toggleRefresh();
   };
 
   render() {
-    const { intl } = this.props;
+    const { intl } = this.prop;
     return (
       <UserContext.Consumer>
         {({ userEmail, tz }) => (
@@ -63,7 +66,7 @@ class DashboardLayout extends Component {
                   theme="dark"
                   mode="inline"
                   defaultSelectedKeys={['home']}
-                  selectedKeys={[this.props.page]}
+                  selectedKeys={[this.prop.page]}
                 >
                   <Menu.Item key="home">
                     <Link to="/dashboard/">
