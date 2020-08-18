@@ -5,19 +5,19 @@ import { injectIntl } from 'react-intl';
 import DashboardLayout from '../../layouts/DashboardLayout';
 import SentryItem from './sentry/SentryItem';
 import api from '../../helpers/Api';
-import './Home.less'
+import './Home.less';
 
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: true,
-      data: []
+      data: [],
     };
     this.showCreateSentry = () => {
       props.history.push('/dashboard/newSentry');
     };
-  };
+  }
 
   componentDidMount() {
     this.loadData();
@@ -26,7 +26,7 @@ class Home extends Component {
   async loadData() {
     if (!this.state.isLoading) {
       this.setState({
-        isLoading: true
+        isLoading: true,
       });
     }
 
@@ -35,39 +35,39 @@ class Home extends Component {
     if (res.code === api.code.ok) {
       this.setState({
         isLoading: false,
-        data: res.data.sentries
+        data: res.data.sentries,
       });
     } else {
       // no error code
       this.setState({
-        isLoading: false
+        isLoading: false,
       });
 
       const { intl } = this.props;
       Modal.error({
         title: intl.formatMessage({ id: 'sentryFailGet' }),
-        onOk: () => { window.location.reload(); }
+        onOk: () => {
+          window.location.reload();
+        },
       });
     }
   }
 
   SentryCard(item) {
-    return (
-      <SentryItem item={item}/>
-    );
+    return <SentryItem item={item} />;
   }
 
   render() {
     return (
-      <DashboardLayout page='home'>
+      <DashboardLayout page="home">
         <div>
           <PageHeader
-            title='Active Sentries'
+            title="Active Sentries"
             extra={
               <Button
-                type='primary'
+                type="primary"
                 icon={<PlusCircleOutlined />}
-                size='default'
+                size="default"
                 onClick={this.showCreateSentry}
               >
                 Create Sentry
@@ -78,7 +78,12 @@ class Home extends Component {
           <List
             loading={this.state.isLoading}
             grid={{
-              gutter: 4, xs: 1, sm: 1, md: 2, xl: 3, xxl: 4,
+              gutter: 4,
+              xs: 1,
+              sm: 1,
+              md: 2,
+              xl: 3,
+              xxl: 4,
             }}
             dataSource={this.state.data}
             renderItem={this.SentryCard}

@@ -6,22 +6,26 @@ import { Redirect } from 'react-router-dom';
 import './Dashboard.less';
 
 class Dashboard extends Component {
-
   renderMain(isLoading, isLoggedIn) {
-    const {pathname} = this.props.location;
+    const { pathname } = this.props.location;
     if (isLoading) {
       return (
-      <div className="loading-spin-center">
-        <Spin size="large" spinning={true} />
-      </div>)
+        <div className="loading-spin-center">
+          <Spin size="large" spinning={true} />
+        </div>
+      );
     } else {
       if (isLoggedIn) {
-        return (<Container />)
+        return <Container />;
       } else {
-        return (<Redirect to={{
-          pathname: "/login",
-          state: { referrer: pathname }
-        }} />)
+        return (
+          <Redirect
+            to={{
+              pathname: '/login',
+              state: { referrer: pathname },
+            }}
+          />
+        );
       }
     }
   }
@@ -29,12 +33,8 @@ class Dashboard extends Component {
   render() {
     return (
       <UserContext.Consumer>
-        { ({isLoading, isLoggedIn}) => {
-            return (
-              <div>
-                {this.renderMain(isLoading, isLoggedIn)}
-              </div>
-            )
+        {({ isLoading, isLoggedIn }) => {
+          return <div>{this.renderMain(isLoading, isLoggedIn)}</div>;
         }}
       </UserContext.Consumer>
     );

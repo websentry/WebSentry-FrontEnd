@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import AppLayout from '../layouts/AppLayout';
 
-import {
-  LockOutlined,
-  MailOutlined
-} from '@ant-design/icons';
+import { LockOutlined, MailOutlined } from '@ant-design/icons';
 
 import { Link } from 'react-router-dom';
 import { Form } from 'antd';
@@ -33,23 +30,25 @@ class Login extends Component {
       error: null,
     });
     console.log('Received values of form: ', values);
-    const res = await api.login(values['email'],
-                                values['password'],
-                                values['remember']);
+    const res = await api.login(
+      values['email'],
+      values['password'],
+      values['remember']
+    );
     if (res.code !== api.code.ok) {
       switch (res.code) {
         case -1:
-          this.setState({ error: 'Incorrect password' })
-          break
+          this.setState({ error: 'Incorrect password' });
+          break;
         case -4:
-          this.setState({ error: 'Request too often' })
-          break
+          this.setState({ error: 'Request too often' });
+          break;
         case -5:
-          this.setState({ error: 'Email did not exist' })
-          break
+          this.setState({ error: 'Email did not exist' });
+          break;
         default:
-          this.setState({ error: 'Unknown error' })
-          break
+          this.setState({ error: 'Unknown error' });
+          break;
       }
     } else {
       // once finished, this will cause the whole page rerender
@@ -57,15 +56,15 @@ class Login extends Component {
       await this.props.userContext.toggleRefresh();
     }
     this.setState({ loading: false });
-  };
+  }
 
   render() {
     return (
-      <AppLayout page='login'>
-        <Card className='login-form-card'>
+      <AppLayout page="login">
+        <Card className="login-form-card">
           <Form
-            name='login_form'
-            className='login-form'
+            name="login_form"
+            className="login-form"
             onFinish={this.handleSubmit}
             initialValues={{
               remember: true,
@@ -73,41 +72,49 @@ class Login extends Component {
           >
             <Form.Item
               style={{ minWidth: '100%' }}
-              name='email'
-              rules={[{
-                type: 'email',
-                message: 'The input is not valid Email!',
-              }, {
-                required: true,
-                message: 'Please input your Email!',
-              }]}
+              name="email"
+              rules={[
+                {
+                  type: 'email',
+                  message: 'The input is not valid Email!',
+                },
+                {
+                  required: true,
+                  message: 'Please input your Email!',
+                },
+              ]}
             >
               <Input
-                prefix={<MailOutlined className='site-form-item-icon' />}
-                size='large'
-                placeholder='Email'
+                prefix={<MailOutlined className="site-form-item-icon" />}
+                size="large"
+                placeholder="Email"
               />
             </Form.Item>
             <Form.Item
-              name='password'
-              rules={[{ required: true, message: 'Please input your Password!' }]}
+              name="password"
+              rules={[
+                { required: true, message: 'Please input your Password!' },
+              ]}
             >
               <Input.Password
-                prefix={<LockOutlined className='site-form-item-icon' />}
-                size='large'
-                type='password'
-                placeholder='Password'
+                prefix={<LockOutlined className="site-form-item-icon" />}
+                size="large"
+                type="password"
+                placeholder="Password"
               />
             </Form.Item>
-            {this.state.error ?
-              <div className='red-6'>{
-                <Alert
-                  message={this.state.error}
-                  type='error'
-                  closable='true'
-                  showIcon />}
-              </div> : null
-            }
+            {this.state.error ? (
+              <div className="red-6">
+                {
+                  <Alert
+                    message={this.state.error}
+                    type="error"
+                    closable="true"
+                    showIcon
+                  />
+                }
+              </div>
+            ) : null}
             <Form.Item
               style={{ marginBottom: '0px' }}
               name="remember"
@@ -119,17 +126,16 @@ class Login extends Component {
             </Form.Item>
             <Form.Item>
               <Button
-                type='primary'
-                size='large'
-                htmlType='submit'
+                type="primary"
+                size="large"
+                htmlType="submit"
                 loading={this.state.loading}
                 // className='login-form-button'
                 block
               >
                 Login
               </Button>
-              Or {' '}
-              <Link to="/register/">register now!</Link>
+              Or <Link to="/register/">register now!</Link>
             </Form.Item>
           </Form>
         </Card>
@@ -140,10 +146,10 @@ class Login extends Component {
 
 const WithContext = (Component) => {
   return (props) => (
-      <UserContext.Consumer>
-        {userContext =>  <Component {...props} userContext={userContext} />}
-      </UserContext.Consumer>
-  )
-}
+    <UserContext.Consumer>
+      {(userContext) => <Component {...props} userContext={userContext} />}
+    </UserContext.Consumer>
+  );
+};
 
 export default WithContext(Login);

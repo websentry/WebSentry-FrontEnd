@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import AppLayout from '../layouts/AppLayout';
 import { UserContext } from '../UserContext';
 
@@ -14,9 +14,20 @@ import {
 import { Form } from 'antd';
 import '@ant-design/compatible/assets/index.css';
 
-import { Alert, Button, Card, Col, Input, Result, Row, Steps, Tooltip, message } from 'antd';
-import './Register.less'
-import api from '../helpers/Api.js'
+import {
+  Alert,
+  Button,
+  Card,
+  Col,
+  Input,
+  Result,
+  Row,
+  Steps,
+  Tooltip,
+  message,
+} from 'antd';
+import './Register.less';
+import api from '../helpers/Api.js';
 
 const { Step } = Steps;
 const MIN_PASSWORD_LENGTH = 8;
@@ -39,12 +50,12 @@ class Register extends Component {
       registerLoading: false,
       registerError: null,
       success: false,
-      alertMsg: null
-    }
+      alertMsg: null,
+    };
 
     this.emailOnChange = (e) => {
       this.onLoginValueChange('email', e.target.value);
-    }
+    };
 
     this.handleStepZero = this.handleStepZero.bind(this);
     this.handleStepOne = this.handleStepOne.bind(this);
@@ -69,14 +80,14 @@ class Register extends Component {
   handleStepZero(e) {
     e.preventDefault();
 
-    this.formRef.current.validateFields().then(values => {
+    this.formRef.current.validateFields().then((values) => {
       console.log('Received register values of form: ', values);
 
       this.setState({
         email: values['email'],
         password: values['password'],
-        success: false
-      })
+        success: false,
+      });
 
       this.next();
     });
@@ -88,54 +99,54 @@ class Register extends Component {
 
     this.setState({
       registerLoading: true,
-      registerError: null
-    })
+      registerError: null,
+    });
 
-    this.formRef.current.validateFields().then(async values => {
+    this.formRef.current.validateFields().then(async (values) => {
       const res = await api.register(
         this.state.email,
         this.state.password,
         lang,
         moment.tz.guess(),
         values['code']
-      )
+      );
 
       if (res.code !== api.code.ok) {
         let msg;
         switch (res.code) {
           case api.code.authError:
-            msg = 'Wrong verification code'
-            break
+            msg = 'Wrong verification code';
+            break;
           case api.code.wrongParam:
-            msg = 'Wrong parameter'
-            break
+            msg = 'Wrong parameter';
+            break;
           case api.code.alreadyExist:
-            msg = 'Account already exists'
-            break
+            msg = 'Account already exists';
+            break;
           default:
             msg = 'Unknown error';
-            break
+            break;
         }
         this.setState({
           registerError: msg,
-          success: false
-        })
-        message.info(msg)
+          success: false,
+        });
+        message.info(msg);
       } else {
-        this.next()
+        this.next();
       }
-    })
-    this.setState({ registerLoading: false })
+    });
+    this.setState({ registerLoading: false });
   }
 
   // request verification code
-  async handleVerification (e) {
+  async handleVerification(e) {
     e.preventDefault();
 
     this.setState({
       verificationLoading: true,
-      verificationError: null
-    })
+      verificationError: null,
+    });
 
     const res = await api.verification(this.state.email);
 
@@ -155,16 +166,16 @@ class Register extends Component {
       this.setState({
         success: false,
         verificationError: msg,
-      })
+      });
       message.info(msg);
     } else {
-      this.setState({ success: true })
+      this.setState({ success: true });
       message.info('Verification code has been sent!');
       this.setState({
-        alertMsg: 'Please check your email inbox.'
-      })
+        alertMsg: 'Please check your email inbox.',
+      });
     }
-    this.setState({ verificationLoading: false })
+    this.setState({ verificationLoading: false });
   }
 
   stepZero() {
@@ -179,57 +190,60 @@ class Register extends Component {
       },
     };
     return (
-      <Form {...formItemLayout} className='register-form' ref={this.formRef}>
+      <Form {...formItemLayout} className="register-form" ref={this.formRef}>
         <Form.Item
-          label='Email'
-          className='register-form-item'
-          name='email'
-          rules={[{
-            type: 'email',
-            message: 'The input is not valid Email!',
-          }, {
-            required: true,
-            message: 'Please input your Email!',
-          }]}
+          label="Email"
+          className="register-form-item"
+          name="email"
+          rules={[
+            {
+              type: 'email',
+              message: 'The input is not valid Email!',
+            },
+            {
+              required: true,
+              message: 'Please input your Email!',
+            },
+          ]}
         >
           <Input onChange={this.emailOnChange} />
         </Form.Item>
         <Form.Item
-          className='register-form-item'
+          className="register-form-item"
           hasFeedback
           label={
             <span>
               Password&nbsp;
-              <Tooltip title='Password requires 8~64 characters.'>
+              <Tooltip title="Password requires 8~64 characters.">
                 <QuestionCircleOutlined />
               </Tooltip>
             </span>
           }
-          name='password'
+          name="password"
           rules={[
             {
               required: true,
               message: 'Please input your password!',
             },
             () => ({
-              validator(rule,value) {
+              validator(rule, value) {
                 if (value && value.length < MIN_PASSWORD_LENGTH) {
-                  return Promise.reject('Password length is too short!')
+                  return Promise.reject('Password length is too short!');
                 } else if (value && value.length > MAX_PASSWORD_LENGTH) {
-                  return Promise.reject('Password length is too long!')
+                  return Promise.reject('Password length is too long!');
                 }
                 return Promise.resolve();
-              }
-            })
+              },
+            }),
           ]}
         >
           <Input.Password />
         </Form.Item>
         <Form.Item
-          className='register-form-item'
+          className="register-form-item"
           hasFeedback
-          label='Confirm Password'
-          name='confirm'
+          label="Confirm Password"
+          name="confirm"
           dependencies={['password']}
           rules={[
             {
@@ -242,11 +256,14 @@ class Register extends Component {
                   return Promise.resolve();
                 }
 
-                return Promise.reject('The two passwords that you entered do not match!');
-            }})
+                return Promise.reject(
+                  'The two passwords that you entered do not match!'
+                );
+              },
+            }),
           ]}
         >
-          <Input.Password/>
+          <Input.Password />
         </Form.Item>
       </Form>
     );
@@ -265,44 +282,42 @@ class Register extends Component {
     };
     return (
       <Form {...formItemLayout} ref={this.formRef}>
-        <Form.Item className='register-form-item' >
-          <Input placeholder='Email' value={this.state.email} disabled />
+        <Form.Item className="register-form-item">
+          <Input placeholder="Email" value={this.state.email} disabled />
         </Form.Item>
         <Form.Item
-          className='register-form-item'
-          extra='We must make sure that your email is valid.'
-          name='code'
-          rules={[{
-            required: true,
-            message: 'Please input the verification code!'
-          }]}
+          className="register-form-item"
+          extra="We must make sure that your email is valid."
+          name="code"
+          rules={[
+            {
+              required: true,
+              message: 'Please input the verification code!',
+            },
+          ]}
         >
-          <Row gutter={8} >
-          <Col span={12} >
-            <Input placeholder='Verification Code' />
-          </Col>
-          <Col span={12}>
-            <Button
-              type='primary'
-              loading={this.state.verificationLoading}
-              onClick={this.handleVerification}
-              className='verification-button'
-              disabled={this.state.success}
-              block
-            >
-              Get verification code!
-            </Button>
-          </Col>
+          <Row gutter={8}>
+            <Col span={12}>
+              <Input placeholder="Verification Code" />
+            </Col>
+            <Col span={12}>
+              <Button
+                type="primary"
+                loading={this.state.verificationLoading}
+                onClick={this.handleVerification}
+                className="verification-button"
+                disabled={this.state.success}
+                block
+              >
+                Get verification code!
+              </Button>
+            </Col>
           </Row>
         </Form.Item>
-        <Form.Item className='register-form-item'>
-          { this.state.success &&
-              <Alert
-                message={this.state.alertMsg}
-                type='success'
-                banner='true'
-              />
-          }
+        <Form.Item className="register-form-item">
+          {this.state.success && (
+            <Alert message={this.state.alertMsg} type="success" banner="true" />
+          )}
         </Form.Item>
       </Form>
     );
@@ -312,9 +327,9 @@ class Register extends Component {
     return (
       <Form>
         <Result
-          status='success'
-          title='Welcome to Web Sentry!'
-          subTitle='You have completed the sign up.'
+          status="success"
+          title="Welcome to Web Sentry!"
+          subTitle="You have completed the sign up."
         />
       </Form>
     );
@@ -322,78 +337,92 @@ class Register extends Component {
 
   render() {
     return (
-      <AppLayout page='register'>
-        <Card className='register-form-card'>
+      <AppLayout page="register">
+        <Card className="register-form-card">
           <Steps current={this.state.current}>
             <Step key={'Register'} title={'Register'} icon={<UserOutlined />} />
-            <Step key={'Verification'} title={'Verification'} icon={<SolutionOutlined />} />
-            <Step key={'Complete'} title={'Complete'} icon={<SmileOutlined />} />
+            <Step
+              key={'Verification'}
+              title={'Verification'}
+              icon={<SolutionOutlined />}
+            />
+            <Step
+              key={'Complete'}
+              title={'Complete'}
+              icon={<SmileOutlined />}
+            />
           </Steps>
-          <div className='steps-content'>{
-            <div>
-              {(() => {
-                switch (this.state.current) {
-                  case 0: return this.stepZero();
-                  case 1: return this.stepOne();
-                  case 2: return this.stepTwo();
-                  default: return null;
-                }
-              })()}
-            </div>
-          }
+          <div className="steps-content">
+            {
+              <div>
+                {(() => {
+                  switch (this.state.current) {
+                    case 0:
+                      return this.stepZero();
+                    case 1:
+                      return this.stepOne();
+                    case 2:
+                      return this.stepTwo();
+                    default:
+                      return null;
+                  }
+                })()}
+              </div>
+            }
           </div>
           {/* <Row gutter={48} > */}
-            <div className='steps-action'>
-              { this.state.current === 1 && (
-                <UserContext.Consumer>
-                  {({ lang }) => (
-                    <Row gutter={24} >
-                    <Col span={12} style={{ textAlign: 'left'}}>
+          <div className="steps-action">
+            {this.state.current === 1 && (
+              <UserContext.Consumer>
+                {({ lang }) => (
+                  <Row gutter={24}>
+                    <Col span={12} style={{ textAlign: 'left' }}>
                       <Button onClick={() => this.prev()}>
                         <LeftOutlined />
                         Previous
                       </Button>
                     </Col>
                     <Col span={12} style={{ textAlign: 'right' }}>
-                    <Button
-                      type='primary'
-                      className='register-form-button'
-                      loading={this.state.registerLoading}
-                      onClick={e => this.handleStepOne(e, lang)}
-                    >
-                      Submit
-                      <RightOutlined />
-                    </Button>
+                      <Button
+                        type="primary"
+                        className="register-form-button"
+                        loading={this.state.registerLoading}
+                        onClick={(e) => this.handleStepOne(e, lang)}
+                      >
+                        Submit
+                        <RightOutlined />
+                      </Button>
                     </Col>
-                    </Row>
-                  )}
-                </UserContext.Consumer>
-              )}
-              { this.state.current === 0 && (
-                <Col span={24} style={{ textAlign: 'right' }}>
-                  <Button
-                    type='primary'
-                    // className='register-form-button'
-                    loading={this.state.verificationLoading}
-                    onClick={this.handleStepZero}>
-                    Next
-                    <RightOutlined />
-                  </Button>
-                </Col>
-              )}
-              { this.state.current === 2 && (
-                <Col span={24} style={{ textAlign: 'right' }}>
-                  <Button
-                    type='primary'
-                    className='register-form-button'
-                    href='/login'
-                  >
-                    Login
-                    <RightOutlined />
-                  </Button>
-                </Col>
-              )}
-            </div>
+                  </Row>
+                )}
+              </UserContext.Consumer>
+            )}
+            {this.state.current === 0 && (
+              <Col span={24} style={{ textAlign: 'right' }}>
+                <Button
+                  type="primary"
+                  // className='register-form-button'
+                  loading={this.state.verificationLoading}
+                  onClick={this.handleStepZero}
+                >
+                  Next
+                  <RightOutlined />
+                </Button>
+              </Col>
+            )}
+            {this.state.current === 2 && (
+              <Col span={24} style={{ textAlign: 'right' }}>
+                <Button
+                  type="primary"
+                  className="register-form-button"
+                  href="/login"
+                >
+                  Login
+                  <RightOutlined />
+                </Button>
+              </Col>
+            )}
+          </div>
           {/* </Row> */}
         </Card>
       </AppLayout>
@@ -401,4 +430,4 @@ class Register extends Component {
   }
 }
 
-export default Register
+export default Register;

@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import { ClockCircleOutlined, DeleteOutlined, LinkOutlined, ProjectOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import {
+  ClockCircleOutlined,
+  DeleteOutlined,
+  LinkOutlined,
+  ProjectOutlined,
+  ExclamationCircleOutlined,
+} from '@ant-design/icons';
 import { Button, Card, List, Modal, Tag, Tooltip, message } from 'antd';
 import api from '../../../helpers/Api.js';
 import { injectIntl } from 'react-intl';
@@ -10,13 +16,13 @@ import { UserContext } from '../../../UserContext.js';
 const { Meta } = Card;
 
 class TaskItem extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       visible: false,
       loading: false,
       alertMsg: '',
-    }
+    };
     this.item = this.props.item;
     this.confirm = this.confirm.bind(this);
   }
@@ -24,14 +30,14 @@ class TaskItem extends Component {
   showModal = () => {
     this.setState({
       visible: true,
-      loading: false
+      loading: false,
     });
   };
 
-  hideModal = e => {
+  hideModal = (e) => {
     this.setState({
       visible: false,
-      loading: false
+      loading: false,
     });
   };
 
@@ -39,7 +45,7 @@ class TaskItem extends Component {
     const { intl } = this.props;
     Modal.confirm({
       title: 'Sentry: ' + this.item.name,
-      icon: <ExclamationCircleOutlined style={{ color: '#f5222d' }}/>,
+      icon: <ExclamationCircleOutlined style={{ color: '#f5222d' }} />,
       content: intl.formatMessage({ id: 'sentryRemoveText' }),
       okText: intl.formatMessage({ id: 'yes' }),
       okType: 'danger',
@@ -65,20 +71,24 @@ class TaskItem extends Component {
           <List.Item>
             <Card
               title={this.item.name}
-              className='task-card'
+              className="task-card"
               actions={[
-                <Tooltip title='Detail'>
-                  <Button type='link'>
+                <Tooltip title="Detail" key="detail">
+                  <Button type="link">
                     <Link to={'/dashboard/sentry/' + this.item.id}>
-                      <ProjectOutlined style={{ fontSize: '16px', color: '#1890ff' }} />
+                      <ProjectOutlined
+                        style={{ fontSize: '16px', color: '#1890ff' }}
+                      />
                     </Link>
                   </Button>
                 </Tooltip>,
-                <Tooltip title='Delete'>
-                  <Button type='link' onClick={this.confirm}>
-                    <DeleteOutlined style={{ fontSize: '16px', color: '#f5222d' }} />
+                <Tooltip title="Delete" key="delete">
+                  <Button type="link" onClick={this.confirm}>
+                    <DeleteOutlined
+                      style={{ fontSize: '16px', color: '#f5222d' }}
+                    />
                   </Button>
-                </Tooltip>
+                </Tooltip>,
               ]}
             >
               <Meta
@@ -88,7 +98,7 @@ class TaskItem extends Component {
                       <tbody>
                         <tr>
                           <td>
-                            <Tooltip title='URL'>
+                            <Tooltip title="URL">
                               <Tag>
                                 <LinkOutlined />
                               </Tag>
@@ -100,14 +110,20 @@ class TaskItem extends Component {
                         </tr>
                         <tr>
                           <td>
-                            <Tooltip title='Last check'>
+                            <Tooltip title="Last check">
                               <Tag>
                                 <ClockCircleOutlined />
                               </Tag>
                             </Tooltip>
                           </td>
                           <td>
-                            <span>{ this.item.lastCheckTime ? moment.tz(this.item.lastCheckTime, tz).fromNow() : 'Initializing...' }</span>
+                            <span>
+                              {this.item.lastCheckTime
+                                ? moment
+                                    .tz(this.item.lastCheckTime, tz)
+                                    .fromNow()
+                                : 'Initializing...'}
+                            </span>
                           </td>
                         </tr>
                       </tbody>
