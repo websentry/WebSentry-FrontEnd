@@ -11,11 +11,6 @@ const { Header } = Layout;
 const { SubMenu } = Menu;
 
 class AppHeader extends React.Component {
-  constructor(props) {
-    super(props);
-    this.prop = props;
-  }
-
   render() {
     return (
       <UserContext.Consumer>
@@ -40,7 +35,7 @@ class AppHeader extends React.Component {
                   }
                   style={{ float: 'right' }}
                   onTitleClick={() =>
-                    this.prop.history.push('/dashboard/settings')
+                    this.props.history.push('/dashboard/settings')
                   }
                 />,
                 <Menu.Item key="dashboard" style={{ float: 'right' }}>
@@ -104,7 +99,7 @@ class AppHeader extends React.Component {
                 mode="horizontal"
                 style={{ lineHeight: '64px' }}
                 defaultSelectedKeys={['home']}
-                selectedKeys={[this.prop.selected]}
+                selectedKeys={[this.props.selected]}
               >
                 <Menu.Item
                   key="home"

@@ -24,12 +24,11 @@ const { Panel } = Collapse;
 class SentryDetail extends Component {
   constructor(props) {
     super(props);
-    this.prop = props;
     this.state = {
       loading: true,
       visible: false,
       deleteLoading: false,
-      id: this.prop.match.params.sentryID,
+      id: this.props.match.params.sentryID,
       data: [],
       notification: [],
       image: [],
@@ -77,7 +76,7 @@ class SentryDetail extends Component {
       Modal.error({
         title: errorMsg,
         onOk: () => {
-          this.prop.history.push('/dashboard');
+          this.props.history.push('/dashboard');
         },
       });
     }

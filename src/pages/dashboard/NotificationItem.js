@@ -4,11 +4,6 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { List, Tag, Tooltip } from 'antd';
 
 class TaskItem extends Component {
-  constructor(props) {
-    super(props);
-    this.prop = props;
-  }
-
   render() {
     return (
       <List.Item
@@ -22,17 +17,17 @@ class TaskItem extends Component {
           </Tooltip>,
         ]}
       >
-        {this.prop.item.type.localeCompare('email') ? (
+        {this.props.item.type.localeCompare('email') ? (
           <List.Item.Meta
             title={
               <div>
-                {this.prop.item.name}
+                {this.props.item.name}
                 <Tag color="#4b90de" style={{ marginLeft: '8px' }}>
                   ServerChan
                 </Tag>
               </div>
             }
-            description={this.prop.item.detail}
+            description={this.props.item.detail}
           />
         ) : (
           <List.Item.Meta
@@ -47,7 +42,7 @@ class TaskItem extends Component {
                 </Tag>
               </div>
             }
-            description={this.prop.item.detail}
+            description={this.props.item.detail}
           />
         )}
       </List.Item>

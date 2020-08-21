@@ -48,7 +48,6 @@ const initialState = {
 class NewSentry extends Component {
   constructor(props) {
     super(props);
-    this.prop = props;
     this.state = initialState;
     this.loadData();
     this.urlOnChange = (e) => {
@@ -67,7 +66,7 @@ class NewSentry extends Component {
       this.setState(initialState);
     };
     this.goDashboard = () => {
-      this.prop.history.push('/dashboard');
+      this.props.history.push('/dashboard');
     };
     this.handleUrlSubmit = this.handleUrlSubmit.bind(this);
     this.handleSentrySubmit = this.handleSentrySubmit.bind(this);
@@ -87,7 +86,7 @@ class NewSentry extends Component {
       });
     } else {
       // no error code
-      const { intl } = this.prop;
+      const { intl } = this.props;
       Modal.error({
         title: intl.formatMessage({ id: 'notificationFailGet' }),
         onOk: () => {

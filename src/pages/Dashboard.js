@@ -6,13 +6,8 @@ import { Redirect } from 'react-router-dom';
 import './Dashboard.less';
 
 class Dashboard extends Component {
-  constructor(props) {
-    super(props);
-    this.prop = props;
-  }
-
   renderMain(isLoading, isLoggedIn) {
-    const { pathname } = this.prop.location;
+    const { pathname } = this.props.location;
     if (isLoading) {
       return (
         <div className="loading-spin-center">

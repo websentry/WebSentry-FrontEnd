@@ -14,7 +14,7 @@ module.exports = {
   plugins: [],
   // add your custom rules here
   rules: {
-    'react/prop-types': [2, { ignore: ['children'] }],
+    'react/prop-types': 0,
     'react/display-name': 'off',
   },
   settings: {

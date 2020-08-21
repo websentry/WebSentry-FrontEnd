@@ -27,7 +27,6 @@ const Language = [
 class Settings extends Component {
   constructor(props) {
     super(props);
-    this.prop = props;
     this.state = {
       isLoading: false,
       language: '',
@@ -57,7 +56,7 @@ class Settings extends Component {
         isLoading: false,
       });
       // error code: notExist
-      const { intl } = this.prop;
+      const { intl } = this.props;
       let errorMsg;
       switch (res.code) {
         case api.code.notExist:
@@ -92,7 +91,7 @@ class Settings extends Component {
       window.location.reload();
     } else {
       // error code: wrongParam
-      const { intl } = this.prop;
+      const { intl } = this.props;
       let errorMsg;
       switch (res.code) {
         case api.code.wrongParam:

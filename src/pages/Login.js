@@ -16,7 +16,6 @@ import api from '../helpers/Api.js';
 class Login extends Component {
   constructor(props) {
     super(props);
-    this.prop = props;
     this.state = {
       loading: false,
       error: null,
@@ -54,7 +53,7 @@ class Login extends Component {
     } else {
       // once finished, this will cause the whole page rerender
       // then the isLoggedIn check below will handle the redirection
-      await this.prop.userContext.toggleRefresh();
+      await this.props.userContext.toggleRefresh();
     }
     this.setState({ loading: false });
   }

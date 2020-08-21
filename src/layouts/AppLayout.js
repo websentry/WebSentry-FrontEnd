@@ -9,19 +9,13 @@ import './AppLayout.less';
 const { Content } = Layout;
 
 class AppLayout extends React.Component {
-  constructor(props) {
-    super(props);
-    this.prop = props;
-    console.log(this.prop);
-  }
-
   render() {
     return (
       <UserContext.Consumer>
         {({ isLoggedIn, isLoading }) => {
-          let content = this.prop.children;
+          let content = this.props.children;
           // login and register page only works when the user is not logged in
-          if (['login', 'register'].includes(this.prop.page)) {
+          if (['login', 'register'].includes(this.props.page)) {
             if (isLoading) {
               // replace content with loading spin
               content = (
@@ -31,9 +25,9 @@ class AppLayout extends React.Component {
               );
             } else {
               if (isLoggedIn) {
-                if (this.prop.location.state) {
-                  if (this.prop.location.state.referrer) {
-                    return <Redirect to={this.prop.location.state.referrer} />;
+                if (this.props.location.state) {
+                  if (this.props.location.state.referrer) {
+                    return <Redirect to={this.props.location.state.referrer} />;
                   }
                 }
                 return <Redirect to={'/dashboard'} />;
@@ -43,7 +37,7 @@ class AppLayout extends React.Component {
 
           return (
             <Layout className="home-layout">
-              <AppHeader selected={this.prop.page} />
+              <AppHeader selected={this.props.page} />
               <Content>{content}</Content>
               <AppFooter />
             </Layout>

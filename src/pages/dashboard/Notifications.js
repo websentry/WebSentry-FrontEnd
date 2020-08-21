@@ -21,7 +21,6 @@ class Notifications extends Component {
 
   constructor(props) {
     super(props);
-    this.prop = props;
     this.state = {
       isLoading: false,
       notificationList: [],
@@ -53,7 +52,7 @@ class Notifications extends Component {
         isLoading: false,
       });
       // no error code
-      const { intl } = this.prop;
+      const { intl } = this.props;
       Modal.error({
         title: intl.formatMessage({ id: 'notificationFailGet' }),
         onOk: () => {
@@ -68,7 +67,7 @@ class Notifications extends Component {
       addLoading: true,
     });
 
-    const { intl } = this.prop;
+    const { intl } = this.props;
 
     console.log('Received values of form: ', values);
     const res = await api.addServerChan(values['name'], values['sckey']);
@@ -120,7 +119,7 @@ class Notifications extends Component {
   };
 
   render() {
-    const { intl } = this.prop;
+    const { intl } = this.props;
     const formLayout = {
       labelCol: { span: 8 },
       wrapperCol: { span: 16 },
