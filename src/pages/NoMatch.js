@@ -10,7 +10,7 @@ class NoMatch extends Component {
           status="404"
           title="404"
           subTitle="Sorry, the page you visited does not exist."
-          style={{ paddingTop: "20vh" }}
+          style={{ paddingTop: '20vh' }}
         />
       </AppLayout>
     );

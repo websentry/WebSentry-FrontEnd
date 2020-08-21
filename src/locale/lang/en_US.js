@@ -34,6 +34,7 @@ const en_US = {
 
   sentryRemoveText: 'Do you want to remove this sentry?',
 
-  timeZoneDiffNotice: 'The browser time zone is different from current user setting!'
-}
+  timeZoneDiffNotice:
+    'The browser time zone is different from current user setting!',
+};
 export default en_US;

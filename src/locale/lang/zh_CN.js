@@ -32,7 +32,6 @@ const zh_CN = {
 
   sentryRemoveText: '你想要移除这条嘛？',
 
-  timeZoneDiffNotice: '浏览器时区与当前用户设置不符!'
-
-}
+  timeZoneDiffNotice: '浏览器时区与当前用户设置不符!',
+};
 export default zh_CN;

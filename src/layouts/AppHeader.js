@@ -3,7 +3,7 @@ import { GlobalOutlined, LoadingOutlined } from '@ant-design/icons';
 import { Layout, Menu, Spin } from 'antd';
 import { FormattedMessage } from 'react-intl';
 import { UserContext } from '../UserContext';
-import { Link, withRouter } from "react-router-dom";
+import { Link, withRouter } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import './AppHeader.less';
 
@@ -19,10 +19,10 @@ class AppHeader extends React.Component {
           if (isLoading) {
             const spinIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
             userMenu = (
-              <Menu.Item key="dashboard" style={{ float: "right" }}>
+              <Menu.Item key="dashboard" style={{ float: 'right' }}>
                 <Spin indicator={spinIcon} />
               </Menu.Item>
-            )
+            );
           } else {
             if (isLoggedIn) {
               userMenu = [
@@ -30,70 +30,64 @@ class AppHeader extends React.Component {
                   key="language"
                   title={
                     <span>
-                      <GlobalOutlined style={{ fontSize: "16px" }} />
+                      <GlobalOutlined style={{ fontSize: '16px' }} />
                     </span>
                   }
-                  style={{ float: "right" }}
-                  onTitleClick = { () =>
-                     this.props.history.push("/dashboard/settings")
+                  style={{ float: 'right' }}
+                  onTitleClick={() =>
+                    this.props.history.push('/dashboard/settings')
                   }
-                />
-                ,
-                <Menu.Item key="dashboard" style={{ float: "right" }}>
+                />,
+                <Menu.Item key="dashboard" style={{ float: 'right' }}>
                   <Link to="/dashboard">
                     <FormattedMessage
-                      id='dashboard'
-                      defaultMessage='Dashboard'
+                      id="dashboard"
+                      defaultMessage="Dashboard"
                     />
                   </Link>
-                </Menu.Item>
-              ]
+                </Menu.Item>,
+              ];
             } else {
               userMenu = [
                 <SubMenu
                   key="language"
                   title={
                     <span>
-                      <GlobalOutlined style={{ fontSize: "16px" }} />
+                      <GlobalOutlined style={{ fontSize: '16px' }} />
                     </span>
                   }
-                  style={{ float: "right" }}
-                  onTitleClick = { ()=> console.log("onTitleClick")}
+                  style={{ float: 'right' }}
+                  onTitleClick={() => console.log('onTitleClick')}
                 >
-                  {[{id: "zh-Hans", name: "简体中文"},
-                    {id: "en-US", name: "English"}].map( language => (
-                      <Menu.Item
-                        key={language.id}
-                        onClick={() => switchLang(language.id)}
-                      >
-                        {language.name}
-                      </Menu.Item>
+                  {[
+                    { id: 'zh-Hans', name: '简体中文' },
+                    { id: 'en-US', name: 'English' },
+                  ].map((language) => (
+                    <Menu.Item
+                      key={language.id}
+                      onClick={() => switchLang(language.id)}
+                    >
+                      {language.name}
+                    </Menu.Item>
                   ))}
                 </SubMenu>,
                 <Menu.Item
                   key="register"
-                  style={{ width: "80px", textAlign: "center", float: "right" }}
+                  style={{ width: '80px', textAlign: 'center', float: 'right' }}
                 >
-                  <Link to='/register'>
-                    <FormattedMessage
-                      id='signUp'
-                      defaultMessage='Sign up'
-                    />
+                  <Link to="/register">
+                    <FormattedMessage id="signUp" defaultMessage="Sign up" />
                   </Link>
-                </Menu.Item>
-                ,
+                </Menu.Item>,
                 <Menu.Item
                   key="login"
-                  style={{ width: "80px", textAlign: "center", float: "right" }}
+                  style={{ width: '80px', textAlign: 'center', float: 'right' }}
                 >
                   <Link to="/login">
-                    <FormattedMessage
-                      id='signIn'
-                      defaultMessage='Sign in'
-                    />
+                    <FormattedMessage id="signIn" defaultMessage="Sign in" />
                   </Link>
-                </Menu.Item>
-              ]
+                </Menu.Item>,
+              ];
             }
           }
 
@@ -103,19 +97,16 @@ class AppHeader extends React.Component {
               <Menu
                 theme="dark"
                 mode="horizontal"
-                style={{ lineHeight: "64px" }}
-                defaultSelectedKeys={["home"]}
+                style={{ lineHeight: '64px' }}
+                defaultSelectedKeys={['home']}
                 selectedKeys={[this.props.selected]}
               >
                 <Menu.Item
                   key="home"
-                  style={{ width: "80px", textAlign: "center" }}
+                  style={{ width: '80px', textAlign: 'center' }}
                 >
                   <Link to="/">
-                    <FormattedMessage
-                      id='home'
-                      defaultMessage='Home'
-                    />
+                    <FormattedMessage id="home" defaultMessage="Home" />
                   </Link>
                 </Menu.Item>
                 {userMenu}

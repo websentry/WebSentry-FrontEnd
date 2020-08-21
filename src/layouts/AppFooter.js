@@ -9,8 +9,11 @@ class AppFooter extends React.Component {
   render() {
     return (
       <Footer className="app-footer">
-        Copyright <CopyrightOutlined /> WebSentry<br/>
-        <a href="https://github.com/websentry/WebSentry">View on Github <GithubOutlined /></a>
+        Copyright <CopyrightOutlined /> WebSentry
+        <br />
+        <a href="https://github.com/websentry/WebSentry">
+          View on Github <GithubOutlined />
+        </a>
       </Footer>
     );
   }

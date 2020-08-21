@@ -5,7 +5,7 @@ import Home from './Home';
 import NoMatch from './NoMatch';
 import Login from './Login';
 import Register from './Register';
-import {UserContext} from '../UserContext';
+import { UserContext } from '../UserContext';
 import api from '../helpers/Api';
 import { IntlProvider } from 'react-intl';
 import zh_CN from '../locale/lang/zh_CN.js';
@@ -21,12 +21,10 @@ if (!Intl.PluralRules) {
 let moment = require('moment-timezone');
 
 const guessUserLanguage = () => {
-  const translatedLocales = [ 'zh-CN', 'zh-Hans', 'en-US' ];
-  let preferredLang = preferredLocale(
-      translatedLocales,
-      'en-US',
-      { lowerCaseRegion: false }
-  );
+  const translatedLocales = ['zh-CN', 'zh-Hans', 'en-US'];
+  let preferredLang = preferredLocale(translatedLocales, 'en-US', {
+    lowerCaseRegion: false,
+  });
 
   switch (preferredLang) {
     case 'zh-CN':
@@ -36,7 +34,7 @@ const guessUserLanguage = () => {
     default:
       return 'en-US';
   }
-}
+};
 
 class App extends Component {
   constructor(props) {
@@ -49,9 +47,8 @@ class App extends Component {
 
     // user context
     this.userContextToggleRefresh = async () => {
-
       if (!this.state.isLoading) {
-        this.setState({isLoading: true});
+        this.setState({ isLoading: true });
       }
 
       const response = await api.getUserInfo();
@@ -64,7 +61,7 @@ class App extends Component {
           isLoggedIn: true,
           userEmail: response.data.email,
           lang: response.data.language,
-          tz: response.data.timeZone
+          tz: response.data.timeZone,
         });
       } else {
         window.localStorage.setItem('disableTimeZoneDiffNotice', '');
@@ -78,18 +75,18 @@ class App extends Component {
       }
     };
 
-    this.switchLang = lang => {
+    this.switchLang = (lang) => {
       this.setState({ lang });
       window.localStorage.setItem('lang', lang);
-    }
+    };
 
     this.onLoading = () => {
       this.setState({ isLoading: true });
-    }
+    };
 
     this.cancelLoading = () => {
       this.setState({ isLoading: false });
-    }
+    };
 
     this.state = {
       lang: preferredLang,
@@ -100,7 +97,7 @@ class App extends Component {
       toggleRefresh: this.userContextToggleRefresh,
       switchLang: this.switchLang,
       onLoading: this.onLoading,
-      cancelLoading: this.cancelLoading
+      cancelLoading: this.cancelLoading,
     };
 
     // async function, don't wait
@@ -108,7 +105,7 @@ class App extends Component {
   }
 
   chooseLocale() {
-    if(this.state.lang === 'zh-Hans') {
+    if (this.state.lang === 'zh-Hans') {
       return zh_CN;
     } else {
       return en_US;
@@ -119,15 +116,15 @@ class App extends Component {
     console.log('loading app');
     return (
       <UserContext.Provider value={this.state}>
-        <IntlProvider locale={this.state.lang}  messages={this.chooseLocale()}>
+        <IntlProvider locale={this.state.lang} messages={this.chooseLocale()}>
           <Router>
-              <Switch>
-                <Route exact path='/' component={Home} />
-                <Route path='/dashboard' component={Dashboard} />
-                <Route path='/login' component={Login} />
-                <Route path='/register' component={Register} />
-                <Route component={NoMatch} />
-              </Switch>
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route path="/dashboard" component={Dashboard} />
+              <Route path="/login" component={Login} />
+              <Route path="/register" component={Register} />
+              <Route component={NoMatch} />
+            </Switch>
           </Router>
         </IntlProvider>
       </UserContext.Provider>

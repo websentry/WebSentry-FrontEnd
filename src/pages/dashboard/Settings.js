@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
 import DashboardLayout from '../../layouts/DashboardLayout';
-import { Card, Col, Divider, Modal, PageHeader, Row, Spin, TreeSelect } from 'antd';
+import {
+  Card,
+  Col,
+  Divider,
+  Modal,
+  PageHeader,
+  Row,
+  Spin,
+  TreeSelect,
+} from 'antd';
 import { injectIntl } from 'react-intl';
 import api from '../../helpers/Api.js';
 
@@ -22,7 +31,7 @@ class Settings extends Component {
       isLoading: false,
       language: '',
       timezone: '',
-    }
+    };
     this.updateSetting = this.updateSetting.bind(this);
   }
 
@@ -41,35 +50,37 @@ class Settings extends Component {
         isLoading: false,
         language: res.data.language,
         timezone: res.data.timeZone,
-      })
+      });
     } else {
       this.setState({
-        isLoading: false
+        isLoading: false,
       });
       // error code: notExist
       const { intl } = this.props;
       let errorMsg;
-      switch(res.code) {
+      switch (res.code) {
         case api.code.notExist:
-          errorMsg = intl.formatMessage({ id: 'userInfoNotExist' })
-          break
+          errorMsg = intl.formatMessage({ id: 'userInfoNotExist' });
+          break;
         default:
-          errorMsg = intl.formatMessage({ id: 'unknownError' })
-          break
+          errorMsg = intl.formatMessage({ id: 'unknownError' });
+          break;
       }
 
       Modal.error({
         title: errorMsg,
-        onOk: () => { window.location.reload(); }
+        onOk: () => {
+          window.location.reload();
+        },
       });
     }
   }
 
-  onLanguageChange = value => {
+  onLanguageChange = (value) => {
     this.updateSetting(value, null);
   };
 
-  onTimezoneChange = value => {
+  onTimezoneChange = (value) => {
     window.localStorage.setItem('disableTimeZoneDiffNotice', '');
     this.updateSetting(null, value);
   };
@@ -82,17 +93,19 @@ class Settings extends Component {
       // error code: wrongParam
       const { intl } = this.props;
       let errorMsg;
-      switch(res.code) {
+      switch (res.code) {
         case api.code.wrongParam:
-          errorMsg = res.detail
-          break
+          errorMsg = res.detail;
+          break;
         default:
-          errorMsg = intl.formatMessage({ id: 'unknownError' })
-          break
+          errorMsg = intl.formatMessage({ id: 'unknownError' });
+          break;
       }
       Modal.error({
         title: errorMsg,
-        onOk: () => { window.location.reload(); }
+        onOk: () => {
+          window.location.reload();
+        },
       });
     }
   }
@@ -103,50 +116,58 @@ class Settings extends Component {
     var timezone_dict = [];
     for (var i in timezones) {
       timezone_dict.push({
-        title: '(GMT' + moment.tz(timezones[i]).format('Z') + ') ' + timezones[i],
+        title:
+          '(GMT' + moment.tz(timezones[i]).format('Z') + ') ' + timezones[i],
         value: timezones[i],
         key: timezones[i],
       });
     }
 
     return (
-      <DashboardLayout page='settings'>
+      <DashboardLayout page="settings">
         <div>
-          <PageHeader
-            title='Setting'
-          />
+          <PageHeader title="Setting" />
           <Divider style={{ marginBottom: '0px' }} />
-          <Spin size='large' spinning={this.state.isLoading}>
+          <Spin size="large" spinning={this.state.isLoading}>
             <Card bordered={false}>
               <Row style={{ marginBottom: '24px' }}>
-                <Col span={8}><h3>Language</h3></Col>
+                <Col span={8}>
+                  <h3>Language</h3>
+                </Col>
                 <Col span={16}>
                   <TreeSelect
                     showSearch
                     style={{ width: '50%', fontSize: '16px' }}
-                    value={ this.state.language }
+                    value={this.state.language}
                     dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                    treeData={ Language }
-                    placeholder='Please select'
+                    treeData={Language}
+                    placeholder="Please select"
                     treeDefaultExpandAll
-                    onChange={ this.onLanguageChange }
-                    defaultValue={ this.state.language }
+                    onChange={this.onLanguageChange}
+                    defaultValue={this.state.language}
                   />
                 </Col>
               </Row>
-              <Row style={{marginBottom: '24px'}}>
-                <Col span={8}><h3>Timezone</h3></Col>
+              <Row style={{ marginBottom: '24px' }}>
+                <Col span={8}>
+                  <h3>Timezone</h3>
+                </Col>
                 <Col span={16}>
                   <TreeSelect
                     showSearch
                     style={{ width: '50%', fontSize: '16px' }}
-                    value={ this.state.timezone }
+                    value={this.state.timezone}
                     dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                    treeData={ timezone_dict }
-                    placeholder='Please select'
+                    treeData={timezone_dict}
+                    placeholder="Please select"
                     treeDefaultExpandAll
-                    onChange={ this.onTimezoneChange }
-                    defaultValue={ '(GMT' + moment.tz(this.state.timezone).format('Z') + ') ' + this.state.timezone }
+                    onChange={this.onTimezoneChange}
+                    defaultValue={
+                      '(GMT' +
+                      moment.tz(this.state.timezone).format('Z') +
+                      ') ' +
+                      this.state.timezone
+                    }
                   />
                 </Col>
               </Row>
