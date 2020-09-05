@@ -156,7 +156,7 @@ class Notifications extends Component {
             visible={this.state.visible}
             onOk={this.handleOk}
             onCancel={this.handleCancel}
-            footer={[]}
+            footer={null}
           >
             <h3>ServerChan</h3>
             <Form
@@ -205,7 +205,7 @@ class Notifications extends Component {
               >
                 <Input style={{ width: '75%' }} />
               </Form.Item>
-              <Form.Item {...tailLayout} style={{ marginBottom: '0px' }}>
+              <Form.Item {...tailLayout}>
                 <Button
                   type="primary"
                   htmlType="submit"
