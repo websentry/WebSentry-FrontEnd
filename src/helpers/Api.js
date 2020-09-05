@@ -186,6 +186,25 @@ api.removeSentry = async (id) => {
   return await requestApi('sentry/remove', params, null, true);
 };
 
+api.updatSentry = async (
+  id,
+  name,
+  notification,
+  similarityThreshold,
+  interval,
+  runningState
+) => {
+  const params = {
+    id: id,
+    name: name,
+    notification: notification,
+    similarityThreshold: similarityThreshold,
+    interval: interval,
+    runningState: runningState,
+  };
+  return await requestApi('sentry/update', params, null, true);
+};
+
 api.getHistoryImage = (filename) => {
   return BASEURL + 'common/get_history_image?filename=' + filename;
 };
