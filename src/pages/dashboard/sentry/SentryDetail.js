@@ -212,7 +212,12 @@ class SentryDetail extends Component {
                 </Descriptions.Item>
               </Descriptions>
             </List>
-            <Collapse defaultActiveKey={['1']} style={{ marginBottom: '16px' }}>
+            <Collapse
+              defaultActiveKey={['1']}
+              activeKey="1"
+              style={{ marginBottom: '16px' }}
+              ghost
+            >
               <Panel header="Screenshot History" key="1" showArrow={false}>
                 <List
                   loading={this.state.loading}
