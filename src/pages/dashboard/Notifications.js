@@ -183,7 +183,7 @@ class Notifications extends Component {
                   },
                 ]}
               >
-                <Input />
+                <Input style={{ width: '75%' }} />
               </Form.Item>
               <Form.Item
                 label="SCKEY"
@@ -203,7 +203,7 @@ class Notifications extends Component {
                   },
                 ]}
               >
-                <Input />
+                <Input style={{ width: '75%' }} />
               </Form.Item>
               <Form.Item {...tailLayout} style={{ marginBottom: '0px' }}>
                 <Button
