@@ -128,7 +128,7 @@ class Settings extends Component {
         <div>
           <PageHeader title="Setting" />
           <Divider style={{ marginBottom: '0px' }} />
-          <Spin size="large" spinning={this.state.isLoading}>
+          <Spin spinning={this.state.isLoading}>
             <Card bordered={false}>
               <Row style={{ marginBottom: '24px' }}>
                 <Col span={8}>
