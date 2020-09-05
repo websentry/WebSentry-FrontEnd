@@ -55,7 +55,7 @@ let api = {};
 api.code = {
   ok: 0,
   authError: -1,
-  wrongParam: -2,
+  invalidParam: -2,
   exceededLimits: -4,
   notExist: -5,
   alreadyExist: -6,

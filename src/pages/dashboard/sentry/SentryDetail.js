@@ -60,11 +60,11 @@ class SentryDetail extends Component {
       this.setState({
         loading: false,
       });
-      // error code: wrongParam, notExist
+      // error code: invalidParam, notExist
       let errorMsg;
       switch (res.code) {
-        case api.code.wrongParam:
-          errorMsg = 'Wrong sentry ID';
+        case api.code.invalidParam:
+          errorMsg = 'Invalid sentry ID';
           break;
         case api.code.notExist:
           errorMsg = 'Sentry is not existed';
@@ -92,7 +92,7 @@ class SentryDetail extends Component {
     if (res.code === api.code.ok) {
       this.props.history.push('/dashboard');
     } else {
-      // wrong sentry ID
+      // invalid sentry ID
       message.error(res.detail);
     }
 
