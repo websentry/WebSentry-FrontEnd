@@ -3,6 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import DashboardLayout from '../../../layouts/DashboardLayout';
 import { DeleteOutlined } from '@ant-design/icons';
 import {
+  Badge,
   Button,
   Collapse,
   Descriptions,
@@ -33,6 +34,7 @@ class SentryDetail extends Component {
       notification: [],
       image: [],
       imageHistory: [],
+      url: '',
     };
     this.deleteSentry = this.deleteSentry.bind(this);
   }
@@ -55,6 +57,7 @@ class SentryDetail extends Component {
         notification: res.data.notification,
         image: res.data.image,
         imageHistory: res.data.imageHistory,
+        url: res.data.task.url,
       });
     } else {
       this.setState({
@@ -167,10 +170,26 @@ class SentryDetail extends Component {
                 style={{ paddingBottom: '24px' }}
                 bordered
               >
+                <Descriptions.Item label="Sentry URL">
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={this.state.url}
+                  >
+                    {this.state.url}
+                  </a>
+                </Descriptions.Item>
+                <Descriptions.Item label="Running State">
+                  {this.state.data.runningState === 1 ? (
+                    <Badge status="processing" text="Running" />
+                  ) : (
+                    <Badge status="error" text="Paused" />
+                  )}
+                </Descriptions.Item>
                 <Descriptions.Item label="Create Time">
                   {moment
                     .tz(this.state.data.createdAt, tz)
-                    .format('MMMM Do YYYY, h:mm A')}
+                    .format('MMM Do YYYY, h:mm A')}
                 </Descriptions.Item>
                 <Descriptions.Item label="Last Check Time">
                   {moment.tz(this.state.data.lastCheckTime, tz).fromNow()}
@@ -191,6 +210,9 @@ class SentryDetail extends Component {
                     </div>
                   )}
                 </Descriptions.Item>
+                <Descriptions.Item label="Checked Count">
+                  {this.state.data.checkCount}
+                </Descriptions.Item>
                 <Descriptions.Item label="Interval">
                   {this.state.data.interval >= 60 ? (
                     <div>
@@ -203,9 +225,6 @@ class SentryDetail extends Component {
                   ) : (
                     <div>{this.state.data.interval + ' minutes'}</div>
                   )}
-                </Descriptions.Item>
-                <Descriptions.Item label="Checked Count">
-                  {this.state.data.checkCount}
                 </Descriptions.Item>
                 <Descriptions.Item label="Notified Count">
                   {this.state.data.notifyCount}
@@ -223,7 +242,13 @@ class SentryDetail extends Component {
                   loading={this.state.loading}
                   itemLayout="vertical"
                   dataSource={this.state.imageHistory}
-                  pagination={{ pageSize: 3 }}
+                  pagination={{
+                    total: this.state.imageHistory.length,
+                    showTotal: (total, range) =>
+                      `${range[0]}-${range[1]} of ${total} items`,
+                    defaultPageSize: 3,
+                    pageSizeOptions: [3, 5, 10, 20],
+                  }}
                   renderItem={(item) => (
                     <List.Item
                       extra={
