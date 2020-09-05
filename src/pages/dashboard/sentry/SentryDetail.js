@@ -90,7 +90,7 @@ class SentryDetail extends Component {
     const res = await api.removeSentry(this.state.id);
 
     if (res.code === api.code.ok) {
-      this.prop.history.push('/dashboard');
+      this.props.history.push('/dashboard');
     } else {
       // wrong sentry ID
       message.error(res.detail);
@@ -119,7 +119,7 @@ class SentryDetail extends Component {
   };
 
   render() {
-    const { intl } = this.prop;
+    const { intl } = this.props;
     return (
       <UserContext.Consumer>
         {({ tz }) => (
@@ -127,7 +127,7 @@ class SentryDetail extends Component {
             <PageHeader
               title={'Sentry Detail: ' + this.state.data.name}
               onBack={() => {
-                this.prop.history.push('/dashboard');
+                this.props.history.push('/dashboard');
               }}
               extra={
                 <Button
