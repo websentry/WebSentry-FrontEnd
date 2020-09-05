@@ -11,7 +11,11 @@ class AppFooter extends React.Component {
       <Footer className="app-footer">
         Copyright <CopyrightOutlined /> WebSentry
         <br />
-        <a href="https://github.com/websentry/WebSentry">
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://github.com/websentry/WebSentry"
+        >
           View on Github <GithubOutlined />
         </a>
       </Footer>
