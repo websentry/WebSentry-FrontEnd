@@ -90,11 +90,11 @@ class Settings extends Component {
     if (res.code === api.code.ok) {
       window.location.reload();
     } else {
-      // error code: wrongParam
+      // error code: invalidParam
       const { intl } = this.props;
       let errorMsg;
       switch (res.code) {
-        case api.code.wrongParam:
+        case api.code.invalidParam:
           errorMsg = res.detail;
           break;
         default:
@@ -128,7 +128,7 @@ class Settings extends Component {
         <div>
           <PageHeader title="Setting" />
           <Divider style={{ marginBottom: '0px' }} />
-          <Spin size="large" spinning={this.state.isLoading}>
+          <Spin spinning={this.state.isLoading}>
             <Card bordered={false}>
               <Row style={{ marginBottom: '24px' }}>
                 <Col span={8}>

@@ -126,7 +126,7 @@ class DashboardLayout extends Component {
                 <Content style={{ margin: '24px 16px 0' }}>
                   <div
                     style={{
-                      padding: '24px 24px 70px',
+                      padding: '24px 24px 24px',
                       background: '#fff',
                       minHeight: '90vh',
                     }}
