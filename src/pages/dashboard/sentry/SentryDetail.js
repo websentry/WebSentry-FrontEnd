@@ -241,7 +241,6 @@ class SentryDetail extends Component {
             <Modal
               title="Delete Sentry"
               visible={this.state.deleteVisible}
-              onOk={this.deleteSentry}
               onCancel={this.handleDeleteCancel}
               footer={[
                 <Button
@@ -269,9 +268,9 @@ class SentryDetail extends Component {
                 ref={this.formRef}
                 onFinish={this.updateSentry}
                 initialValues={{
-                  ['name']: this.state.data.name,
-                  ['interval']: this.state.data.interval,
-                  ['runningState']: this.state.data.runningState,
+                  name: this.state.data.name,
+                  interval: this.state.data.interval,
+                  runningState: this.state.data.runningState,
                 }}
               >
                 <Form.Item
