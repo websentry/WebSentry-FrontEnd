@@ -123,7 +123,7 @@ class DashboardLayout extends Component {
                 </Menu>
               </Sider>
               <Layout>
-                <Content style={{ margin: '24px 16px 0' }}>
+                <Content style={{ margin: '16px 16px 0' }}>
                   <div
                     style={{
                       padding: '24px 24px 24px',

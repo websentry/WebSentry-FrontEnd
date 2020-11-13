@@ -34,6 +34,10 @@ const en_US = {
 
   sentryRemoveText: 'Do you want to remove this sentry?',
 
+  sentryDetailInputName: 'Please input sentry name!',
+  sentryDetailInputInterval: 'Please input sentry interval',
+  sentryDetailSuccessUpdate: 'Successfully updated!',
+
   timeZoneDiffNotice:
     'The browser time zone is different from current user setting!',
 };

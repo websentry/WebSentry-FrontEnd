@@ -32,6 +32,10 @@ const zh_CN = {
 
   sentryRemoveText: '你想要移除这条嘛？',
 
+  sentryDetailInputName: 'Please input sentry name!',
+  sentryDetailInputInterval: 'Please input sentry interval',
+  sentryDetailSuccessUpdate: '更新成功！',
+
   timeZoneDiffNotice: '浏览器时区与当前用户设置不符!',
 };
 export default zh_CN;

@@ -1,17 +1,28 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import DashboardLayout from '../../../layouts/DashboardLayout';
-import { DeleteOutlined } from '@ant-design/icons';
+import {
+  CheckOutlined,
+  CloseOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  QuestionCircleOutlined,
+} from '@ant-design/icons';
 import {
   Badge,
   Button,
   Collapse,
   Descriptions,
   Divider,
+  Form,
+  Input,
+  InputNumber,
   List,
   Modal,
   PageHeader,
+  Switch,
   Tag,
+  Tooltip,
   message,
 } from 'antd';
 import api from '../../../helpers/Api.js';
@@ -23,12 +34,17 @@ import { UserContext } from '../../../UserContext';
 const { Panel } = Collapse;
 
 class SentryDetail extends Component {
+  formRef = React.createRef();
+
   constructor(props) {
     super(props);
     this.state = {
       loading: true,
-      visible: false,
+      deleteVisible: false,
       deleteLoading: false,
+      updateVisible: false,
+      updateLoading: false,
+      updateMsg: '',
       id: this.props.match.params.sentryID,
       data: [],
       notification: [],
@@ -37,6 +53,7 @@ class SentryDetail extends Component {
       url: '',
     };
     this.deleteSentry = this.deleteSentry.bind(this);
+    this.updateSentry = this.updateSentry.bind(this);
   }
 
   componentDidMount() {
@@ -85,6 +102,10 @@ class SentryDetail extends Component {
     }
   }
 
+  getHistoryImageURL(filename) {
+    return api.getHistoryImage(filename);
+  }
+
   async deleteSentry() {
     this.setState({
       deleteLoading: true,
@@ -104,25 +125,88 @@ class SentryDetail extends Component {
     });
   }
 
-  getHistoryImageURL(filename) {
-    return api.getHistoryImage(filename);
+  async updateSentry(values) {
+    this.setState({
+      updateLoading: true,
+    });
+
+    const { intl } = this.props;
+
+    const res = await api.updatSentry(
+      this.state.data.id,
+      values['name'],
+      this.state.data.notification.id,
+      // TODO: threshold needs to be added
+      1,
+      values['interval'],
+      values['runningState'] ? 1 : -1
+    );
+
+    if (res.code === api.code.ok) {
+      this.setState({
+        updateLoading: false,
+        updateMsg: intl.formatMessage({ id: 'sentryDetailSuccessUpdate' }),
+      });
+      this.loadData();
+      this.handleUpdateCancel();
+      message.success(this.state.updateMsg);
+    } else {
+      this.setState({
+        updateLoading: false,
+        updateMsg: res.detail,
+      });
+      this.handleUpdateCancel();
+      message.error(this.state.updateMsg);
+    }
   }
 
-  showModal = () => {
+  showDeleteModal = () => {
     this.setState({
-      visible: true,
+      deleteVisible: true,
       deleteLoading: false,
     });
   };
 
-  handleCancel = () => {
+  showUpdateModal = () => {
     this.setState({
-      visible: false,
+      updateVisible: true,
+      updateLoading: false,
     });
+  };
+
+  handleDeleteCancel = () => {
+    this.setState({
+      deleteVisible: false,
+      deleteLoading: false,
+    });
+  };
+
+  handleUpdateCancel = () => {
+    this.setState({
+      updateVisible: false,
+      updateLoading: false,
+    });
+  };
+
+  getInterval = () => {
+    if (this.state.data.interval === 60) {
+      return this.state.data.interval / 60 + ' hour';
+    } else if (this.state.data.interval % 60 === 0) {
+      return this.state.data.interval / 60 + ' hours';
+    } else {
+      return this.state.data.interval + ' minutes';
+    }
   };
 
   render() {
     const { intl } = this.props;
+    const formLayout = {
+      labelCol: { span: 8 },
+      wrapperCol: { span: 16 },
+    };
+    const tailLayout = {
+      wrapperCol: { offset: 8, span: 16 },
+    };
     return (
       <UserContext.Consumer>
         {({ tz }) => (
@@ -132,23 +216,32 @@ class SentryDetail extends Component {
               onBack={() => {
                 this.props.history.push('/dashboard');
               }}
-              extra={
+              extra={[
                 <Button
+                  key="update"
+                  type="primary"
+                  icon={<EditOutlined />}
+                  size="default"
+                  onClick={this.showUpdateModal}
+                >
+                  Update Sentry
+                </Button>,
+                <Button
+                  key="delete"
                   type="primary"
                   icon={<DeleteOutlined />}
                   size="default"
-                  onClick={this.showModal}
+                  onClick={this.showDeleteModal}
                   danger
                 >
                   Delete Sentry
-                </Button>
-              }
+                </Button>,
+              ]}
             />
             <Modal
               title="Delete Sentry"
-              visible={this.state.visible}
-              onOk={this.deleteSentry}
-              onCancel={this.handleCancel}
+              visible={this.state.deleteVisible}
+              onCancel={this.handleDeleteCancel}
               footer={[
                 <Button
                   key="submit"
@@ -162,6 +255,82 @@ class SentryDetail extends Component {
               ]}
             >
               {intl.formatMessage({ id: 'sentryRemoveText' })}
+            </Modal>
+            <Modal
+              title="Update Sentry"
+              closable={false}
+              visible={this.state.updateVisible}
+              onCancel={this.handleUpdateCancel}
+              footer={null}
+            >
+              <Form
+                {...formLayout}
+                ref={this.formRef}
+                onFinish={this.updateSentry}
+                initialValues={{
+                  name: this.state.data.name,
+                  interval: this.state.data.interval,
+                  runningState: this.state.data.runningState,
+                }}
+              >
+                <Form.Item
+                  label="Name"
+                  name="name"
+                  rules={[
+                    {
+                      required: true,
+                      message: intl.formatMessage({
+                        id: 'sentryDetailInputName',
+                      }),
+                    },
+                  ]}
+                >
+                  <Input style={{ width: '50%' }} />
+                </Form.Item>
+                <Form.Item
+                  label={
+                    <span>
+                      Interval&nbsp;
+                      <Tooltip title="Interval requires at least 15 minutes">
+                        <QuestionCircleOutlined />
+                      </Tooltip>
+                    </span>
+                  }
+                  name="interval"
+                  rules={[
+                    {
+                      required: true,
+                      message: intl.formatMessage({
+                        id: 'sentryDetailInputInterval',
+                      }),
+                    },
+                  ]}
+                >
+                  <InputNumber min={15} step={5} style={{ width: '30%' }} />
+                </Form.Item>
+                <Form.Item
+                  label="Running State"
+                  name="runningState"
+                  valuePropName="checked"
+                >
+                  <Switch
+                    checkedChildren={<CheckOutlined />}
+                    unCheckedChildren={<CloseOutlined />}
+                    defaultChecked={
+                      this.state.data.runningState === 1 ? true : false
+                    }
+                  />
+                </Form.Item>
+                <Form.Item {...tailLayout}>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    loading={this.state.updateLoading}
+                  >
+                    Submit
+                  </Button>
+                </Form.Item>
+              </Form>
             </Modal>
             <Divider />
             <List loading={this.state.loading}>
@@ -214,17 +383,7 @@ class SentryDetail extends Component {
                   {this.state.data.checkCount}
                 </Descriptions.Item>
                 <Descriptions.Item label="Interval">
-                  {this.state.data.interval >= 60 ? (
-                    <div>
-                      {this.state.data.interval === 60 ? (
-                        <div>{this.state.data.interval / 60 + ' hour'}</div>
-                      ) : (
-                        <div>{this.state.data.interval / 60 + ' hours'}</div>
-                      )}
-                    </div>
-                  ) : (
-                    <div>{this.state.data.interval + ' minutes'}</div>
-                  )}
+                  {this.getInterval()}
                 </Descriptions.Item>
                 <Descriptions.Item label="Notified Count">
                   {this.state.data.notifyCount}
@@ -235,7 +394,6 @@ class SentryDetail extends Component {
               defaultActiveKey={['1']}
               activeKey="1"
               style={{ marginBottom: '16px' }}
-              ghost
             >
               <Panel header="Screenshot History" key="1" showArrow={false}>
                 <List
