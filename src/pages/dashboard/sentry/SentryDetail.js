@@ -15,6 +15,7 @@ import {
   Descriptions,
   Divider,
   Form,
+  Image,
   Input,
   InputNumber,
   List,
@@ -410,7 +411,7 @@ class SentryDetail extends Component {
                   renderItem={(item) => (
                     <List.Item
                       extra={
-                        <img
+                        <Image
                           width={272}
                           alt="screenshot"
                           src={this.getHistoryImageURL(item.file)}
