@@ -11,7 +11,7 @@
     "customize-cra": "^1.0.0",
     "less": "^3.12.0",
     "less-loader": "4.1.0",
-    "moment": "^2.27.0",
+    "moment": "^2.29.4",
     "moment-timezone": "^0.5.31",
     "preferred-locale": "^1.0.5",
     "react": "^16.13.1",
